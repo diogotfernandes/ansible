@@ -1,0 +1,28 @@
+---
+
+- name: debug info
+  debug:
+    msg: "hello world"
+
+- name: debug
+  debug:
+    msg: 
+      - "{{ ansible_user }}   -> {{ ansible_facts.enp0s3.ipv4.address }}"
+      - "gateway   -> {{ ansible_default_ipv4.gateway }}"
+  #register: aux
+
+#- name: print aux variable
+#  debug: msg="{{ aux.stdout }}"
+
+
+  #register: aux
+
+
+
+- name: xD
+  copy:
+    content: 
+      - "{{ ansible_user }}   -> {{ ansible_facts.enp0s3.ipv4.address }}"
+      - "gateway   -> {{ ansible_default_ipv4.gateway }}"
+    dest: /tmp/{{ansible_user}}.txt
+  delegate_to: localhost

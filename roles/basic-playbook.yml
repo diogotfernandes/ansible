@@ -1,0 +1,12 @@
+#
+# -Instalação de pacotes
+# -debug
+# -Atualização 
+# -Reboot
+#
+
+---
+- hosts: all
+  become: yes
+  roles:
+  - basic

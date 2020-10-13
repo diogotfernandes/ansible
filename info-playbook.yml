@@ -1,0 +1,10 @@
+#
+# -
+# -
+#
+
+---
+- hosts: multi
+  become: yes
+  roles:
+  - info
