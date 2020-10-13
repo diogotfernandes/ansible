@@ -1,9 +1,4 @@
 ---
-#- hosts: all
-#  become: yes
-#  roles:
-#  - basic
-
 - hosts: app
   become: yes
   roles:

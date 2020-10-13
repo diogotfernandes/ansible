@@ -1,0 +1,6 @@
+---
+- name: webserver playbook  
+  hosts: multi
+  become: yes
+  roles:
+  - info

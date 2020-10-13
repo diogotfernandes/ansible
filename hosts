@@ -12,12 +12,12 @@
 
 #Aplication servers
 [app]
-app1 ansible_host=10.0.1.59 ansible_user=ans-app1 ansible_sudo_pass=1qazZAQ!
-app2 ansible_host=10.0.1.152 ansible_user=ans-app2 ansible_sudo_pass=1qazZAQ!
+app1 ansible_host=10.0.1.59 ansible_ssh_port=2849 ansible_user=ans-app1 ansible_sudo_pass=1qazZAQ!
+app2 ansible_host=10.0.1.152 ansible_ssh_port=2849 ansible_user=ans-app2 ansible_sudo_pass=1qazZAQ!
 
 #Database server
 [db]
-database ansible_host=10.0.1.95 ansible_user=ans-db ansible_sudo_pass=1qazZAQ!
+database ansible_host=10.0.1.95 ansible_ssh_port=2849 ansible_user=ans-db ansible_sudo_pass=1qazZAQ!
 
 #Group 'multi' with all servers
 [multi:children]
