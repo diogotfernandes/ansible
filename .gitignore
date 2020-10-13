@@ -1,3 +1,4 @@
 info-playbook.retry
 web-playbook.retry
 basic-playbook.retry
+sftp-config.json
