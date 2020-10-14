@@ -1,0 +1,29 @@
+---
+
+#faz sentido???? se não está instaladi, não vou consigar ligar-me por ssh e verficar se está instalado!!!
+- name: ensure ssh is installed
+  apt:
+    pkg: openssh-server
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+  notify: restart ssh
+
+- name: Update SSH configuration to be more secure
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication no"
+    - regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+    - regexp: "^Port"
+      line: "Port 2849"
+  notify: restart ssh
+
+
+### TODO: 
+  #  - permitir/proibir utilizador a fazer ligar-se por ssh

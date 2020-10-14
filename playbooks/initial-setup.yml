@@ -1,5 +1,15 @@
----
-- hosts: all
-  become: yes
+- hosts: multi
+  become: true
+ # user: root
+
+  vars_files:
+    - ../vars/main.yml
+
   roles:
-  - initial-setup
+#   - essentials
+#   - hostname
+   - timezone
+#    - user
+#    - fail2ban
+#   - ssh
+#    - ufw
