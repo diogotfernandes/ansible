@@ -5,7 +5,14 @@
 * Install a list of packages
 
 
- [- git, ntp, unattended-upgrades, tree, ufw, curl]
+ [
+    - git, 
+    - ntp, 
+    - unattended-upgrades, 
+    - tree, 
+    - ufw, 
+    - curl
+ ]
  
 * Enable unattended upgrades
 
