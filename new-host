@@ -1,0 +1,2 @@
+[new]
+192.168.1.56 	ansible_user=johndoe ansible_ssh_port=2849

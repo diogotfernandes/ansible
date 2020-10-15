@@ -1,15 +1,15 @@
-- hosts: multi
+- hosts: new
   become: true
- # user: root
+ # user: remote_root
 
   vars_files:
     - ../vars/main.yml
 
   roles:
-#   - essentials
-#   - hostname
+   - user
+   - essentials
+   #- hostname
    - timezone
-#    - user
-#    - fail2ban
-#   - ssh
-#    - ufw
+  #- fail2ban
+   - ssh
+   - ufw

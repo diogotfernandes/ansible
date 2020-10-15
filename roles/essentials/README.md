@@ -7,11 +7,11 @@
 
 
  ```
-    + git, 
-    + ntp, 
-    + unattended-upgrades, 
-    + tree, 
-    + ufw, 
+    + git
+    + ntp 
+    + unattended-upgrades 
+    + tree
+    + ufw
     + curl
 ```
 * Enable unattended upgrades

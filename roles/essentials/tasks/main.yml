@@ -8,13 +8,11 @@
   apt:
     name: "{{ packages }}"
     update_cache: true
-Fixtures.identify(:name)
     cache_valid_time: 3600
     state: latest
   vars:
     packages:
     - git
-    - ntp
     #https://wiki.debian.org/UnattendedUpgrades
     - unattended-upgrades #package to configure automatic updates
     - tree
@@ -31,10 +29,3 @@ Fixtures.identify(:name)
   with_items:
     - 10periodic
     - 50unattended-upgrades
-
-
-- name: Ensure ntp starts on a fresh reboot
-  service:
-    name: ntp
-    state: started
-    enabled: yes

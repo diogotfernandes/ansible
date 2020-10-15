@@ -16,8 +16,33 @@
   notify:
     - update timezone
 
+- name: Verificar se estão especificados os ntp servers
+  shell: grep -c "^NTP=" /etc/systemd/timesyncd.conf # 1 if true, 0 if false
+  register: current_ntp
+  #ignore_errors: true
+  failed_when: current_ntp.rc != 1 and current_ntp.rc != 0
+#^A -> "A" at the beginning of a line
+
+#Adicionar servidores de NTP PT's
+- name: add ntp servers
+  lineinfile:
+    dest: /etc/systemd/timesyncd.conf
+    regexp: "^NTP="
+    line: "NTP={{ntp_server}}"
+  when: current_ntp.stdout == '0'
+  notify:
+    - update set-ntp
+
+
+  
+
+#- debug:
+#    msg:
+#      - "{{current_ntp.rc}}"
+
 #- debug:
 #    msg: 
 #      - "{{ timezone }}"
 #      - "{{ current_timezone.stdout }}"
 #  when: current_timezone.stdout != timezone
+

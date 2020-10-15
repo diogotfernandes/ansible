@@ -23,4 +23,3 @@ database ansible_host=10.0.1.95 ansible_ssh_port=2849 ansible_user=ans-db ansibl
 [multi:children]
 app
 db
-
