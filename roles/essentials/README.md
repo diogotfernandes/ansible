@@ -4,9 +4,7 @@
 
 * Install a list of packages
 
-```
-./run
-```
+
 
 
  [
