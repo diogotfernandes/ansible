@@ -6,16 +6,14 @@
 
 
 
-
- [
+ ```
     - git, 
     - ntp, 
     - unattended-upgrades, 
     - tree, 
     - ufw, 
     - curl
- ]
- 
+```
 * Enable unattended upgrades
 
 
