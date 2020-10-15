@@ -7,14 +7,11 @@
 
 
  ```
-    - git, 
-    - ntp, 
-    - unattended-upgrades, 
-    - tree, 
-    - ufw, 
-    - curl
+    + git, 
+    + ntp, 
+    + unattended-upgrades, 
+    + tree, 
+    + ufw, 
+    + curl
 ```
 * Enable unattended upgrades
-
-
-* Ensure ntp starts on a fresh reboot
