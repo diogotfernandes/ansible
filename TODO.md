@@ -1,3 +1,4 @@
 # TODO
 
-[ ] task1
+- [ ] task1
+- [x] completed task
