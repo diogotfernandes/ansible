@@ -1,6 +1,6 @@
 # dns-bind
 
-Role para instalação do Bind9. 
+Role para instalação do Bind9. Utiliza templates em jinja2.
 
 * basic usage
 ```yaml

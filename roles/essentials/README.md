@@ -13,5 +13,6 @@
     + tree
     + ufw
     + curl
+    + dnsutils
 ```
 * Enable unattended upgrades
