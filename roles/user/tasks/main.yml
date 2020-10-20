@@ -25,5 +25,17 @@
 - name: Add SSH key for new super user
   authorized_key:
     user: "{{ user }}"
-    key: "{{  lookup('file',item) }}"
+    key: "{{  lookup('file',item) }}" 
   with_items: "{{ public_key }}"
+
+- name: Disable user password
+  shell: passwd -d "{{ user }}"
+
+- name: Expire user password
+  shell: passwd -e "{{ user  }}"
+
+- name: Remove default user
+  user:
+    name: "{{ default_user }}"
+    state: absent
+    remove: yes

@@ -1,0 +1,25 @@
+---
+# vars file for Bind setup
+domain: alcafaz.test
+rev_domain: 1.0.10.in-addr.arpa
+forward_dns: opendns
+
+forwarders:
+  opendns: 
+    primary: 208.67.222.222
+    secondary: 208.67.220.220
+  google:
+    primary: 8.8.8.8
+    secondary: 8.8.4.4
+  cloudflare:
+    primary: 1.1.1.1
+    secondary: 1.0.0.1
+
+records:
+  ans-app1:     { forward: 10.0.1.96, type: A, rev: 96 }
+  ans-main:     { forward: 10.0.1.26, type: A, rev: 26 }
+  nameserver1:  { forward: 10.0.1.21, type: A, rev: 21 }
+  win10:        { forward: 10.0.1.125, type: A, rev: 125 }
+  someshit:     { forward: 192.168.100.200, type: A, rev: 200 }
+  www:          { forward: ans-app1, type: CNAME}
+  www2:         { forward: ans-app1, type: CNAME}

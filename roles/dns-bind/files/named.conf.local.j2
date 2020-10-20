@@ -1,0 +1,9 @@
+zone "{{ domain }}" {
+    type master;
+    file "/etc/bind/zones/db.{{ domain }}";
+};
+
+zone "{{ rev_domain }}" {
+    type master;
+    file "/etc/bind/zones/db.{{ rev_domain }}";
+};
