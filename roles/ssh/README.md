@@ -6,7 +6,7 @@ Role para atualizar a configuração do SSH.
 ```yaml
 PasswordAuthentication no
 ```
-* Remove a autenticação com o utilizador > root
+* Remove a autenticação com o utilizador  `root`
 ```yaml
 PermitRootLogin no
 ```
