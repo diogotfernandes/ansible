@@ -1,0 +1,7 @@
+---
+
+- name: Modificar configuração para modificar nameservers e domain-name
+  template:
+    src: dhclient.conf.j2
+    dest: /etc/dhcp/dhclient.conf
+    backup: yes

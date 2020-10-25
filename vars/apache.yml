@@ -1,0 +1,9 @@
+apache_listen_port: 80
+apache_vhosts:
+  - {servername: "alcafaz.test", documentroot: "/var/www/vhosts/alcafaz.test"}
+  - {servername: "diogof.test", documentroot: "/var/www/vhosts/diogof.test"}
+  - {servername: "joao.test", documentroot: "/var/www/vhosts/diogof.test"}
+  - {servername: "manel.test", documentroot: "/var/www/vhosts/diogof.test"}
+  - {servername: "web1.test", documentroot: "/var/www/vhosts/diogof.test"}
+  - {servername: "web2.test", documentroot: "/var/www/vhosts/diogof.test"}
+

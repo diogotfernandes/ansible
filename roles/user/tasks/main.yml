@@ -28,11 +28,11 @@
     key: "{{  lookup('file',item) }}" 
   with_items: "{{ public_key }}"
 
-- name: Disable user password
-  shell: passwd -d "{{ user }}"
+#- name: Disable user password
+#  shell: passwd -d "{{ user }}"
 
-- name: Expire user password
-  shell: passwd -e "{{ user  }}"
+#- name: Expire user password
+#  shell: passwd -e "{{ user  }}"
 
 - name: Remove default user
   user:

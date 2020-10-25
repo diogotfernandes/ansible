@@ -1,17 +1,17 @@
 #Aplication servers
-[app]
-web01 ansible_host=10.0.1.96 ansible_ssh_port=2849 ansible_user=ans-app1 ansible_sudo_pass=1qazZAQ! alias_hostname=web01
-web02 ansible_host=10.0.1.152 ansible_ssh_port=2849 ansible_user=ans-app2 ansible_sudo_pass=1qazZAQ! alias_hostname=web02
+[web]
+web01 ansible_host=10.0.1.67 ansible_ssh_port=2849 ansible_user=admin ansible_sudo_pass=qwerty alias_hostname=web01
+apache ansible_host=10.0.1.126 ansible_ssh_port=2849 ansible_user=admin ansible_sudo_pass=qwerty alias_hostname=apache
 
 #Database server
 [db]
-db01 ansible_host=10.0.1.95 ansible_ssh_port=2849 ansible_user=ans-db ansible_sudo_pass=1qazZAQ! alias_hostname=db01
+
 
 #DNS server
 [nameserver]
-nameserver1 ansible_host=10.0.1.141 ansible_ssh_port=2849
+nameserver1 ansible_host=10.0.1.141 ansible_ssh_port=2849 ansible_user=admin ansible_ssh_password=qwerty
 
 #Group 'multi' with all servers
 [multi:children]
-app
+web
 db

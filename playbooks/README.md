@@ -1,5 +1,5 @@
 # apacheWebserver
-* usage
+* Setup
 ``` ansible-playbook playbooks/apacheWebserver.yml -i [hostFile] ...???? ```
 ```yaml
 - hosts: all
@@ -9,7 +9,7 @@
 ```
 
 # dns
-* usage
+* Setup
 ```ansible-playbook playbooks/dns.yml -i [hostFile] -u [user] -K --extra-vars forward_dns=opendns ```
 ```yaml
 - hosts: nameserver
@@ -23,8 +23,8 @@
 ```
 
 # initial-setup
-* usage
-``` ansible-playbook playbooks/initial-setup -u root --ask-pass -K  ```
+* Setup
+``` ansible-playbook playbooks/initial-setup -i [newHost] -u root --ask-pass -K --extra-vars user=newUser  ```
 
 ```yaml
 - hosts: all

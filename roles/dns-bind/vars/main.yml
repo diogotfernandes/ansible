@@ -16,10 +16,9 @@ forwarders:
     secondary: 1.0.0.1
 
 records:
-  ans-app1:     { forward: 10.0.1.96, type: A, rev: 96 }
-  ans-main:     { forward: 10.0.1.26, type: A, rev: 26 }
-  nameserver1:  { forward: 10.0.1.21, type: A, rev: 21 }
+  web01:        { forward: 10.0.1.67, type: A, rev: 67 }
+  ans-main:     { forward: 10.0.1.40, type: A, rev: 40 }
+  nameserver1:  { forward: 10.0.1.141, type: A, rev: 141 }
   win10:        { forward: 10.0.1.125, type: A, rev: 125 }
-  someshit:     { forward: 192.168.100.200, type: A, rev: 200 }
-  www:          { forward: ans-app1, type: CNAME}
-  www2:         { forward: ans-app1, type: CNAME}
+  www:          { forward: web01.alcafaz.test., type: CNAME}
+  www2:         { forward: web01.alcafaz.test., type: CNAME}

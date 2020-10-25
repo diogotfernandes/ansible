@@ -1,2 +1,2 @@
 [new]
-10.0.1.141 ansible_ssh_extra_args='-o StrictHostKeyChecking=no' alias_hostname=nameserver1
+10.0.1.126 ansible_ssh_extra_args='-o StrictHostKeyChecking=no' alias_hostname=apache

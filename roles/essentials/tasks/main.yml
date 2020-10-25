@@ -1,5 +1,4 @@
 ---
-
 - name: Install essential packages
   apt:
     name: "{{ packages }}"
@@ -24,13 +23,13 @@
     upgrade: yes
     autoremove: yes
 
-- name: Enable unattended upgrades
-  copy:
-    src: ../files/{{ item }}.j2
-    dest:  /etc/apt/apt.conf.d/{{ item }}
-    owner: root
-    group:  root
-    mode: 0644
-  with_items:
-    - 10periodic
-    - 50unattended-upgrades
+# - name: Enable unattended upgrades
+#  copy:
+#    src: ../files/{{ item }}.j2
+#    dest:  /etc/apt/apt.conf.d/{{ item }}
+#    owner: root
+#    group:  root
+#    mode: 0644
+#  with_items:
+#    - 10periodic
+#    - 50unattended-upgrades

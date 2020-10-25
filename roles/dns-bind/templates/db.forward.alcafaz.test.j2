@@ -1,16 +1,7 @@
-$TTL    604800
-@       IN      SOA     {{ ansible_fqdn }}. admin.{{ domain }}. (
-                  3       ; Serial
-             604800     ; Refresh
-              86400     ; Retry
-            2419200     ; Expire
-             604800 )   ; Negative Cache TTL
-;
-; name servers - NS records
-     IN      NS      {{ ansible_fqdn }}.
-
+$INCLUDE "/etc/bind/zones/default-zone-data";
 
 ;name servers - A records
+@     					IN		A		10.0.1.67
 {% for key, value in records.items() %}
 {% if value.type == 'A' %}
 {{ key }}.{{domain}}.     		IN		{{ value.type }}		{{ value.forward }}

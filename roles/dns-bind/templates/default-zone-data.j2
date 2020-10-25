@@ -8,9 +8,3 @@ $TTL    604800
 ; name servers
       IN      NS      {{ ansible_fqdn }}.
 
-; PTR Records
-{% for key, value in records.items() %}
-{% if value.type == 'A' %}
-{{ value.rev }}			IN		PTR		{{ key }}.{{domain}}.
-{% endif %}
-{% endfor %}
