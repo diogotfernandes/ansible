@@ -1,17 +1,18 @@
-#Aplication servers
-[web]
-web01 ansible_host=10.0.1.67 ansible_ssh_port=2849 ansible_user=admin ansible_sudo_pass=qwerty alias_hostname=web01
-apache ansible_host=10.0.1.126 ansible_ssh_port=2849 ansible_user=admin ansible_sudo_pass=qwerty alias_hostname=apache
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
 
-#Database server
-[db]
+[nameservers]
+192.168.100.5 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
 
+[new]
+192.168.100.0 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
 
-#DNS server
-[nameserver]
-nameserver1 ansible_host=10.0.1.141 ansible_ssh_port=2849 ansible_user=admin ansible_ssh_password=qwerty
-
-#Group 'multi' with all servers
-[multi:children]
-web
-db
+[mail]
+192.168.100.10 ansible_ssh_port=2849 ansible_user=admin ansible_sudo_pass=qwerty

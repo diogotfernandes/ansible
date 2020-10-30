@@ -1,0 +1,5 @@
+---
+ns1: 192.168.100.5
+ns2: 127.0.0.53
+domain_name: alcafaz.test
+domain_search: alcafaz.test

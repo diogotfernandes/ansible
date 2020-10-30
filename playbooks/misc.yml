@@ -1,6 +1,0 @@
----
-- name: tests  
-  hosts: all
-  become: yes
-  roles:
-  - change-dhclient-conf

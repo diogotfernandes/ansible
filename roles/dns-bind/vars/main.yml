@@ -1,7 +1,7 @@
 ---
 # vars file for Bind setup
 domain: alcafaz.test
-rev_domain: 1.0.10.in-addr.arpa
+rev_domain: 100.168.192.in-addr.arpa #192.168.100.0
 forward_dns: opendns
 
 forwarders:
@@ -16,9 +16,8 @@ forwarders:
     secondary: 1.0.0.1
 
 records:
-  web01:        { forward: 10.0.1.67, type: A, rev: 67 }
-  ans-main:     { forward: 10.0.1.40, type: A, rev: 40 }
-  nameserver1:  { forward: 10.0.1.141, type: A, rev: 141 }
-  win10:        { forward: 10.0.1.125, type: A, rev: 125 }
-  www:          { forward: web01.alcafaz.test., type: CNAME}
-  www2:         { forward: web01.alcafaz.test., type: CNAME}
+  #web01:        { forward: 10.0.1.67, type: A, rev: 67 }
+  nameserver1:  { forward: 192.168.100.5,  type: A, rev: 5 }
+  laptop:       { forward: 192.168.100.1,  type: A, rev: 1 }
+  mailman:      { forward: 192.168.100.15, type: A, rev: 15 }
+  #www2:         { forward: web01.alcafaz.test., type: CNAME}

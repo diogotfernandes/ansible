@@ -1,8 +1,6 @@
-- hosts: nameserver
+---
+- hosts: nameservers
   become: true
- 
-  vars_files:
-    - ../vars/dns.yml
-
   roles:
-   - dns-bind
+  - dns-bind
+  #- initial_setup

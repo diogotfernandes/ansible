@@ -1,0 +1,6 @@
+---
+# defaults file for dns-bind9
+domain: alcafaz.test
+acl_trusted: 192.168.100.0
+acl_cidr: /24
+log_dir: /var/log/bind/bind.log

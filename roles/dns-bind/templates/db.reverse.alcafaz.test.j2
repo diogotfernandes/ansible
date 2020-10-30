@@ -1,7 +1,7 @@
 $INCLUDE "/etc/bind/zones/default-zone-data";
 
 ; PTR Records
-141			IN		PTR		alcafaz.test
+5			IN		PTR		alcafaz.test
 {% for key, value in records.items() %}
 {% if value.type == 'A' %}
 {{ value.rev }}			IN		PTR		{{ key }}.{{domain}}.

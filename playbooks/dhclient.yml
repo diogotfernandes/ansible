@@ -1,0 +1,7 @@
+---
+- hosts: mail
+  become: true
+  roles:
+   - change_dhcp_nameservers
+  #- dns-bind
+  #- initial_setup
