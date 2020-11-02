@@ -1,0 +1,46 @@
+---
+# tasks file for mail
+
+- name: Set postfix option hostname
+  debconf:
+    name: postfix
+    question: postfix/mailname
+    value: "{{ postfix_mailname }}"
+    vtype: string
+
+- name: Set postfix option type as internet site
+  debconf:
+    name: postfix
+    question: postfix/main_mailer_type
+    value: "{{ postfix_main_mailer_type }}"
+    vtype: string
+
+- name: Set postfix option mynetworks
+  debconf:
+    name: postfix
+    question: postfix/mynetworks
+    value: "{{ postfix_mynetworks }}"
+    vtype: string
+
+- name: Set postfix delimiter option
+  debconf:
+    name: postfix
+    question: postfix/recipient_delim
+    value: "{{ postfix_recipient_delim }}"
+    vtype: string
+
+- name: Set postfix root root address
+  debconf:
+    name: postfix
+    question: postfix/root_address
+    value: "{{ postfix_root_address }}"
+    vtype: string
+
+- name: Instalar postfix
+  apt:
+    name: "{{ postfix_packages }}"
+    update_cache: true
+    state: present
+  notify:
+    - restart postfix
+    - debug

@@ -3,3 +3,9 @@
 postfix_packages:
   - postfix
   - postfix-doc
+
+postfix_mailname: alcafaz.test
+postfix_main_mailer_type: Internet Site
+postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
+postfix_recipient_delim: A
+postfix_root_address: admin@alcafaz.test
