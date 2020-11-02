@@ -1,13 +1,5 @@
 - hosts: new
   become: true
- 
-  vars_files:
-    - ../vars.yml
 
   roles:
-   - essentials
-   - user
-   - hostname
-   - timezone
-   - ssh
-   - ufw
+   - initial_setup
