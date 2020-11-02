@@ -1,5 +1,0 @@
----
-- hosts: new
-  become: true
-  roles:
-  - initial_setup

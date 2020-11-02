@@ -1,8 +1,7 @@
 $INCLUDE "/etc/bind/zones/default-zone-data";
 
 ;name servers - A records
-;@     					IN		A		192.168.100.5
-						IN 		MX	10	mailman.alcafaz.test.
+@     					IN		A		192.168.100.5
 {% for key, value in records.items() %}
 {% if value.type == 'A' %}
 {{ key }}.{{domain}}.     		IN		{{ value.type }}		{{ value.forward }}

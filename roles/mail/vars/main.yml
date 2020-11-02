@@ -1,0 +1,5 @@
+---
+# vars file for mail
+postfix_packages:
+  - postfix
+  - postfix-doc

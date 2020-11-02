@@ -3,9 +3,11 @@
 domain: alcafaz.test
 rev_domain: 100.168.192.in-addr.arpa #192.168.100.0
 forward_dns: opendns
+ip_duarte: 10.0.1.138
+domain_duarte: core.pt
 
 forwarders:
-  opendns: 
+  opendns:
     primary: 208.67.222.222
     secondary: 208.67.220.220
   google:
@@ -16,8 +18,6 @@ forwarders:
     secondary: 1.0.0.1
 
 records:
-  #web01:        { forward: 10.0.1.67, type: A, rev: 67 }
   nameserver1:  { forward: 192.168.100.5,  type: A, rev: 5 }
   laptop:       { forward: 192.168.100.1,  type: A, rev: 1 }
-  mailman:      { forward: 192.168.100.15, type: A, rev: 15 }
-  #www2:         { forward: web01.alcafaz.test., type: CNAME}
+  mail:         { forward: 192.168.100.10, type: A, rev: 10 }

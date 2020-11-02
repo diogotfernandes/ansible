@@ -12,3 +12,13 @@ zone "diogof.test" {
     type master;
     file "/etc/bind/zones/db.diogof.test";
 };
+
+zone "{{domain_duarte}}" {
+    type forward;
+    forwarders { {{ip_duarte}};};
+};
+
+zone "1.0.10.in-addr.arpa" {
+  type forward;
+  forwarders { {{ip_duarte}}; };
+};
