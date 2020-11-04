@@ -44,3 +44,43 @@
   notify:
     - restart postfix
     - debug
+
+- name: Create virtual recipient domains file
+  template:
+    src: virtual_recipient_domains.j2
+    dest: /etc/postfix/virtual_recipient_domains
+    backup: true
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart postfix
+
+- name: Create virtual recipients file
+  template:
+    src: virtual_recipients.j2
+    dest: /etc/postfix/virtual_recipients
+    backup: true
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart postfix
+
+- name: Create postfix conf.cf file
+  template:
+    src: postfix.main.cf.j2
+    dest: /etc/postfix/main.cf
+    backup: true
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart postfix
+
+- name: postmap cenas
+  shell: "{{ item }}"
+  with_items:
+    - postmap /etc/postfix/virtual_recipient_domains
+    - postmap /etc/postfix/virtual_recipients
+  notify: restart postfix
+
+
+  

@@ -14,5 +14,5 @@
 [mail]
 192.168.100.10 ansible_ssh_port=2849 ansible_user=admin ansible_sudo_pass=qwerty
 
-#[new]
-#192.168.100.10 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+[new]
+139.162.149.62 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'

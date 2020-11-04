@@ -4,6 +4,12 @@
   service:
     name: postfix
     state: restarted
-    
+
 - name: debug
   debug: msg="debug msg!"
+
+- name: restart cyrus-imap
+  service: name=cyrus-imapd state=restarted
+
+- name: restart sasl
+  service: name=saslauthd state=restarted

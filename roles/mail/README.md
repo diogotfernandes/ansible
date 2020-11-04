@@ -11,7 +11,7 @@ sudo apt install postfix postfix-doc
 
 + debconf-show postfix
 ```shell
-postfix/bad_recipient_delimiter:
+  postfix/bad_recipient_delimiter:
   postfix/recipient_delim: +
   postfix/not_configured:
   postfix/main_cf_conversion_warning: true
@@ -67,3 +67,76 @@ mynetworks = 127.0.0.0/8 192.168.100.0/24
 
 
 + `/etc/postfix/master.cf`
+
+
+
+# Cyrus IMAP (MDA)
+
+## Requirements
+
+\#Não resolveu o problema
+https://wiki.debian.org/pt_BR/PostfixAndSASL
+\#Resolveu o problema!!
+http://blog.bekyarov.info/2013/01/04/testsaslauthd-connect-no-such-file-or-directory-0-postfix-postfixsmtpd11571-warning-sasl-authentication-failure-cannot-connect-to-saslauthd-server-no-such-file-or-directory/
+
+
++ libsasl2-modules sasl2-bin
+```shell
+sudo apt install libsasl2-modules sasl2-bin
+```
+
++ cyrus-*
+```shell
+sudo apt install cyrus-imapd cyrus-clients cyrus-common cyrus-admin
+```
+
+
+## Install
+
++ Setup the cyrus:mail user and group
+
+Verificar se já existe um grupo com o nome `mail` e um utilizador com o nome cyrus
+```shell
+#mail:x:8:
+getent group mail
+
+#cyrus:x:999:8:Cyrus IMAP Server:/var/lib/imap:/bin/bash
+getent passwd cyrus
+```
+
+Exemplo para criar utilizador/grupo
+```shell
+groupadd -fr mail
+useradd -c "Cyrus IMAP Server" -d /var/lib/cyrus -g mail -s /bin/bash -r cyrus
+```
+
+## Setting up authentication with SASL
+
+### Por omissão são criados os grupos necessários (mail,sasl) e os utilizadores necessários(cyrus)!!
+
++ Verificar se existe um grupo `sasl`
+```shell
+getent group sasl
+```
+
++ Mudar a configuração do SASL `/etc/default/saslauthd`
+```shell
+START=yes
+MECHANISMS="sasldb"
+```
+
++ Criar um utilizador dentro do SASL
+```shell
+echo 'secret' | sudo saslpasswd2 -p -c cyrus
+```
+
++ Testar a autenticação
+```shell
+sudo testsaslauth -u cyrus -p qwerty
+```
+You should get an `0: OK "Success."` message.
+
+
+
++ imtest
+path: /usr/lib/cyrus/bin/imtest
