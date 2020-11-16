@@ -1,11 +1,11 @@
-$TTL    604800
+$TTL    {{bind9_ttl}}
 @       IN      SOA     {{ ansible_fqdn }}. admin.{{ domain }}. (
-                              3         ; Serial
-                         604800         ; Refresh
-                          86400         ; Retry
-                        2419200         ; Expire
-                         604800 )       ; Negative Cache TTL
+              {{bind9_serial}}          ; Serial
+              {{bind9_refresh}}         ; Refresh
+                {{bind9_retry}}         ; Retry
+               {{bind9_expire}}         ; Expire
+   {{bind9_negative_cache_ttl}} )       ; Negative Cache TTL
 ; name servers
-      IN           NS      {{ ansible_fqdn }}.
-      IN           MX   10     mail.alcafaz.test.
-      IN           TXT     "v=spf1 a:alcafaz.test  ~all"
+      IN           NS           {{ ansible_fqdn }}.
+      IN           MX   10      {{ mx_domain }}.
+      IN           TXT     "v=spf1 a:{{ domain }}  ~all"

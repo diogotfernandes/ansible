@@ -1,17 +1,16 @@
-$INCLUDE "/etc/bind/zones/default-zone-data";
+$INCLUDE "/var/lib/bind/zones/default-zone-data";
 
 ;name servers - A records
-@     					IN		A		192.168.100.5
 {% for key, value in records.items() %}
 {% if value.type == 'A' %}
-{{ key }}.{{domain}}.     		IN		{{ value.type }}		{{ value.forward }}
+{{ key }}           IN          {{ value.type }}          {{ value.forward }}
 {% endif %}
 {% endfor %}
 
 
 ;name servers - CNAME records
 {% for key, value in records.items() %}
-{% if value.type == 'CNAME' %}
-{{ key }}     		IN		{{ value.type }}		{{ value.forward }}
+{%+ if value.type == 'CNAME' %}
+{{ key }}         IN          {{ value.type }}          {{ value.forward }}
 {% endif %}
 {% endfor %}

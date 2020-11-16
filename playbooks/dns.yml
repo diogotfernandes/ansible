@@ -1,5 +1,5 @@
 ---
-- hosts: nameservers
+- hosts: ns_unts
   become: true
   roles:
   - dns-bind

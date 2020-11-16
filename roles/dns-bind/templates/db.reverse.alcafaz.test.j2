@@ -1,9 +1,12 @@
-$INCLUDE "/etc/bind/zones/default-zone-data";
+$INCLUDE "/var/lib/bind/zones/default-zone-data";
 
 ; PTR Records
-5			IN		PTR		alcafaz.test
 {% for key, value in records.items() %}
 {% if value.type == 'A' %}
+{% if key == '@' %}
+{{ value.rev }}			IN		PTR		{{domain}}.
+{% else %}
 {{ value.rev }}			IN		PTR		{{ key }}.{{domain}}.
+{% endif %}
 {% endif %}
 {% endfor %}

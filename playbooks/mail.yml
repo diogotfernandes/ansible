@@ -1,4 +1,4 @@
-- hosts: mail
+- hosts: mail_alcafaz
   become: true
 
   roles:

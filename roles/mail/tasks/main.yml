@@ -1,4 +1,15 @@
 ---
 
-- include_tasks: postfix.yml
-- include_tasks: cyrus-imap.yml
+#- debug:
+#    msg:
+#    - "{{postfix_mailname}}"
+#    - "{{postfix_root_address}}"
+
+#- name: Exterminate mankind
+#  pause:
+#    prompt: Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort
+
+#- include_tasks: postfix.yml
+#- include_tasks: sasl.yml
+#- include_tasks: cyrus-imap.yml
+- include_tasks: mailman3.yml

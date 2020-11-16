@@ -1,2 +1,3 @@
-diogo@alcafaz.test  diogo@alcafaz.test
-admin@alcafaz.test  admin@alcafaz.test
+{% for email in virtual_recipients %}
+{{ email.name }}@{{ domain_name }}{{ansible_date_time.date.rjust(20)}} 
+{% endfor %}

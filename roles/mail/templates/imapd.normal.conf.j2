@@ -118,3 +118,14 @@ tls_client_ca_dir: /etc/ssl/certs
 # later reuse.  The maximum value is 1440 (24 hours), the default.  A
 # value of 0 will disable session caching.
 tls_session_timeout: 1440
+
+###################################################################
+## Auto create mailboxes
+###################################################################
+
+autocreate_quota: 20480
+unixhierarchysep: yes
+quotawarn: 90
+autocreate_inbox_folders: Drafts|Sent|Trash
+autocreate_subscribe_folders: Drafts|Sent|Trash
+lmtp_over_quota_perm_failure: 1

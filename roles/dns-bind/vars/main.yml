@@ -1,23 +1,31 @@
 ---
 # vars file for Bind setup
-domain: alcafaz.test
-rev_domain: 100.168.192.in-addr.arpa #192.168.100.0
-forward_dns: opendns
-ip_duarte: 10.0.1.138
-domain_duarte: core.pt
+#
+#domain: example.net
+#rev_domain: 200.168.192.in-addr.arpa
+#records:
+#  record1:       { forward: 192.168.200.5,  type: A, rev: 5 }
+#  record2:       { forward: 192.168.200.1,  type: A, rev: 1 }
+#  record3:       { forward: 192.168.200.10, type: CNAME, rev: 10 }
+#
 
-forwarders:
-  opendns:
-    primary: 208.67.222.222
-    secondary: 208.67.220.220
-  google:
-    primary: 8.8.8.8
-    secondary: 8.8.4.4
-  cloudflare:
-    primary: 1.1.1.1
-    secondary: 1.0.0.1
+duarte_zone: false
 
+acl_trusted_networks:
+  - 139.162.149.62    #ns1
+  - 192.168.140.158   #ns1
+  - 172.105.71.143    #ns2
+  - 192.168.172.38    #ns2
+
+bind9_serial: 2020110719
+
+domain: diogo.test
+rev_domain: 200.168.192.in-addr.arpa
+mx_domain: mail.diogo.test
 records:
-  nameserver1:  { forward: 192.168.100.5,  type: A, rev: 5 }
-  laptop:       { forward: 192.168.100.1,  type: A, rev: 1 }
-  mail:         { forward: 192.168.100.10, type: A, rev: 10 }
+  '@':          { forward: 172.105.71.143,  type: A, rev: 5 }
+  ns1:          { forward: 139.162.149.62,  type: A, rev: 5 }
+  ns2:          { forward: 172.105.71.143,  type: A, rev: 1 }
+  #mail:         { forward: 192.168.200.10, type: A, rev: 10 }
+
+#TODO criar zonas dinamicamente

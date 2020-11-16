@@ -1,0 +1,302 @@
+---
+
+
+- name: (1)Remember database passwords permanently in debconf?
+  debconf:
+    name: dbconfig-common
+    question: dbconfig-common/remember-admin-pass
+    value: "{{ dbconfig_common_remember_admin_pass }}"
+    vtype: boolean
+
+- name: (2)Will this server be used to access remote databases?
+  debconf:
+    name: dbconfig-common
+    question: dbconfig-common/remote-questions-default
+    value: "{{ dbconfig_common_remote_questions_default }}"
+    vtype: boolean
+
+- name: (3)Add the HyperKitty configuration to mailman.cfg?
+  debconf:
+    name: mailman3
+    question: mailman3/config_hyperkitty
+    value: "{{ mailman3_config_hyperkitty }}"
+    vtype: boolean
+
+- name: (4)Domain name for sender email addresses
+  debconf:
+    name: mailman3-web
+    question: mailman3-web/emailname
+    value: "{{ mailman3_web_emailname }}"
+    vtype: string
+
+- name: (5)Username of the Postorius superuser
+  debconf:
+    name: mailman3-web
+    question: mailman3-web/superuser-name
+    value: "{{ mailman3_web_superuser_name }}"
+    vtype: string
+
+- name: (6)Email address of the Postorius superuser
+  debconf:
+    name: mailman3-web
+    question: mailman3-web/superuser-mail
+    value: "{{ mailman3_web_superuser_mail }}"
+    vtype: string
+
+#Se for dada uma palavra-chave vazia, não será criado nenhum super utilizador.
+#Terá então que ser criado manualmente.
+- name: (7)Password for the Postorius superuser
+  debconf:
+    name: mailman3-web
+    question: mailman3-web/superuser-password
+    value: "{{ mailman3_web_superuser_password }}"
+    vtype: password
+
+- name: (8)Web server(s) to configure automatically
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/configure-webserver
+   value: "{{ mailman3_web_configure_webserver }}"
+   vtype: select
+
+- name: (9)Should the webserver(s) be restarted now?
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/restart-webserver
+   value: "{{ mailman3_web_configure_webserver }}"
+   vtype: boolean
+
+- name: (10)Configure database for mailman3 with dbconfig-common?
+  debconf:
+   name: mailman3
+   question: mailman3/dbconfig-install
+   value: "{{ mailman3_dbconfig_install }}"
+   vtype: boolean
+
+- name: (11)Database type to be used by mailman3
+  debconf:
+   name: mailman3
+   question: mailman3/database-type
+   value: "{{ mailman3_database_type }}"
+   vtype: select
+
+- name: (12)Connection method for PostgreSQL database of mailman3
+  debconf:
+   name: mailman3
+   question: mailman3/pgsql/method
+   value: "{{ mailman3_pgsql_method }}"
+   vtype: select
+
+- name: (13)Port number for the PostgreSQL service
+  debconf:
+   name: mailman3
+   question: mailman3/remote/port
+   value: "{{ mailman3_remote_port }}"
+   vtype: string
+
+- name: (14)Method for authenticating the PostgreSQL administrator
+  debconf:
+   name: mailman3
+   question: mailman3/pgsql/authmethod-admin
+   value: "{{ mailman3_pgsql_authmethod_admin }}"
+   vtype: select
+
+
+- name: (15)Method for authenticating PostgreSQL user
+  debconf:
+   name: mailman3
+   question: mailman3/pgsql/authmethod-user
+   value: "{{ mailman3_pgsql_authmethod_user }}"
+   vtype: select
+
+- name: (16)PostgreSQL database name for mailman3
+  debconf:
+   name: mailman3
+   question: mailman3/db/dbname
+   value: "{{ mailman3_db_dbname }}"
+   vtype: string
+
+- name: (17)PostgreSQL username for mailman3
+  debconf:
+   name: mailman3
+   question: mailman3/db/app-user
+   value: "{{ mailman3_db_app_user }}"
+   vtype: string
+
+
+- name: (18)PostgreSQL application password for mailman3
+  debconf:
+   name: mailman3
+   question: mailman3/pgsql/app-pass
+   value: "{{ mailman3_pgsql_app_pass }}"
+   vtype: password
+
+# #mailman3/app-password-confirm ??
+# - name: (19)Password confirmation
+#   debconf:
+#    name: mailman3
+#    question: mailman3/password-confirm
+#    value: "{{ mailman3_password_confirm }}"
+#    vtype: password
+
+#mailman3/app-password-confirm ??
+- name: (19)App password confirmation
+  debconf:
+   name: mailman3
+   question: mailman3/app-password-confirm
+   value: "{{ mailman3_app_password_confirm }}"
+   vtype: password
+
+
+- name: (20)Name of the database's administrative user
+  debconf:
+   name: mailman3
+   question: mailman3/pgsql/admin-user
+   value: "{{ mailman3_pgsql_admin_user }}"
+   vtype: string
+
+- name: (21)Password of your database's administrative user
+  debconf:
+   name: mailman3
+   question: mailman3/pgsql/admin-pass
+   value: "{{ mailman3_pgsql_admin_pass }}"
+   vtype: password
+#
+# - name: (22)Password of your database's administrative user (confirmation)
+#   debconf:
+#    name: mailman3
+#    question: mailman3/pgsql/admin-pass
+#    value:  "{{ mailman3_pgsql_admin_pass }}"
+#    vtype: password
+
+
+- name: (23)Configure database for mailman3-web with dbconfig-common?
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/dbconfig-install
+   value: "{{ mailman3_web_dbconfig_install }}"
+   vtype: boolean
+
+- name: (24)Database type to be used by mailman3-web
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/database-type
+   value: "{{ mailman3_web_database_type }}"
+   vtype: select
+
+- name: (25)Connection method for PostgreSQL database of mailman3-web
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/pgsql/method
+   value: "{{ mailman3_web_pgsql_method }}"
+   vtype: select
+
+- name: (26)Host name of the PostgreSQL database server for mailman3-web
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/remote/host
+   value: "{{ mailman3_web_remote_host }}"
+   vtype: select
+
+- name: (27)Port number for the PostgreSQL service
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/remote/port
+   value: "{{ mailman3_web_remote_port }}"
+   vtype: string
+
+- name: (28)Method for authenticating the PostgreSQL administrator
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/pgsql/authmethod-admin
+   value: "{{ mailman3_web_pgsql_authmethod_admin }}"
+   vtype: select
+
+- name: (29)Method for authenticating PostgreSQL user
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/pgsql/authmethod-user
+   value: "{{ mailman3_web_pgsql_authmethod_user }}"
+   vtype: select
+
+- name: (30)PostgreSQL database name for mailman3-web
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/db/dbname
+   value: "{{ mailman3_web_db_dbname }}"
+   vtype: string
+
+- name: (31)PostgreSQL username for mailman3-web
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/db/app-user
+   value: "{{ mailman3_web_db_app_user }}"
+   vtype: string
+
+- name: (32)PostgreSQL application password for mailman3-web
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/pgsql/app-pass
+   value: "{{ mailman3_web_pgsql_app_pass }}"
+   vtype: password
+
+- name: (33)Name of the database's administrative user
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/mysql/admin-user
+   value: "{{ mailman3_web_mysql_admin_user }}"
+   vtype: string
+
+- name: (34)Password of your database's administrative user
+  debconf:
+   name: mailman3-web
+   question: mailman3-web/pgsql/admin-pass
+   value: "{{ mailman3_web_pgsql_admin_pass }}"
+   vtype: password
+
+# - name: (35)Password of your database's administrative user
+#   debconf:
+#    name: mailman3-web
+#    question: mailman3-web/pgsql/admin-pass
+#    value: "{{ mailman3_web_pgsql_admin_pass }}"
+#    vtype: password
+
+
+
+# - name: Render file with answers for mailman3.
+#   template:
+#     src: debconf/mailman3.j2
+#     dest: /tmp/mailman3.txt
+#     owner: root
+#     group: root
+#     mode: 0600
+#
+# - name: Pre-configure answers for mailman3 questions.
+#   command: debconf-set-selections /tmp/mailman3.txt
+#
+# - name: Render file with answers for mailman3-web debconf.
+#   template:
+#     src: debconf/mailman3_web.j2
+#     dest: /tmp/mailman3_web.txt
+#     owner: root
+#     group: root
+#     mode: 0600
+#
+# - name: Pre-configure answers for mailman3-web questions.
+#   command: debconf-set-selections /tmp/mailman3_web.txt
+#
+# - name: Render file with answers for dbconfig-common debconf.
+#   template:
+#     src: debconf/dbconfig_common.j2
+#     dest: /tmp/dbconfig_common.txt
+#     owner: root
+#     group: root
+#     mode: 0600
+#
+# - name: Pre-configure answers for dbconfig_common questions.
+#   command: debconf-set-selections /tmp/dbconfig_common.txt
+
+
+- apt:
+   name: mailman3-full
+   state: present

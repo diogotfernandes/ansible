@@ -1,0 +1,25 @@
+---
+# vars file for Bind setup
+
+forwarders:
+  opendns:
+    primary: 208.67.222.222
+    secondary: 208.67.220.220
+  google:
+    primary: 8.8.8.8
+    secondary: 8.8.4.4
+  cloudflare:
+    primary: 1.1.1.1
+    secondary: 1.0.0.1
+
+ip_duarte: 10.0.1.189
+domain_duarte: core.pt
+forward_dns: opendns
+other_zone: false
+
+bind9_log_path: /var/log/named
+bind9_refresh: 604800
+bind9_retry: 86400
+bind9_expire: 2419200
+bind9_negative_cache_ttl: 604800
+bind9_ttl: 604800

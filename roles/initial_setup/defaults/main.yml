@@ -1,7 +1,10 @@
 ---
 # defaults file for initial_setup
+timezone: "Europe/Lisbon"
+default_user: debian
+#password->qwerty
+password: $6$mysecretsalt$TeZeV.rEDBMx13VjSrdQkmPn72Wat0qtBh9li9PUFlIjrITbyOVpUy9YVi/gatKQQHRosbDeFQJCmNHR.9OW8.
+public_key: ~/.ssh/id_rsa.pub
+ssh_port: 2849
+ntp_server: "0.pt.pool.ntp.org 2.europe.pool.ntp.org 1.europe.pool.ntp.org"
 change_dhcp: false
-ns1: 192.168.100.5
-ns2: 127.0.0.53
-domain_name: alcafaz.test
-domain_search: alcafaz.test

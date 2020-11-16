@@ -8,11 +8,26 @@
 #   - You can enter hostnames or ip addresses
 #   - A hostname/ip can be a member of multiple groups
 
-[nameservers]
+[ns_alcafaz]
 192.168.100.5 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
 
-[mail]
+[mail_alcafaz]
 192.168.100.10 ansible_ssh_port=2849 ansible_user=admin ansible_sudo_pass=qwerty
 
+
 [new]
-139.162.149.62 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+192.168.1.10 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+
+[ns_unts]
+172.105.71.143 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=diogo
+
+
+[ns_diogo]
+192.168.200.5 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=diogo
+
+[mail_diogo]
+192.168.200.10 ansible_ssh_port=2849 ansible_user=diogo ansible_sudo_pass=qwerty
+
+[rpi]
+95.93.235.242 ansible_ssh_port=2849 ansible_user=diogo ansible_sudo_pass=qwerty

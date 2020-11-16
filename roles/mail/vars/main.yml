@@ -1,21 +1,85 @@
 ---
 # vars file for mail
+################################
+#              MISC            #
+################################
+domain_name: alcafaz.test
+virtual_recipients:
+  - name: diogo
+  - name: admin
+  - name: mailman3web
+
+################################
+#       MAILMAN3               #
+################################
+
+dbconfig_common_remember_admin_pass: true
+dbconfig_common_remote_questions_default: false
+
+
+mailman3_config_hyperkitty: true
+mailman3_dbconfig_install: true
+mailman3_database_type: pgsql
+mailman3_pgsql_method: TCP/IP
+mailman3_remote_port: 5432
+mailman3_pgsql_authmethod_admin: password
+mailman3_pgsql_authmethod_user: password
+mailman3_db_dbname: mailman3
+mailman3_db_app_user: mailman3
+mailman3_pgsql_app_pass: qwerty
+
+mailman3_password_confirm: qwerty
+mailman3_app_password_confirm: qwerty
+
+mailman3_pgsql_admin_user: postgres
+mailman3_pgsql_admin_pass: qwerty
+
+mailman3_web_emailname: alcafaz.test
+mailman3_web_superuser_name: mailman3web
+mailman3_web_superuser_mail: mailman3web@alcafaz.test
+mailman3_web_superuser_password: qwerty
+mailman3_web_configure_webserver: apache2
+mailman3_web_restart_webserver: true
+mailman3_web_dbconfig_install: true
+mailman3_web_database_type: pgsql
+mailman3_web_pgsql_method: TCP/IP
+mailman3_web_remote_host: localhost
+mailman3_web_remote_port: 5432
+mailman3_web_pgsql_authmethod_admin: password
+mailman3_web_pgsql_authmethod_user: password
+mailman3_web_db_dbname: mailman3web
+mailman3_web_db_app_user: mailman3web
+mailman3_web_pgsql_app_pass: qwerty
+mailman3_web_mysql_admin_user: postgres
+mailman3_web_pgsql_admin_pass: qwerty
+
+################################
+#         POSTFIX              #
+################################
+postfix_mailname: "{{ domain_name }}"
+postfix_main_mailer_type: Internet Site
+postfix_mynetworks: 127.0.0.0/8 192.168.100.1/24
+postfix_recipient_delim: +
+postfix_root_address: diogo@{{ domain_name }}
+postfix_mydomain: "{{ domain_name }}"
+postfix_myhostname: mail.{{ domain_name }}
 postfix_packages:
   - postfix
   - postfix-doc
 
-postfix_mailname: alcafaz.test
-postfix_main_mailer_type: Internet Site
-postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
-postfix_recipient_delim: A
-postfix_root_address: admin@alcafaz.test
-
-
+################################
+#         SASL                 #
+################################
 sasl2_packages:
   - libsasl2-modules
   - sasl2-bin
   - libsasl2-2
+default_sasl_group: sasl
+create_users: true
 
+################################
+#         CYRUS-IMAP           #
+################################
 cyrus_imap_packages:
   - cyrus-admin
   - cyrus-clients

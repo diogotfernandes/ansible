@@ -1,0 +1,78 @@
+---
+- name: Install sasl2 packages
+  apt:
+    name: "{{sasl2_packages}}"
+    update_cache: true
+    state: present
+  notify:
+    - restart sasl
+
+#TODO: utilizar variável default_sasl_group
+- name: Verificar se o grupo 'sasl' existe
+  shell: getent group {{ default_sasl_group }} | awk -F':' '{print $1}'
+  register: group_sasl_exists
+  ignore_errors: true
+
+- debug: msg="GROUP 'sasl' EXISTS"
+  when: group_sasl_exists.stdout == default_sasl_group
+
+
+#TODO: utilizar variável default_sasl_group
+#-r: create a system account
+- name: Criar grupo 'sasl'
+  command: groupadd -fr {{ default_sasl_group }}
+  register: aux
+  when: group_sasl_exists.stdout != default_sasl_group
+
+
+#- debug:
+#    msg:
+#      - "{{aux}}"
+#      - "{{group_sasl_exists}}"
+  #Quando se utiliza condições (p.ex. WHEN) as variáveis saõ definidas
+  #sem as {{ item }}; é so o nome da variável: item
+
+#- pause:
+
+- name: Mudar configuração do saslauthd
+  lineinfile:
+    path: /etc/default/saslauthd
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backup: true
+  notify: restart sasl
+  with_items:
+    - regexp: "^START="
+      line: "START=yes"
+    - regexp: "^MECHANISMS="
+      line: "MECHANISMS=\"sasldb\""
+
+- name: flush handlers
+  meta: flush_handlers
+
+#TODO utilizar variáveis para o user/pw(imap_admin_user/imap_admin_password []??])
+# Estes utilizar vai ser o admin?? Mudar linha admin=cyrus no cyrus.conf
+- name: Criar utilizador IMAP dentro do SASL
+  shell: echo qwerty | saslpasswd2 -p -c cyrus
+
+#TODO verificar se foi feita a autenticação com sucesso -> 0: OK "Success."
+- name: Testar autenticação saslauthd
+  shell: testsaslauthd -u cyrus -p qwerty  | awk -F' ' '{print $2}'
+  become: true
+  register: saslauthd_cyrus_check
+
+- name: Verificar se a autenticação com o novo utilizador deu OK
+  debug: msg="0 OK Success."
+  when: saslauthd_cyrus_check.stdout == "OK"
+
+- name: Verificar se a autenticação com o novo utilizador deu NO
+  debug: msg="0 NO authentication failed"
+  when: saslauthd_cyrus_check.stdout == "NO"
+
+  #- debug: msg="{{saslauthd_cyrus_check}}"
+
+- block:
+  - name: Criar utilizadores dentro do SASL
+    shell: echo qwerty | saslpasswd2 -p -c "{{ item.name }}"@"{{ domain_name }}"
+    loop: "{{ virtual_recipients }}"
+  when: create_users == true

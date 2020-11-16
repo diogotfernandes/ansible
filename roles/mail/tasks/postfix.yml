@@ -81,6 +81,3 @@
     - postmap /etc/postfix/virtual_recipient_domains
     - postmap /etc/postfix/virtual_recipients
   notify: restart postfix
-
-
-  
