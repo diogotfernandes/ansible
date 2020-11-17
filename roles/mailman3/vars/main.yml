@@ -1,9 +1,5 @@
 ---
-# vars file for mail
-
-################################
-#       MAILMAN3               #
-################################
+# vars file for mailman3
 
 dbconfig_common_remember_admin_pass: true
 dbconfig_common_remote_questions_default: false
@@ -44,22 +40,3 @@ mailman3_web_db_app_user: mailman3web
 mailman3_web_pgsql_app_pass: qwerty
 mailman3_web_mysql_admin_user: postgres
 mailman3_web_pgsql_admin_pass: qwerty
-
-################################
-#         SASL                 #
-################################
-sasl2_packages:
-  - libsasl2-modules
-  - sasl2-bin
-  - libsasl2-2
-default_sasl_group: sasl
-create_users: true
-
-################################
-#         CYRUS-IMAP           #
-################################
-cyrus_imap_packages:
-  - cyrus-admin
-  - cyrus-clients
-  - cyrus-common
-  - cyrus-imapd

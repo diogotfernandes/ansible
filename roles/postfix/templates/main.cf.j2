@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 # Global Postfix configuration file. This file lists only a subset
 # of all parameters. For the syntax, and for a complete parameter
 # list, see the postconf(5) manual page (command: "man 5 postconf").
@@ -125,7 +126,7 @@ myorigin = /etc/mailname
 #
 # Note: you need to stop/start Postfix when this parameter changes.
 #
-inet_interfaces = all
+inet_interfaces = {{ postfix_inet_interfaces }}
 
 # The mydestination parameter specifies the list of domains that this
 # machine considers itself the final destination for.
@@ -158,7 +159,7 @@ inet_interfaces = all
 #
 # See also below, section "REJECTING MAIL FOR UNKNOWN LOCAL USERS".
 #
-mydestination = localhost
+mydestination = {{ postfix_mydestination }}
 
 
 # The unknown_local_recipient_reject_code specifies the SMTP server
@@ -228,8 +229,6 @@ mynetworks = {{ postfix_mynetworks }}
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
-
-#
 #Access restrictions for mail relay control that the Postfix SMTP server
 #applies in the context of the RCPT TO command,
 #before smtpd_recipient_restrictions.
@@ -237,17 +236,30 @@ mynetworks = {{ postfix_mynetworks }}
 #smtpd_relay_restrictions (default:
 #     permit_mynetworks,
 #     permit_sasl_authenticated,
-#		 defer_unauth_destination)
+#	  defer_unauth_destination)
 smtpd_relay_restrictions =
-    permit_mynetworks,
-    permit_sasl_authenticated,
-		defer_unauth_destination
+    permit_mynetworks
+    permit_sasl_authenticated
+	defer_unauth_destination
+
+
+smtpd_recipient_restrictions =
+{% for item in postfix_smtpd_recipient_restrictions %}
+    {% if item == 'check_policy_service unix:private/policyd-spf' %}
+    {% if postfix_use_spf %}
+    {{ item.rjust(20) }}
+    {% endif %}
+    {% else %}
+    {{ item.rjust(20) }}
+    {% endif %}
+{% endfor %}
+
 
 #
 #Require that a remote SMTP client sends HELO or EHLO
 #before commencing a MAIL transaction.
 #
-smtpd_helo_required = yes
+smtpd_helo_required = {{ postfix_smtpd_helo_required }}
 
 # INTERNET OR INTRANET
 
@@ -278,19 +290,29 @@ relayhost =
 # The VIRTUAL_README document gives information about the many forms
 # of domain hosting that Postfix supports.
 
-virtual_mailbox_domains=hash:/etc/postfix/virtual_recipient_domains
-virtual_mailbox_maps=hash:/etc/postfix/virtual_recipients
-virtual_transport=lmtp:unix:/run/cyrus/socket/lmtp
+# TRANSPORT MAPS
+#
+virtual_mailbox_domains = {{ postfix_virtual_mailbox_domains }}
+virtual_mailbox_maps = {{ postfix_virtual_mailbox_maps }}
+virtual_transport = {{ postfix_virtual_transport }}
 
+
+# SASL Auth Settings
 #
-#Mailma3 related
+smtpd_sasl_local_domain =
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+
+
+{% if postfix_use_mailman3 %}
+# MAILMAN3 RELATED
 #
-#transport_maps =
-#    hash:/var/lib/mailman3/data/postfix_lmtp
-#relay_domains =
-#    hash:/var/lib/mailman3/data/postfix_domains
-#virtual_alias_maps =
-#    hash:/var/lib/mailman3/data/postfix_vmap
+transport_maps = hash:/var/lib/mailman3/data/postfix_lmtp
+relay_domains = hash:/var/lib/mailman3/data/postfix_domains
+virtual_alias_maps = hash:/var/lib/mailman3/data/postfix_vmap
+{% endif %}
+
 
 
 # ADDRESS EXTENSIONS (e.g., user+foo)
@@ -343,15 +365,9 @@ inet_protocols = ipv4
 
 
 # TLS parameters
-#smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-#smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
-#smtpd_use_tls=yes
-#smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
-#smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
-# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
-# information on enabling SSL in the smtp client.
 
-#
+
+
 #The maximal size of any local(8) individual mailbox or maildir file,
 #or zero (no limit)
 #

@@ -43,11 +43,19 @@
     state: present
   notify:
     - restart postfix
-    - debug
+
+- name: Instalar Postfix Policy SPF
+  apt:
+    name: "{{ postfix_spf_package }}"
+    update_cache: true
+    state: present
+  when: postfix_use_spf
+  notify:
+    - restart postfix
 
 - name: Create virtual recipient domains file
   template:
-    src: virtual_recipient_domains.j2
+    src: files/virtual_recipient_domains.j2
     dest: /etc/postfix/virtual_recipient_domains
     backup: true
     owner: root
@@ -57,7 +65,7 @@
 
 - name: Create virtual recipients file
   template:
-    src: virtual_recipients.j2
+    src: files/virtual_recipients.j2
     dest: /etc/postfix/virtual_recipients
     backup: true
     owner: root
@@ -65,9 +73,9 @@
     mode: 0644
   notify: restart postfix
 
-- name: Create postfix conf.cf file
+- name: Create postfix main.cf file
   template:
-    src: postfix.main.cf.j2
+    src: main.cf.j2
     dest: /etc/postfix/main.cf
     backup: true
     owner: root
@@ -75,7 +83,17 @@
     mode: 0644
   notify: restart postfix
 
-- name: postmap cenas
+- name: Create postfix master.cf file
+  template:
+    src: master.cf.j2
+    dest: /etc/postfix/master.cf
+    backup: true
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart postfix
+
+- name: Postmap virtual recipients, virtual_recipient_domains
   shell: "{{ item }}"
   with_items:
     - postmap /etc/postfix/virtual_recipient_domains

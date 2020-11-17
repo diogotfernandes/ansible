@@ -1,0 +1,4 @@
+---
+# handlers file for cyrus-imap
+- name: restart cyrus-imap
+  service: name=cyrus-imapd state=restarted

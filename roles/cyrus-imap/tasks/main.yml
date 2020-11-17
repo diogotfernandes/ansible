@@ -1,4 +1,5 @@
 ---
+# tasks file for cyrus-imap
 
 #TODO: utilizar variável default_mail_group
 - name: Verificar se o grupo 'mail' existe
@@ -40,7 +41,7 @@
 
 - name: Copy cyrus.conf conf file
   template:
-    src: cyrus.normal.conf.j2
+    src: cyrus.conf.j2
     dest: /etc/cyrus.conf
     backup: true
     owner: root
@@ -50,7 +51,7 @@
 
 - name: Copy imapd.conf conf file
   template:
-    src: imapd.normal.conf.j2
+    src: imapd.conf.j2
     dest: /etc/imapd.conf
     backup: true
     owner: root
@@ -72,9 +73,9 @@
     groups: mail
     append: true
 
-- name: open port 143 on ufw
-  ufw:
-    rule: allow
-    port: '143'
-    proto: tcp
-  notify: restart ufw
+# - name: open port 143 on ufw
+#   ufw:
+#     rule: allow
+#     port: '143'
+#     proto: tcp
+#   notify: restart ufw

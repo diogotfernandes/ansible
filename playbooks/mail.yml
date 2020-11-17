@@ -2,4 +2,15 @@
   become: true
 
   roles:
-   - mail
+   - postfix
+   - cyrus-sasl2
+   - cyrus-imap
+
+  vars:
+    virtual_recipients:
+      - name: diogo
+      - name: mailman3web
+      - name: admin
+    domain_name: alcafaz.test
+    default_sasl_group: sasl
+    postfix_use_spf: true

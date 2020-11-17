@@ -1,0 +1,12 @@
+---
+# vars file for cyrus-sasl2
+#https://packages.debian.org/source/stretch/cyrus-sasl2
+sasl2_packages:
+  #Cyrus SASL - módulos de autenticação acopláveis
+  - libsasl2-modules
+  #Cyrus SASL - programas de administração para a base de dados de utilizadores SASL
+  - sasl2-bin
+  #Cyrus SASL - authentication abstraction library
+  - libsasl2-2
+default_sasl_group: sasl
+create_users: true

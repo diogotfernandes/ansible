@@ -1,6 +1,5 @@
 ---
 
-
 - name: (1)Remember database passwords permanently in debconf?
   debconf:
     name: dbconfig-common

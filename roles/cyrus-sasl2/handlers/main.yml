@@ -1,0 +1,4 @@
+---
+# handlers file for cyrus-sasl2
+- name: restart sasl
+  service: name=saslauthd state=restarted

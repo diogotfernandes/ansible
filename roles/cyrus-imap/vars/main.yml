@@ -1,0 +1,7 @@
+---
+# vars file for cyrus-imap
+cyrus_imap_packages:
+  - cyrus-admin
+  - cyrus-clients
+  - cyrus-common
+  - cyrus-imapd
