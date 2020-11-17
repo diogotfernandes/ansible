@@ -1,38 +1,116 @@
-Role Name
+Postfix
 =========
 
-A brief description of the role goes here.
+Role para instalação do Postfix
 
-Requirements
+Ficheiros de Configuração
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
++ `/etc/postfix/main.cf`
++ `/etc/postfix/master.cf`
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
++ postfix_mailname
 
-Dependencies
-------------
++ postfix_main_mailer_type
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
++ postfix_mynetworks
+
++ postfix_recipient_delim
+
++ postfix_root_address
+
++ postfix_mydomain
+
++ postfix_myhostname
+
++ postfix_packages
+
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: mail
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: postfix }
 
 License
 -------
 
 BSD
 
-Author Information
+Diogo Fernandes
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+# Postfix (MTA)
+
+## Install
+
+``` shell
+sudo apt install postfix postfix-doc
+```
+
++ General type of mail configuration : **Internet Site**
++ System mail name : **alcafaz.test**
+
++ debconf-show postfix
+```shell
+  postfix/bad_recipient_delimiter:
+  postfix/recipient_delim: +
+  postfix/not_configured:
+  postfix/main_cf_conversion_warning: true
+  postfix/tlsmgr_upgrade_warning:
+  postfix/procmail: false
+  postfix/main_mailer_type: Internet Site
+  postfix/relay_restrictions_warning:
+  postfix/destinations: $myhostname, alcafaz.test, mail.alcafaz.test, localhost.alcafaz.test, localhost
+  postfix/sqlite_warning:
+  postfix/newaliases: false
+  postfix/retry_upgrade_warning:
+  postfix/dynamicmaps_conversion_warning:
+  postfix/mynetworks: 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+  postfix/chattr: false
+  postfix/mailname: alcafaz.test
+  postfix/lmtp_retired_warning: true
+  postfix/mydomain_warning:
+  postfix/compat_conversion_warning: true
+  postfix/relayhost:
+  postfix/protocols: all
+  postfix/root_address:
+  postfix/kernel_version_warning:
+  postfix/rfc1035_violation: false
+  postfix/mailbox_limit: 0
+
+```
+
+
+## Postfix configuration files
+
+Por omissão os ficheiros de configuração do Postfix estão localizados em `/etc/postfix`. Os ficheiro de configuração mais importantes são o `master.cf` e o `main.cf`. O dono destes ficheiro deve ser o `root`!
+Após qualquer configuração nestes ficheiros é necessário executar o comando `postfix reload`
+
++ `/etc/postfix/main.cf`
+```shell
+# default is to use fqdn
+myhostname = mail.alcafaz.test
+
+#(send mail as "user@$mydomain")
+myorigin = /etc/mailname
+
+#specifies what domains this machine will deliver locally, instead of forwarding to another machine.
+mydestination = $myhostname, alcafaz.test, mail.alcafaz.test, localhost.alcafaz.test, localhost
+
+#By default, Postfix will forward mail from clients in authorized network blocks to any destination
+mynetworks = 127.0.0.0/8 192.168.100.0/24
+
+
+
+
+
+```
