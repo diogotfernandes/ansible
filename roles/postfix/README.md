@@ -29,6 +29,11 @@ Role Variables
 
 + postfix_packages
 
+| Variable | Description     |
+| :------------- | :------------- |
+| postfix_mailname       | Item Two       |
+|postfix_main_mailer_type | |
+
 
 Example Playbook
 ----------------
@@ -108,9 +113,6 @@ mydestination = $myhostname, alcafaz.test, mail.alcafaz.test, localhost.alcafaz.
 
 #By default, Postfix will forward mail from clients in authorized network blocks to any destination
 mynetworks = 127.0.0.0/8 192.168.100.0/24
-
-
-
 
 
 ```
