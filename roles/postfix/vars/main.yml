@@ -1,0 +1,17 @@
+---
+# vars file for postfix
+
+#################################################################
+#                        POSTFIX                                #
+#################################################################
+
+postfix_mailname: "{{ domain_name }}"
+postfix_main_mailer_type: Internet Site
+postfix_mynetworks: 127.0.0.0/8 192.168.100.1/24
+postfix_recipient_delim: +
+postfix_root_address: diogo@{{ domain_name }}
+postfix_mydomain: "{{ domain_name }}"
+postfix_myhostname: mail.{{ domain_name }}
+postfix_packages:
+  - postfix
+  - postfix-doc
