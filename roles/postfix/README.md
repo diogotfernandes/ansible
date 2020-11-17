@@ -29,16 +29,16 @@ Role Variables
 
 + postfix_packages
 
-| Variable                | Description       |
-| :-------------          | :-------------    |
-|postfix_mailname         |          |
-|postfix_main_mailer_type |                   |
-|postfix_mynetworks       | |
-|postfix_recipient_delim  | |
-|postfix_root_address     | |
-|postfix_mydomain         | |
-|postfix_myhostname       | |
-|postfix_packages         | |
+| Variable                | Description               |
+| :-------------          | :-------------            |
+|postfix_mailname         | example.com               |
+|postfix_main_mailer_type | Internet Site             |
+|postfix_mynetworks       | 127.0.0.1                 |
+|postfix_recipient_delim  | +                         |
+|postfix_root_address     | foo@example.com           |
+|postfix_mydomain         | example.com               |
+|postfix_myhostname       | mail.example.com          |
+|postfix_packages         | - postfix - postfix-doc   |
 
 
 Example Playbook
