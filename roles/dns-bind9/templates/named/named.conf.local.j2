@@ -1,7 +1,0 @@
-{% for zone in zones %}
-zone "{{ zone }}" { 
-{% if bind_role == 'master' %}
-    type master;
-    file "/var/lib/bind/zones/db.{{ zone }}";
-{% endif %}
-{% endfor %}

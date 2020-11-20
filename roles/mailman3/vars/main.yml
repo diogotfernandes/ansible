@@ -1,10 +1,12 @@
 ---
 # vars file for mailman3
 
+#
+# DBCONFIG-COMMON
 dbconfig_common_remember_admin_pass: true
 dbconfig_common_remote_questions_default: false
-
-
+#
+# MAILMAN3
 mailman3_config_hyperkitty: true
 mailman3_dbconfig_install: true
 mailman3_database_type: pgsql
@@ -21,7 +23,8 @@ mailman3_app_password_confirm: qwerty
 
 mailman3_pgsql_admin_user: postgres
 mailman3_pgsql_admin_pass: qwerty
-
+#
+# MAILMAN3-WEB
 mailman3_web_emailname: alcafaz.test
 mailman3_web_superuser_name: mailman3web
 mailman3_web_superuser_mail: mailman3web@alcafaz.test

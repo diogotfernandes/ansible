@@ -296,14 +296,14 @@ virtual_mailbox_domains = {{ postfix_virtual_mailbox_domains }}
 virtual_mailbox_maps = {{ postfix_virtual_mailbox_maps }}
 virtual_transport = {{ postfix_virtual_transport }}
 
-
+{% if postfix_use_sasl %}
 # SASL Auth Settings
 #
 smtpd_sasl_local_domain =
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 broken_sasl_auth_clients = yes
-
+{% endif %}
 
 {% if postfix_use_mailman3 %}
 # MAILMAN3 RELATED
@@ -324,7 +324,7 @@ virtual_alias_maps = hash:/var/lib/mailman3/data/postfix_vmap
 # Basically, the software tries user+foo and .forward+foo before
 # trying user and .forward.
 #
-recipient_delimiter = +
+recipient_delimiter = {{ postfix_recipient_delimiter }}
 
 
 
@@ -355,20 +355,8 @@ debug_peer_level = 2
 
 
 
-# html_directory: The location of the Postfix HTML documentation.
-#
-html_directory = /usr/share/doc/postfix/html
-readme_directory = /usr/share/doc/postfix
-
-
-inet_protocols = ipv4
+inet_protocols = {{ postfix_inet_protocols }}
 
 
 # TLS parameters
-
-
-
-#The maximal size of any local(8) individual mailbox or maildir file,
-#or zero (no limit)
 #
-mailbox_size_limit = 0

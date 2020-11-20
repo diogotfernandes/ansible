@@ -1,7 +1,0 @@
----
-- hosts: ns_alcafaz
-  become: true
-  vars_files:
-    - ../vars.yml
-  roles:
-  - bertvv.bind

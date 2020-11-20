@@ -1,10 +1,60 @@
 ---
 # defaults file for initial_setup
-timezone: "Europe/Lisbon"
-default_user: debian
+
+# MISC
+#
+supersede_dhcp: true
+
+# USER_TASK
+#
+user_default: debian
 #password->qwerty
-password: $6$mysecretsalt$TeZeV.rEDBMx13VjSrdQkmPn72Wat0qtBh9li9PUFlIjrITbyOVpUy9YVi/gatKQQHRosbDeFQJCmNHR.9OW8.
-public_key: ~/.ssh/id_rsa.pub
+user_password: $6$mysecretsalt$TeZeV.rEDBMx13VjSrdQkmPn72Wat0qtBh9li9PUFlIjrITbyOVpUy9YVi/gatKQQHRosbDeFQJCmNHR.9OW8.
+user_public_key_path: ~/.ssh/id_rsa.pub
+
+# UFW_TASK
+#
+ufw_rules:
+  - rule: allow
+    port: "{{ ssh_port }}"
+    proto: tcp
+
+# TIMEZONE_TASK
+#
+timezone_local: "Europe/Lisbon"
+timezone_ntp_server: "0.pt.pool.ntp.org 2.europe.pool.ntp.org 1.europe.pool.ntp.org"
+
+# SSH_TASK
+#
+ssh_dir_path: /etc/ssh/sshd_config
 ssh_port: 2849
-ntp_server: "0.pt.pool.ntp.org 2.europe.pool.ntp.org 1.europe.pool.ntp.org"
+ssh_config:
+  - regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  - regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+  - regexp: "^Port"
+    line: "{{ ssh_port }}"
+
+# HOSTNAME_TASK
+#
+hostname_name: mail
+user: diogo
+hostname_domain_name: unts.xyz
+
+# CHANGE_DHCP_TASK
+#
 change_dhcp: false
+dhcp_config_ns1: 192.168.200.5
+dhcp_config_ns2: 127.0.0.53
+dhcp_config_domain_search: unts.xyz
+
+# PACKAGES_TASK
+#
+packages_to_install:
+  - sudo
+  - aptitude
+  - tree
+  - ufw
+  - curl
+  - dnsutils

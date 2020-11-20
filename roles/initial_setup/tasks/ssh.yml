@@ -10,20 +10,15 @@
 
 - name: Update SSH configuration to be more secure
   lineinfile:
-    dest: /etc/ssh/sshd_config
+    dest: "{{ ssh_dir_path }}"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
     state: present
   with_items:
-    - regexp: "^PasswordAuthentication"
-      line: "PasswordAuthentication no"
-    - regexp: "^PermitRootLogin"
-      line: "PermitRootLogin no"
-    - regexp: "^Port"
-      line: "Port 2849"
+    "{{ ssh_config }}"
   notify: restart ssh
   when: ansible_distribution == 'Debian'
 
 
-### TODO: 
+### TODO:
   #  - permitir/proibir utilizador a fazer ligar-se por ssh

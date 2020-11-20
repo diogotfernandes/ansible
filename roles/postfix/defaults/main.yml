@@ -5,6 +5,10 @@ virtual_recipients:
   - name: johndoe
   - name: janedoe
 
+postfix_packages:
+  - postfix
+  - postfix-doc
+
 postfix_mailname: "{{ domain_name }}"
 postfix_main_mailer_type: Internet Site
 postfix_mynetworks: 127.0.0.0/8
@@ -12,17 +16,20 @@ postfix_recipient_delim: +
 postfix_root_address: root@{{ domain_name }}
 postfix_mydomain: "{{ domain_name }}"
 postfix_myhostname: mail.{{ domain_name }}
-postfix_packages:
-  - postfix
-  - postfix-doc
-postfix_spf_package: postfix-policyd-spf-python
-postfix_use_spf: false
 
+postfix_spf_package: postfix-policyd-spf-python
+
+postfix_use_spf: true
 postfix_use_mailman3: false
+postfix_use_sasl: true
 
 postfix_inet_interfaces: all
+postfix_inet_protocols: ipv4
 postfix_mydestination: localhost
-postfix_smtpd_helo_required: yes
+postfix_smtpd_helo_required: 'yes'
+postfix_recipient_delimiter: +
+
+# TRANSPORT MAPS
 postfix_virtual_mailbox_domains: hash:/etc/postfix/virtual_recipient_domains
 postfix_virtual_mailbox_maps: hash:/etc/postfix/virtual_recipients
 postfix_virtual_transport: lmtp:unix:/run/cyrus/socket/lmtp

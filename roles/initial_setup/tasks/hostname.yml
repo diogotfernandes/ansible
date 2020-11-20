@@ -1,13 +1,13 @@
 ---
 - name: set hostname
   hostname:
-    name: "{{ alias_hostname }}"
+    name: "{{ hostname_name }}"
 
 - name: Add correct IP address to hosts file
   lineinfile:
     dest: /etc/hosts
     insertafter: '^127\.0\.0\.1\slocalhost'
-    line: "{{ansible_default_ipv4.address}}\t{{ alias_hostname }}.{{domain_name}} {{ alias_hostname }}"
+    line: "{{ansible_default_ipv4.address}}\t{{ hostname_name }}.{{hostname_domain_name}} {{ hostname_name }}"
     state: present
 
 - name: Remove old line from hosts file

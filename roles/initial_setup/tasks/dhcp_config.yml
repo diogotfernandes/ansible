@@ -4,4 +4,3 @@
     src: dhclient.conf.j2
     dest: /etc/dhcp/dhclient.conf
     backup: yes
-  when: change_dhcp == true

@@ -4,12 +4,12 @@
   command: cat /etc/timezone
   register: current_timezone
 
-- debug:
-    msg: "{{current_timezone}}"
+# - debug:
+#     msg: "{{current_timezone}}"
 
 - name: Set timezone variables
   copy:
-    content: "{{ timezone }}"
+    content: "{{ timezone_local }}"
     dest: /etc/timezone
     owner: root
     group: root
@@ -31,21 +31,20 @@
   lineinfile:
     dest: /etc/systemd/timesyncd.conf
     regexp: "^NTP="
-    line: "NTP={{ntp_server}}"
+    line: "NTP={{ timezone_ntp_server }}"
   when: current_ntp.stdout == '0'
   notify:
     - update set-ntp
 
 
-  
+
 
 #- debug:
 #    msg:
 #      - "{{current_ntp.rc}}"
 
 #- debug:
-#    msg: 
+#    msg:
 #      - "{{ timezone }}"
 #      - "{{ current_timezone.stdout }}"
 #  when: current_timezone.stdout != timezone
-

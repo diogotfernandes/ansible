@@ -1,11 +1,2 @@
 ---
 # vars file for initial_setup
-ns1: 192.168.200.5
-ns2: 127.0.0.53
-domain_search: unts.xyz
-domain_name: unts.xyz
-alias_hostname: mail
-user: diogo
-change_dhcp: false
-default_user: ubuntu
-ssh_port: 22
