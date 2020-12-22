@@ -32,7 +32,8 @@ postfix_recipient_delimiter: +
 # TRANSPORT MAPS
 postfix_virtual_mailbox_domains: hash:/etc/postfix/virtual_recipient_domains
 postfix_virtual_mailbox_maps: hash:/etc/postfix/virtual_recipients
-postfix_virtual_transport: lmtp:unix:/run/cyrus/socket/lmtp
+#deve corresponder ao
+postfix_virtual_transport: lmtp:unix:/var/run/cyrus/socket/lmtp
 
 postfix_smtpd_recipient_restrictions:
   - permit_mynetworks

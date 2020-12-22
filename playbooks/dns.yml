@@ -1,5 +1,5 @@
 ---
-- hosts: ns_unts
+- hosts: ns1_alcafaz
   become: true
   roles:
   - dns-bind

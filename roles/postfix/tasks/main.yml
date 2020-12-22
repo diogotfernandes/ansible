@@ -99,3 +99,20 @@
     - postmap /etc/postfix/virtual_recipient_domains
     - postmap /etc/postfix/virtual_recipients
   notify: restart postfix
+
+- name: Create smtpd.conf
+  template:
+    src: smtpd.conf.j2
+    dest: /etc/postfix/sasl/smtpd.conf
+    backup: true
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart postfix
+
+- name: Open firewall port 25
+  ufw:
+    rule: allow
+    port: '25'
+    proto: tcp
+  notify: restart ufw

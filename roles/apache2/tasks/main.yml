@@ -1,0 +1,55 @@
+---
+# tasks file for apache2
+
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
+- name: loop
+  debug:
+    msg: "{{ item }}"
+  loop:
+    - hey
+    - man
+
+# - name: Using dict2items
+#   ansible.builtin.debug:
+#     msg:
+#       - "{{ item.key }}"
+#       - " name:  {{ item.value.name }}"
+#       - "conf_name:  {{ item.value.conf_name }}"
+#   loop: "{{ apache2_vhost | dict2items }}"
+
+
+
+- name: Instalar apache2
+  apt:
+    name: "{{ apache2_packages }}"
+    update_cache: true
+    state: present
+  notify:
+    - restart apache2
+
+- name: Create vhosts
+  template:
+    src: vhost.conf.j2
+    dest: /etc/apache2/sites-available/{{ item.key }}.conf
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ apache2_vhost | dict2items }}"
+  when: apache2_create_vhost
+
+- name: Remove default vhost
+  file:
+    path: "{{ apache2_path }}/sites-enabled/{{ apache2_default_vhost_name }}"
+    state: absent
+  notify: restart apache2
+  when: apache2_remove_default_vhost
+
+- name: Add entry to UFW
+  ufw:
+    rule: 'allow'
+    port: "{{ apache2_default_port }}"
+    proto: tcp

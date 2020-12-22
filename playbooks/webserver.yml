@@ -1,0 +1,7 @@
+- hosts: ldapAlcafaz
+  become: true
+
+  roles:
+   - apache2
+
+  # vars:

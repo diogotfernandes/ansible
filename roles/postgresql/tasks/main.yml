@@ -1,0 +1,14 @@
+---
+# tasks file for postgresql
+
+- name: install postgresql pkg
+  apt:
+    name: ['postgresql', 'postgresql-contrib', 'python-psycopg2' ]
+    state: present
+
+- name: pd reset database user
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    user: postgres
+    password: "qwerty"

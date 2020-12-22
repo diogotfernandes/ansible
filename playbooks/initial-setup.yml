@@ -1,5 +1,21 @@
-- hosts: localhost
+- hosts: new
   become: true
 
   roles:
-   - initial_setup
+    - initial_setup
+
+  vars:
+    supersede_dhcp: True
+    hostname_name: ldap
+    user: admin
+    hostname_domain_name: alcafaz.test
+    dhcp_config_ns1: 192.168.100.5
+    dhcp_config_ns2: 127.0.0.53
+    dhcp_config_domain_search: alcafaz.test
+    packages_to_install:
+      - sudo
+      - aptitude
+      - tree
+      - ufw
+      - curl
+      - dnsutils

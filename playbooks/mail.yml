@@ -4,15 +4,17 @@
   roles:
    # - postfix
    # - cyrus-sasl2
-   - cyrus-imap
+   # - cyrus-imap
+   - postgresql
 
   vars:
     domain_name: alcafaz.test
     virtual_recipients:
       - name: diogo
-      - name: mailman3web
+      - name: marcia
       - name: admin
-    postfix_mynetworks: 127.0.0.0/8 192.168.1.0/24
+    postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
     postfix_root_address: diogo@{{ domain_name }}
     default_sasl_group: sasl
     postfix_use_spf: true
+    postfix_use_mailman3: false

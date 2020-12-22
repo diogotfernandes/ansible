@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+    DocumentRoot "{{ apache2_document_root }}/{{ item.key }}"
+    ServerName {{ item.value.server_name }}
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    # Other directives here
+</VirtualHost>

@@ -1,0 +1,10 @@
+- hosts: rpi
+  become: true
+
+  roles:
+   - mailman3
+
+  vars:
+    mailman3_web_emailname: unts.xyz
+    mailman3_web_superuser_name: mailman3web
+    mailman3_web_superuser_mail: mailman3web@unts.xyz

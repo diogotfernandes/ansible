@@ -61,7 +61,7 @@
 
 - name: mount dir /run/cyrus
   mount:
-    path: /var/spool/postfix/run/cyrus
+    path: /var/spool/postfix/var/run/cyrus
     src: /run/cyrus
     opts: bind,rw
     state: mounted
@@ -69,7 +69,7 @@
 
 - name: mount dir /run/saslauthd
   mount:
-    path: /var/spool/postfix/run/saslauthd
+    path: /var/spool/postfix/var/run/saslauthd
     src: /run/saslauthd
     opts: bind,rw
     state: mounted
@@ -81,9 +81,9 @@
     groups: mail
     append: true
 
-# - name: open port 143 on ufw
-#   ufw:
-#     rule: allow
-#     port: '143'
-#     proto: tcp
-#   notify: restart ufw
+- name: open port 143 on ufw
+  ufw:
+    rule: allow
+    port: '143'
+    proto: tcp
+  notify: restart ufw

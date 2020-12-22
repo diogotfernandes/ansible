@@ -3,7 +3,7 @@
 
 # MISC
 #
-supersede_dhcp: true
+
 
 # USER_TASK
 #
@@ -34,20 +34,20 @@ ssh_config:
   - regexp: "^PermitRootLogin"
     line: "PermitRootLogin no"
   - regexp: "^Port"
-    line: "{{ ssh_port }}"
+    line: "Port {{ ssh_port }}"
 
 # HOSTNAME_TASK
 #
-hostname_name: mail
-user: diogo
-hostname_domain_name: unts.xyz
+hostname_name: hostname
+user: johndoe
+hostname_domain_name: example.com
 
 # CHANGE_DHCP_TASK
 #
-change_dhcp: false
+supersede_dhcp: True
 dhcp_config_ns1: 192.168.200.5
 dhcp_config_ns2: 127.0.0.53
-dhcp_config_domain_search: unts.xyz
+dhcp_config_domain_search: example.com
 
 # PACKAGES_TASK
 #
