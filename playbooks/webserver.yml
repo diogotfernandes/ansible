@@ -1,4 +1,4 @@
-- hosts: ldapAlcafaz
+- hosts: webAlcafaz
   become: true
 
   roles:

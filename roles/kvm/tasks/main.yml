@@ -1,2 +1,21 @@
 ---
 # tasks file for kvm
+# Add a new host in the dhcp pool
+# - virt_net:
+#     name: default
+#     command: modify
+#     xml: "<host mac='52:54:00:34:fd:3e' name='web.alcafaz.test' ip='192.168.100.8'/>"
+
+- virt_net:
+    command: list_nets
+  register: kvm_networks
+
+- debug:
+    msg: "{{ kvm_networks.list_nets }}"
+
+- virt_net:
+    command: facts
+  register: kvm_network_facts
+
+- debug:
+   msg: "{{ kvm_network_facts }}"

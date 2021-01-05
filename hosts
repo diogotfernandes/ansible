@@ -17,10 +17,8 @@
 [ldapAlcafaz]
 192.168.100.6 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
 
-
-[new]
-192.168.100.6 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
-
+[webAlcafaz]
+192.168.100.15 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
 
 [rpi]
 #109.49.20.69 ansible_ssh_port=2849 ansible_user=diogo ansible_sudo_pass=qwerty
