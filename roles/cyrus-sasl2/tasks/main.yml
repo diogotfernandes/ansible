@@ -25,6 +25,11 @@
   register: aux
   when: group_sasl_exists.stdout != default_sasl_group
 
+- name: adicionar o user postfix ao grupo sasl
+  user:
+    name: postfix
+    groups: sasl
+    append: yes
 
 #- debug:
 #    msg:

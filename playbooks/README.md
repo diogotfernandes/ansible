@@ -1,11 +1,11 @@
-# apacheWebserver
-* Setup
-``` ansible-playbook playbooks/apacheWebserver.yml -i [hostFile] ...???? ```
+# webserver
+* Usage
+``` ansible-playbook playbooks/webserver.yml ```
 ```yaml
 - hosts: all
   become: yes
   roles:
-  - webserver
+  - apache2
 ```
 
 # dns
@@ -24,7 +24,7 @@
 
 # initial-setup
 * Setup
-``` ansible-playbook playbooks/initial-setup -i [newHost] -u root --ask-pass -K --extra-vars user=newUser  ```
+``` ansible-playbook playbooks/initial-setup -i [newHost] -u root --ask-pass --extra-vars user=newUser  ```
 
 ```yaml
 - hosts: all

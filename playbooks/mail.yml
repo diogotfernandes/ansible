@@ -1,11 +1,14 @@
-- hosts: mail_alcafaz
+## USAGE
+#  ansible-playbook playbooks/mail.yml
+#
+
+- hosts: mailAlcafaz
   become: true
 
   roles:
-   # - postfix
-   # - cyrus-sasl2
-   # - cyrus-imap
-   - postgresql
+   - postfix
+   - cyrus-sasl2
+   - cyrus-imap
 
   vars:
     domain_name: alcafaz.test
@@ -17,4 +20,4 @@
     postfix_root_address: diogo@{{ domain_name }}
     default_sasl_group: sasl
     postfix_use_spf: true
-    postfix_use_mailman3: false
+    postfix_use_mailman3: true

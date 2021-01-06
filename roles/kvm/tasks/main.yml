@@ -1,10 +1,29 @@
 ---
 # tasks file for kvm
-# Add a new host in the dhcp pool
+
+- name: get xml
+  virt_net:
+    command: get_xml
+    name: default
+  register: kvm_xml
+
+
+- shell: "virsh net-update default add ip-dhcp-host \"<host mac='{{ item.mac }}' name='{{ item.name }}' ip='{{ item.ip }}' />\" --live --config"
+  # when: kvm_xml.get_xml | regex_search('(item.mac)') is  match
+  with_items: "{{ kvm_dhcp_hosts }}"
+  ignore_errors: True
+# - fail:
+
+## NÃO É PERSISTENTE!!!
+# # Add a new host in the dhcp pool
 # - virt_net:
 #     name: default
 #     command: modify
-#     xml: "<host mac='52:54:00:34:fd:3e' name='web.alcafaz.test' ip='192.168.100.8'/>"
+#     xml: "<host mac='52:54:00:ae:d7:0a' name='mail.alcafaz.test' ip='192.168.100.10'/>"
+
+
+# - name: add dhcp entry using shell
+#   shell: virsh net-update default add ip-dhcp-host "<host mac='52:54:00:68:bd:6f' name='ns1.alcafaz.test' ip='192.168.100.5' />" --live --config
 
 - virt_net:
     command: list_nets
@@ -13,7 +32,8 @@
 - debug:
     msg: "{{ kvm_networks.list_nets }}"
 
-- virt_net:
+- name: Get facts
+  virt_net:
     command: facts
   register: kvm_network_facts
 

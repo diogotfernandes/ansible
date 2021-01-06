@@ -3,3 +3,5 @@
   become: true
   roles:
   - kvm
+  vars:
+    kvm_add_new_host: true
