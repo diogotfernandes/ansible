@@ -4,6 +4,19 @@
   fail: msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
 
+
+- debug:
+   msg:
+  loop: "{{ bind_zones }}"
+
+- debug:
+   msg:
+  loop: "{{ records | dict2items }}"
+
+- name: Exterminate mankind
+  pause:
+    prompt: Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort
+
 - name: install bind
   apt:
     name: "{{ packages }}"

@@ -13,6 +13,9 @@ bind_zones:
   - name: alcafaz.test
     type: master
     reverse: 100.168.192
+  - name: zone2
+    type: slave
+    reverse: 99.168.192
 
 rev_domain: 100.168.192.in-addr.arpa
 

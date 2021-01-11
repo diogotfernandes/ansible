@@ -4,10 +4,21 @@
   roles:
     - initial_setup
 
+  vars_prompt:
+    - name: user
+      prompt: "Username"
+      private: no
+    - name: user_password
+      prompt: "Password"
+      private: yes
+      encrypt: sha512_crypt
+      salt_size: 7
+
+
   vars:
     supersede_dhcp: False
     hostname_name: lb02
-    user: admin
+    # user: admin
     hostname_domain_name: dd.test
     dhcp_config_ns1: 192.168.100.5
     dhcp_config_ns2: 1.1.1.1

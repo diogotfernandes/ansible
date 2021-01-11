@@ -1,6 +1,19 @@
 ---
 # tasks file for initial_setup
 
+
+- name: debug
+  debug:
+    msg:
+      - "{{ user_password }}"
+      - "{{ user }}"
+
+- name: Exterminate mankind
+  pause:
+    prompt: Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort
+
+# - fail: msg="falhou pq eu quis! :=)))"
+
 - name: Verificar OS
   fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
