@@ -1,7 +1,14 @@
-- hosts: webAlcafaz
+- hosts: mailAlcafaz
   become: true
 
   roles:
    - apache2
 
-  # vars:
+  vars:
+    apache2_vhost:
+      example.com:
+        server_name: www.example.com
+        conf_name: example.com.conf
+      # alcafaz.test:
+      #   conf_name: alcafaz.test.conf
+      #   server_name: alcafaz.test

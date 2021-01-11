@@ -1,3 +1,4 @@
+;{{ ansible_managed }} at {{ ansible_date_time.date }}
 acl "trusted" {
         192.168.100.0/24;
         10.0.1.0/24;
@@ -14,11 +15,11 @@ options {
         disable-empty-zone "10.in-addr.arpa";
 
         forwarders {
-        {% for key, value in forwarders.items() %}
-        {% if forward_dns == key %}
-        {{ value.primary }};
-        {{ value.secondary }};
-        {% endif %}
+        {% for key, value in bind_forwarders.items() %}
+          {% if bind_default_forward_dns == key %}
+            {{ value.primary }};
+            {{ value.secondary }};
+          {% endif %}
         {% endfor %}
         };
 };

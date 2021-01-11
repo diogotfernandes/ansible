@@ -1,7 +1,7 @@
 ---
 # handlers file for initial_setup
 - name: restart ssh
-  service: 
+  service:
     name: ssh
     state: restarted
 

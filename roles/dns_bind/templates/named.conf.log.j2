@@ -1,62 +1,63 @@
+;{{ ansible_managed }} at {{ ansible_date_time.date }}
 logging {
      channel default_log {
-          file "{{ bind9_log_path }}/default" versions 3 size 20m;
+          file "{{ bind_log_path }}/default" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel auth_servers_log {
-          file "{{ bind9_log_path }}/auth_servers" versions 100 size 20m;
+          file "{{ bind_log_path }}/auth_servers" versions 100 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel dnssec_log {
-          file "{{ bind9_log_path }}/dnssec" versions 3 size 20m;
+          file "{{ bind_log_path }}/dnssec" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel zone_transfers_log {
-          file "{{ bind9_log_path }}/zone_transfers" versions 3 size 20m;
+          file "{{ bind_log_path }}/zone_transfers" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel ddns_log {
-          file "{{ bind9_log_path }}/ddns" versions 3 size 20m;
+          file "{{ bind_log_path }}/ddns" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel client_security_log {
-          file "{{ bind9_log_path }}/client_security" versions 3 size 20m;
+          file "{{ bind_log_path }}/client_security" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel rate_limiting_log {
-          file "{{ bind9_log_path }}/rate_limiting" versions 3 size 20m;
+          file "{{ bind_log_path }}/rate_limiting" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel rpz_log {
-          file "{{ bind9_log_path }}/rpz" versions 3 size 20m;
+          file "{{ bind_log_path }}/rpz" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
           severity info;
      };
      channel dnstap_log {
-          file "{{ bind9_log_path }}/dnstap" versions 3 size 20m;
+          file "{{ bind_log_path }}/dnstap" versions 3 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
@@ -68,7 +69,7 @@ logging {
 // query logging on (and off again) using command ‘rndc querylog’
 //
      channel queries_log {
-          file "{{ bind9_log_path }}/queries" versions 600 size 20m;
+          file "{{ bind_log_path }}/queries" versions 600 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;
@@ -82,7 +83,7 @@ logging {
 // affecting the regular logging.
 //
      channel query-errors_log {
-          file "{{ bind9_log_path }}/query-errors" versions 5 size 20m;
+          file "{{ bind_log_path }}/query-errors" versions 5 size 20m;
           print-time yes;
           print-category yes;
           print-severity yes;

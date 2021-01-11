@@ -5,10 +5,10 @@
     - initial_setup
 
   vars:
-    supersede_dhcp: True
-    hostname_name: mail
+    supersede_dhcp: False
+    hostname_name: lb02
     user: admin
-    hostname_domain_name: alcafaz.test
+    hostname_domain_name: dd.test
     dhcp_config_ns1: 192.168.100.5
     dhcp_config_ns2: 1.1.1.1
     dhcp_config_domain_search: alcafaz.test

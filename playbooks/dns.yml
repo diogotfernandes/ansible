@@ -2,4 +2,4 @@
 - hosts: ns1Alcafaz
   become: true
   roles:
-  - dns-bind
+  - dns_bind

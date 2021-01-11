@@ -3,7 +3,7 @@
 apache2_packages:
   - apache2
 
-apache2_create_vhost: True
+apache2_create_vhost: False
 apache2_remove_default_vhost: True
 
 apache2_path: /etc/apache2
@@ -15,6 +15,6 @@ apache2_vhost:
   # example.com:
   #   server_name: www.example.com
   #   conf_name: example.com.conf
-  alcafaz.test:
-    conf_name: alcafaz.test.conf
-    server_name: alcafaz.test
+  # alcafaz.test:
+  #   conf_name: alcafaz.test.conf
+  #   server_name: alcafaz.test

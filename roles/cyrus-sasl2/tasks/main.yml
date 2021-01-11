@@ -1,5 +1,10 @@
 ---
-# tasks file for cyrus-sasl2---
+# tasks file for cyrus-sasl2
+
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
 - name: Install sasl2 packages
   apt:
     name: "{{sasl2_packages}}"

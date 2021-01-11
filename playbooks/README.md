@@ -10,7 +10,7 @@
 
 # dns
 * Setup
-```ansible-playbook playbooks/dns.yml -i [hostFile] -u [user] -K --extra-vars forward_dns=opendns ```
+```ansible-playbook playbooks/dns.yml  -K --extra-vars forward_dns=opendns ```
 ```yaml
 - hosts: nameserver
   become: true

@@ -1,6 +1,8 @@
 ---
 # vars file for Bind setup
 
+
+bind_default_forward_dns: opendns
 bind_forwarders:
   opendns:
     primary: 208.67.222.222
@@ -11,12 +13,10 @@ bind_forwarders:
   cloudflare:
     primary: 1.1.1.1
     secondary: 1.0.0.1
-bind_default_forward_dns: opendns
 
-bind_zones_path: /var/lib/bind/zones/
-
-
-bind_log_path: /var/log/named
+bind_zones_path: /var/lib/bind/zones
+bind_soa_email: admin.{{ bind_domain }}
+bind_log_path: /var/log/named\
 bind_refresh: 604800
 bind_retry: 86400
 bind_expire: 2419200

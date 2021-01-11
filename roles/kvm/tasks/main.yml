@@ -1,6 +1,10 @@
 ---
 # tasks file for kvm
 
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
 - name: get xml
   virt_net:
     command: get_xml

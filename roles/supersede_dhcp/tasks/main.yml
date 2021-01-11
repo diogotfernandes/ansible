@@ -1,5 +1,9 @@
 ---
 
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
 - name: Modificar configuração para modificar nameservers e domain-name
   template:
     src: dhclient.conf.j2

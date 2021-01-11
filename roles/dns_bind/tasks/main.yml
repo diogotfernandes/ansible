@@ -1,9 +1,13 @@
 ---
 
+- name: Verificar OS
+  fail: msg="This role is not supported in {{ ansible_os_family }} OS"
+  when: ansible_os_family != "Debian"
+
 - name: install bind
   apt:
     name: "{{ packages }}"
-    state: latest
+    state: present
   vars:
     packages:
       - bind9
@@ -20,6 +24,7 @@
     group: bind
     mode: 0660
   notify: restart named
+  tags: [ config ]
 
 - name: Copy named conf file
   template:
@@ -30,7 +35,12 @@
     group: bind
     mode: 0660
   notify: restart named
+  tags: [ config ]
 
+
+- name: debug shit
+  debug:
+    msg: "{{ bind_zones[0].name }}"
 
 - name: Copy named conf local file
   template:
@@ -41,6 +51,7 @@
     group: bind
     mode: 0640
   notify: restart named
+  tags: [ config ]
 
 - name: Make zones directory
   file:
@@ -57,40 +68,29 @@
     owner: root
     group: bind
     mode: 0640
+  tags: [zone_defaults]
 
 - name: Copy alcafaz.test forward file
   template:
     src: db.forward.alcafaz.test.j2
-    dest: /var/lib/bind/zones/db.{{domain}}
+    dest: /var/lib/bind/zones/db.{{ bind_domain }}
     owner: root
     group: bind
     mode: 0640
   with_dict: "{{ records }}"
   notify: restart named
+  tags: [ zone_records ]
 
 - name: Copy alcafaz.test reverse file
   template:
     src: db.reverse.alcafaz.test.j2
-    dest: /var/lib/bind/zones/db.{{rev_domain}}
+    dest: /var/lib/bind/zones/db.{{ rev_domain }}
     owner: root
     group: bind
     mode: 0640
   with_dict: "{{ records }}"
   notify: restart named
-
-
-- block:
-
-  - name: Copy diogof.test forward file
-    template:
-      src: db.forward.diogof.test.j2
-      dest: /var/lib/bind/zones/db.diogof.test
-      owner: root
-      group: bind
-      mode: 0640
-    notify: restart named
-
-  when: other_zone == true
+  tags: [ zone_records ]
 
 - name: Open firewall port
   ufw:

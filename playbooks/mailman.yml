@@ -1,10 +1,65 @@
-- hosts: rpi
+##PLAYBOOK
+# servidor com postfix, autenticação por sasl2, cyrus-imap, apache2 e mailman3-full(core+web)
+#
+
+##SALS2
+#
+#
+
+##CYRUS-IMAP
+#
+#
+
+##POSTFIX
+#Non-Postfix mailbox store: separate domains, non-UNIX accounts
+#
+#
+
+## MAILMAN3
+#postfix_use_mailman3: true -> adiconar à configuração do postfix (main.cf) os transport maps
+# Quando é iniciado pela 1a vez, dá erro, pois ainda não foram criadas os aliases
+#do mailman3 (/var/lib/mailman3/data/). Tenho que comentar as linhas relativas
+#ao mailman3. Criar o dominio na interface do mailman3, criar uma lista, e
+#depois já posso descomentar as linhas relativas ao mailman3 (/etc/postfix/main.cf)
+# A RESOLVER... (??)
+#
+- hosts: mailAlcafaz
   become: true
 
   roles:
+   - postfix
+   - cyrus-sasl2
+   - cyrus-imap
+   - apache2
    - mailman3
 
   vars:
+
+    domain_name: alcafaz.test
+    virtual_recipients:
+      - name: diogo
+      - name: marcia
+      - name: admin
+      - name: mailman3web
+
+    postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
+    postfix_root_address: diogo@{{ domain_name }}
+    default_sasl_group: sasl
+    postfix_use_spf: true
+    postfix_use_mailman3: true
+
+    ## mailman3 vars
     mailman3_web_emailname: unts.xyz
     mailman3_web_superuser_name: mailman3web
     mailman3_web_superuser_mail: mailman3web@unts.xyz
+
+    ## apache2 vars
+    apache2_create_vhost: False
+    apache2_remove_default_vhost: True
+    apache2_vhost:
+      example.com:
+        server_name: www.example.com
+        conf_name: example.com.conf
+      # alcafaz.test:
+      #   conf_name: alcafaz.test.conf
+      #   server_name: alcafaz.test

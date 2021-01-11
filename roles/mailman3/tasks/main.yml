@@ -1,5 +1,9 @@
 ---
 
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
 - name: (1)Remember database passwords permanently in debconf?
   debconf:
     name: dbconfig-common

@@ -1,6 +1,10 @@
 ---
 # tasks file for cyrus-imap
 
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
 #TODO: utilizar variável default_mail_group
 - name: Verificar se o grupo 'mail' existe
   shell: getent group mail | awk -F':' '{print $1}'

@@ -9,21 +9,26 @@
 #  record3:       { forward: 192.168.200.10, type: CNAME, rev: 10 }
 #
 
-duarte_zone: false
+bind_zones:
+  - name: alcafaz.test
+    type: master
+    reverse: 100.168.192
 
-acl_trusted_networks:
+rev_domain: 100.168.192.in-addr.arpa
+
+bind_acl_trusted_networks:
   - 192.168.100.0/24
   - 192.168.1.0/24
 
-bind9_serial: 2021010501
+bind_serial: 2021010501
 
-domain: alcafaz.test
-rev_domain: 100.168.192.in-addr.arpa
-mx_domain: mail.alcafaz.test
+bind_domain: alcafaz.test
+bind_rev_domain: 100.168.192.in-addr.arpa
+bind_mx_domain: mail.alcafaz.test
 records:
 #  '@':          { forward: 192.168.100.5,  type: A, rev: 5 }
   ns1:          { forward: 192.168.100.5,  type: A, rev: 5 }
 #  ns2:          { forward: 172.105.71.143,  type: A, rev: 1 }
-#  mail:         { forward: 192.168.100.10, type: A, rev: 10 }
+  mail:         { forward: 192.168.100.10, type: A, rev: 10 }
 
 #TODO criar zonas dinamicamente

@@ -5,12 +5,12 @@
   fail:  msg="This role is not supported in {{ansible_os_family}} OS"
   when: ansible_os_family != "Debian"
 
-- name: loop
-  debug:
-    msg: "{{ item }}"
-  loop:
-    - hey
-    - man
+# - name: loop
+#   debug:
+#     msg: "{{ item }}"
+#   loop:
+#     - hey
+#     - man
 
 # - name: Using dict2items
 #   ansible.builtin.debug:
@@ -19,8 +19,6 @@
 #       - " name:  {{ item.value.name }}"
 #       - "conf_name:  {{ item.value.conf_name }}"
 #   loop: "{{ apache2_vhost | dict2items }}"
-
-
 
 - name: Instalar apache2
   apt:
@@ -39,7 +37,7 @@
     group: root
     mode: 0644
   loop: "{{ apache2_vhost | dict2items }}"
-  when: (apache2_create_vhost) and (apache2_vhost|length > 0)
+  when: apache2_create_vhost
 
 
 - name: Create dir to vhost
@@ -50,11 +48,14 @@
     group: root
     mode: 0755
   loop: "{{ apache2_vhost | dict2items }}"
+  when: apache2_create_vhost
 
-- name: Activate vhost
-  shell: a2ensite alcafaz.test.conf
-  notify:
-    - restart apache2
+#Criar loop para ativar os vhost's criados acima
+# - name: Activate vhost
+#   shell: a2ensite alcafaz.test.conf
+#   notify:
+#     - restart apache2
+#   when: apache2_create_vhost
 
 - name: Check apache2 config
   shell: apache2ctl configtest

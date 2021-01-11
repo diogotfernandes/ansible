@@ -1,6 +1,10 @@
 ---
 # tasks file for postgresql
 
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
 - name: install postgresql pkg
   apt:
     name: ['postgresql', 'postgresql-contrib', 'python-psycopg2' ]
