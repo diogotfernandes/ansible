@@ -3,3 +3,21 @@
   become: true
   roles:
   - dns_bind
+
+
+#TODO criar variavel bind_packages!
+#TODO criar variaveis com os caminhos (P.EX. bind_named.conf.local_path: /etc/bind/named.conf.local, etc)
+#TODO criar variais com o caminho para as zonas (P.EX. bind_zones_path: /var/lib/bind/zones, etc)
+#TODO log separado do bind
+#TODO 'bind_zone' mais completo (P.EX. add email, ttl, ns, txt)
+  # bind_zones:
+  #   - name: dd.test
+  #     type: master
+  #     reverse: 0.0.10
+  #     mx: mail.dd.test
+  #     txt:
+  #       - "some text"
+  #       - "some text"
+  #     records:
+  #       - { name: ns1,   forward: 10.0.0.11,     type: A, rev: 11 }
+  #       - { name: lb02,   forward: 10.0.0.12,     type: A, rev: 12 }
