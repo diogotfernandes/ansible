@@ -1,4 +1,7 @@
-;{{ ansible_managed }} at {{ ansible_date_time.date }}
+#
+#{{ ansible_managed }} at {{ ansible_date_time.date }}
+#
+
 logging {
      channel default_log {
           file "{{ bind_log_path }}/default" versions 3 size 20m;

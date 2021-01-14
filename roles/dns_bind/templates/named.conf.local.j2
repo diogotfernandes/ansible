@@ -1,14 +1,15 @@
-;{{ ansible_managed }} at {{ ansible_date_time.date }}
-{% for zone in bind_zones %}
+#
+#{{ ansible_managed }} at {{ ansible_date_time.date }}
+#
 
+{% for zone in bind_zones %}
 zone "{{ zone.name }}" {
     type {{ zone.type }};
     file "{{ bind_zones_path }}/db.{{ zone.name }}";
 };
 
-zone "{{ zone.reverse }}" {
+zone "{{ zone.reverse }}.in-addr.arpa" {
     type {{ zone.type }};
     file "{{ bind_zones_path }}/db.{{ zone.reverse }}.in-addr.arpa";
 };
-
 {% endfor %}

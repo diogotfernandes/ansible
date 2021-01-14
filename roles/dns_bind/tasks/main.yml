@@ -4,19 +4,36 @@
   fail: msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
 
+# - debug:
+#    msg:
+#      # - "{{ item.records.name }}"
+#      # - "Zone name: {{ item.0.name }}"
+#      # - "Zone type: {{ item.0.type }}"
+#      # - "Record name: {{ item.1.name }}"
+#     # - "item[0] -> {{ item[0] }}"
+#     # - "item[1] -> {{ item[1] }}"
+#   with_items: "{{ bind_zones  }}"
+#   # with_subelements:
+#   # - "{{ bind_zones }}"
+#     # - records
+#   # run_once: true
+#   # loop_control:
+#     # label: "{{ item.0.name }}"
+#   tags: [ debug ]
+# #
+# # - fail:
 
-- debug:
-   msg:
-  loop: "{{ bind_zones }}"
+- name: Include task list in play
+  import_tasks: set_bind_serial.yml
+  tags: [ update serial ,zone_records ]
 
-- debug:
-   msg:
-  loop: "{{ records | dict2items }}"
 
-- name: Exterminate mankind
-  pause:
-    prompt: Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort
+# - name: Exterminate mankind
+#   pause:
+#     prompt: Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort
 
+
+#TODO criar variavel bind_packages!
 - name: install bind
   apt:
     name: "{{ packages }}"
@@ -36,10 +53,12 @@
     owner: root
     group: bind
     mode: 0660
-  notify: restart named
-  tags: [ config ]
+  notify:
+    - restart named
+    - update serial
+  tags: [ config_named ]
 
-- name: Copy named conf file
+- name: Copy named conf options file
   template:
     src: named.conf.options.j2
     dest: /etc/bind/named.conf.options
@@ -47,13 +66,11 @@
     owner: root
     group: bind
     mode: 0660
-  notify: restart named
-  tags: [ config ]
+  notify:
+    - restart named
+    - update serial
+  tags: [ config_named ]
 
-
-- name: debug shit
-  debug:
-    msg: "{{ bind_zones[0].name }}"
 
 - name: Copy named conf local file
   template:
@@ -63,8 +80,10 @@
     owner: root
     group: bind
     mode: 0640
-  notify: restart named
-  tags: [ config ]
+  notify:
+    - restart named
+    - update serial
+  tags: [ config_named ]
 
 - name: Make zones directory
   file:
@@ -74,6 +93,10 @@
     group: bind
     mode: 0750
 
+# - debug:
+#     msg:
+#       - "{{ bind_serial }}"
+
 - name: Copy default zone data
   template:
     src: default-zone-data.j2
@@ -81,28 +104,28 @@
     owner: root
     group: bind
     mode: 0640
-  tags: [zone_defaults]
+  tags: [ zone_defaults ]
 
-- name: Copy alcafaz.test forward file
+- name: Copy zone forward file
   template:
-    src: db.forward.alcafaz.test.j2
-    dest: /var/lib/bind/zones/db.{{ bind_domain }}
+    src: db.forward.zone.j2
+    dest: /var/lib/bind/zones/db.{{ item.name }}
     owner: root
     group: bind
     mode: 0640
-  with_dict: "{{ records }}"
-  notify: restart named
+  with_items: "{{ bind_zones }}"
+  notify: [restart named, update serial]
   tags: [ zone_records ]
 
 - name: Copy alcafaz.test reverse file
   template:
-    src: db.reverse.alcafaz.test.j2
-    dest: /var/lib/bind/zones/db.{{ rev_domain }}
+    src: db.reverse.zone.j2
+    dest: /var/lib/bind/zones/db.{{ item.reverse }}.in-addr.arpa
     owner: root
     group: bind
     mode: 0640
-  with_dict: "{{ records }}"
-  notify: restart named
+  with_items: "{{ bind_zones }}"
+  notify: [restart named, update serial]
   tags: [ zone_records ]
 
 - name: Open firewall port

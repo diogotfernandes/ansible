@@ -17,12 +17,12 @@
 
   vars:
     supersede_dhcp: False
-    hostname_name: lb02
+    hostname_name: ns1
     # user: admin
-    hostname_domain_name: dd.test
-    dhcp_config_ns1: 192.168.100.5
+    hostname_domain_name: alcafaz.test
+    dhcp_config_ns1: 192.168.100.6
     dhcp_config_ns2: 1.1.1.1
-    dhcp_config_domain_search: alcafaz.test
+    # dhcp_config_domain_search: alcafaz.test
     packages_to_install:
       - sudo
       - aptitude

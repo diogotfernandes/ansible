@@ -9,4 +9,4 @@
 #   - A hostname/ip can be a member of multiple groups
 
 [new]
-192.168.100.62 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+192.168.100.6 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'

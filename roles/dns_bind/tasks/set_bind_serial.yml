@@ -1,0 +1,68 @@
+---
+
+#
+# if current_day == current_serial_date
+#   bind_current_serial + 1
+# else
+#   bind_serial = bind_new_serial
+#
+#
+
+# - debug:
+#     msg:
+#       - "{{ bind_serial }}"
+
+- name: get stats of bind file
+  stat:
+    path: /var/lib/bind/zones/default-zone-data
+  register: bind_default_zone_file
+
+- name: get current date (yyyymmdd)
+  shell: echo $(date +%Y%m%d)
+  register: current_day
+  changed_when: False
+
+- name: get new serial based on date (yyyymmddxx)
+  shell: echo $(date +%Y%m%d00)
+  register: bind_new_serial
+  changed_when: False
+
+- name: set new serial based on current date
+  set_fact:
+    bind_serial: "{{ bind_new_serial.stdout }}"
+
+
+- name: block to increment current serial
+
+  block:
+    - name: current serial date
+      shell: cat /var/lib/bind/zones/default-zone-data | grep '; Serial' | awk '{ print $1 }' | head -c 8
+      register: bind_current_serial_date
+      changed_when: False
+
+    - name: get current serial
+      shell: cat /var/lib/bind/zones/default-zone-data | grep '; Serial' | awk '{ print $1 }'
+      register: bind_current_serial
+      changed_when: False
+
+    - name: increment current serial
+      set_fact:
+        bind_serial: "{{ bind_current_serial.stdout | int + 1 }}"
+      when: bind_current_serial_date.stdout == current_day.stdout
+
+  when: bind_default_zone_file.stat.exists
+
+
+# - name: check if serial dates are equal
+#   debug:
+#     msg: "{{ current_serial_date.stdout}}  equal {{ current_day.stdout }}"
+#   when: current_serial_date.stdout == current_day.stdout
+
+# - name: print current serial
+#   debug:
+#     msg: "{{ current_serial.stdout }}"
+
+# - name: check if serial dates are different
+#   debug:
+#     msg: "{{ current_serial.stdout}} not equal {{ current_day.stdout }}"
+#   when: bind_current_serial_date.stdout != current_day.stdout
