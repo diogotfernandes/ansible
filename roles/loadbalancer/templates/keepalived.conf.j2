@@ -1,0 +1,16 @@
+vrrp_instance {{ item.name }} {
+        state {{ item.state }}
+        interface {{ item.interface }}
+        virtual_router_id {{ item.virtual_router_id }}
+        priority {{ item.priority }}
+        advert_int {{ item.advert_int }}
+        authentication {
+              auth_type {{ item.authentication['auth_type'] }}
+              auth_pass {{ item.authentication['auth_pass'] }}
+        }
+        virtual_ipaddress {
+{% for ip in item.virtual_ipaddress %}
+              {{ ip }}
+{% endfor %}
+        }
+}

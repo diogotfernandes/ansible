@@ -1,0 +1,17 @@
+---
+# defaults file for loadbalancer
+
+#
+# HAProxy
+#
+haproxy_default_path: /etc/haproxy
+haproxy_packages:
+  - haproxy
+
+
+#
+# keepalived
+#
+keepalived_default_path: /etc/keepalived
+keepalived_packages:
+  - keepalived

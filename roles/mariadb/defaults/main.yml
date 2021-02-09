@@ -1,0 +1,13 @@
+---
+# defaults file for mariadb
+
+mariadb_packages:
+  mariadb-server
+
+mariadb_bind_address: 127.0.0.1
+mariadb_default_port: 3306
+mariadb_path: /etc/mysql
+mariadb_config_path: /etc/mysql/mariadb.conf.d
+
+mariadb_unix_socket: /var/run/mysqld/mysqld.sock
+mariadb_user: root

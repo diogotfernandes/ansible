@@ -1,11 +1,10 @@
 #
-#{{ ansible_managed }} at {{ ansible_date_time.date }}
+# {{ ansible_managed }} at {{ ansible_date_time.date }}
 #
-
 acl "trusted" {
-        192.168.100.0/24;
-        10.0.1.0/24;
-        192.168.200.0/24;
+{% for ip in bind_acl_trusted_networks %}
+{{ ip | indent(8, True) }};
+{% endfor %}
 };
 
 options {
@@ -15,14 +14,13 @@ options {
         allow-recursion { trusted; };  # allows recursive queries from "trusted" clients
         listen-on { {{ansible_default_ipv4.address}}; };   # ns1 private IP address - listen on private network only
         allow-transfer { none; };      # disable zone transfers by default
-        disable-empty-zone "10.in-addr.arpa";
 
         forwarders {
-        {% for key, value in bind_forwarders.items() %}
-          {% if bind_default_forward_dns == key %}
-            {{ value.primary }};
-            {{ value.secondary }};
-          {% endif %}
-        {% endfor %}
+{% for key, value in bind_forwarders.items() %}
+{% if bind_default_forward_dns == key %}
+{{ value.primary | indent(12, True) }};
+{{ value.secondary | indent(12, True) }};
+{% endif %}
+{% endfor %}
         };
 };

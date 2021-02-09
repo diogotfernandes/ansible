@@ -1,4 +1,4 @@
-- hosts: mailAlcafaz
+- hosts: rpi
   become: true
 
   roles:
@@ -6,9 +6,8 @@
 
   vars:
     apache2_vhost:
-      example.com:
-        server_name: www.example.com
-        conf_name: example.com.conf
-      # alcafaz.test:
-      #   conf_name: alcafaz.test.conf
-      #   server_name: alcafaz.test
+      - name: unts.xyz
+        server_name: www.unts.xyz
+        conf_name: unts.xyz.conf
+        port: 80
+    apache2_create_vhost: True

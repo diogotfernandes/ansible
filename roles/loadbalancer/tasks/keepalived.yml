@@ -1,0 +1,18 @@
+---
+# tasks file for keepalived
+
+- name: install keepalived packages
+  apt:
+    name: "{{ keepalived_packages }}"
+    state: present
+
+- name: keepalived template file
+  template:
+    src: keepalived.conf.j2
+    dest: "{{ keepalived_default_path }}/keepalived.conf"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    backup: yes
+  with_items: "{{ keepalived_vrrp_instance }}"
+  tags: [ keepalived_config ]

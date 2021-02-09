@@ -1,19 +1,43 @@
-;
-;{{ ansible_managed }} at {{ ansible_date_time.date }}
-;
 
-$INCLUDE "{{ bind_zones_path }}/default-zone-data";
+;
+; {{ ansible_managed }} at {{ ansible_date_time.date }}
+;
+$TTL    {{ bind_ttl }}
+@       IN      SOA     {{ item.nameservers | first }} {{ item.admin_email }}.{{ item.name }}. (
+{{ item.serial | string | indent(12, True) }}     ; Serial
+{{ bind_refresh | string | indent(12, True) }}         ; Refresh
+{{ bind_retry | string | indent(12, True)  }}          ; Retry
+{{ bind_expire | string | indent(12, True)  }}        ; Expire
+{{ bind_negative_cache_ttl | string | indent(12, True)  }}         ; Negative Cache TTL
+)
 
-;name servers - A records
+; nameservers
+{% if item.nameservers | length > 1 %}
+{% for ns in item.nameservers %}
+      IN           NS           {{ ns }}
+{% endfor %}
+{% else %}
+      IN           NS           {{ item.nameservers | first }}
+{% endif %}
+
+{% if item.mail_servers is defined %}
+; MX servers
+{% for mail in item.mail_servers %}
+      IN           MX   {{mail.preference}}      {{ mail.name }}.{{item.name}}.
+{% endfor %}
+      IN           TXT     "v=spf1 a:{{ item.name }}  ~all"
+{% endif %}
+
+; A records
 {% for host in item.records %}
 {% if host.type == 'A' %}
 {{ host.name.ljust(20) }} IN {{ host.type.rjust(10) }} {{ host.forward.rjust(15) }}
 {% endif %}
 {% endfor %}
 
-;name servers - CNAME records
+;CNAME records
 {% for host in item.records %}
 {% if host.type == 'CNAME' %}
-{{ host.name.ljust(20) }} IN {{ host.type.rjust(10) }} {{ host.forward.rjust(15) }}
+{{ host.name.ljust(20) }} IN {{ host.type.rjust(10) }} {{ host.forward.rjust(15) }}.
 {% endif %}
 {% endfor %}

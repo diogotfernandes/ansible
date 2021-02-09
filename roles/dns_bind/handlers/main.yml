@@ -3,9 +3,3 @@
   service:
     name: bind9
     state: restarted
-
-- name: update serial
-  lineinfile:
-    path: /var/lib/bind/zones/default-zone-data
-    regexp: '; Serial'
-    line: "{{ bind_serial.rjust(20) }}\t\t; Serial"

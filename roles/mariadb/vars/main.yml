@@ -1,0 +1,13 @@
+---
+# vars file for mariadb
+mariab_mysqld:
+  # bind_address: 10.0.0.21
+
+# mariadb_databases:
+#   - name: wordpress
+#
+# mariadb_users:
+#   - name: wp
+#     password: qwerty
+#     host: localhost
+#     priv: 'wordpress.*.*:ALL,GRANT'

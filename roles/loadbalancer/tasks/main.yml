@@ -1,0 +1,39 @@
+---
+# tasks file for loadbalancer
+
+- name: Verificar OS
+  fail: msg="This role is not supported in {{ ansible_os_family }} OS"
+  when: ansible_os_family != "Debian"
+
+- name: Include haproxy tasks
+  include_tasks: haproxy.yml
+  tags: haproxy
+
+- name: Include keepalived tasks
+  include_tasks: keepalived.yml
+  tags: keepalived
+
+# - name: debug keepalived vars
+#   debug:
+#     msg: "{{ item }}"
+#   with_items: "{{ keepalived_vrrp_instance }}"
+#   tags: [ debug ]
+#
+# - name: debug haproxy vars
+#   debug:
+#     msg: "{{ item.name }}"
+#   with_subelements:
+#     - "{{ haproxy_options }}"
+#     - name
+#   tags: [ debug ]
+
+- name: debug
+  debug:
+    msg="{{ item }}"
+  with_items: "{{ haproxy_defaults.errorfile }}"
+  tags: debug
+
+- name: debug
+  debug:
+    msg: "{{haproxy_backend }}"
+  tags: debug

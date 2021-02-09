@@ -1,0 +1,11 @@
+---
+- hosts: lbDD
+  become: true
+  roles:
+  - self_signed_cert
+  vars:
+    ssl_hostname: dd.test
+    ssl_country: PT
+    ssl_org_name: Disponibilidade e Desempenho
+    ssl_email_addr: hostmaster@dd.test
+    ssl_common_name: DD

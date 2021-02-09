@@ -8,5 +8,5 @@
 - name: update timezone
   command: dpkg-reconfigure --frontend noninteractive tzdata
 
-- name: update set-ntp
+- name: enable network time sync
   command: timedatectl set-ntp true

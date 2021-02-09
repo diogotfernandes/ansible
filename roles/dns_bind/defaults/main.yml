@@ -1,7 +1,10 @@
 ---
 # vars file for Bind setup
-
-bind_serial: yyyymmddxx
+bind_packages:
+  - bind9
+  - bind9utils
+  - bind9-doc
+bind_serial: 2021010100
 bind_default_forward_dns: opendns
 bind_forwarders:
   opendns:
@@ -15,6 +18,7 @@ bind_forwarders:
     secondary: 1.0.0.1
 
 bind_zones_path: /var/lib/bind/zones
+bind_config_path: /etc/bind
 bind_log_path: /var/log/named
 bind_refresh: 604800
 bind_retry: 86400

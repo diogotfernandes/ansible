@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  become: true
+  roles:
+  - test
+  gather_facts: no

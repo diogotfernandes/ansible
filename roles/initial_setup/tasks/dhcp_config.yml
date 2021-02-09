@@ -4,3 +4,4 @@
     src: dhclient.conf.j2
     dest: /etc/dhcp/dhclient.conf
     backup: yes
+  tags: dhcp_config, config

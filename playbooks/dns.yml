@@ -4,10 +4,28 @@
   roles:
   - dns_bind
 
+  vars:
+    bind_zones:
+      - name: alcafaz.test
+        reverse: 100.168.192
+        type: primary
+        serial: 2020012600
+        admin_email: hostmaster #admin zone email
+        primary: 192.168.100.5  #primary nameserver
+        mail_servers: #mx records
+          - name: mail
+            preference: 10
+        nameservers:
+          - ns1.dd.test.
+        records:
+          - { name: ns1,    forward: 192.168.100.5,   type: A, rev: 5  }
+          - { name: mail,   forward: 192.168.100.10,  type: A, rev: 10 }
+          - { name: '@',    forward: 192.168.100.1,   type: A, rev: 1 }
 
-#TODO criar variavel bind_packages!
-#TODO criar variaveis com os caminhos (P.EX. bind_named.conf.local_path: /etc/bind/named.conf.local, etc)
-#TODO criar variais com o caminho para as zonas (P.EX. bind_zones_path: /var/lib/bind/zones, etc)
+    bind_acl_trusted_networks:
+      - 192.168.1.0/24
+      - 192.168.100.0/24
+
 #TODO log separado do bind
 #TODO 'bind_zone' mais completo (P.EX. add email, ttl, ns, txt)
   # bind_zones:

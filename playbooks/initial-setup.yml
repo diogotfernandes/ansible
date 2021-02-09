@@ -17,16 +17,15 @@
 
   vars:
     supersede_dhcp: False
-    hostname_name: ns1
+    hostname_name: rpi
     # user: admin
-    hostname_domain_name: alcafaz.test
-    dhcp_config_ns1: 192.168.100.6
-    dhcp_config_ns2: 1.1.1.1
+    hostname_domain_name:
+    # dhcp_config_ns1: 192.168.100.5
+    # dhcp_config_ns2: 1.1.1.1
     # dhcp_config_domain_search: alcafaz.test
     packages_to_install:
       - sudo
       - aptitude
-      - tree
       - ufw
       - curl
       - dnsutils

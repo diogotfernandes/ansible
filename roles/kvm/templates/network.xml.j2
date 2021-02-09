@@ -1,0 +1,14 @@
+<network>
+  <name>default</name>
+  <uuid>0b16b18b-53b0-47b8-8bd3-114f7fb3638c</uuid>
+  <forward mode='nat'/>
+  <bridge name='virbr0' stp='on' delay='0'/>
+  <mac address='52:54:00:82:a1:83'/>
+  <ip address='192.168.100.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.100.50' end='192.168.100.70'/>
+      <host mac='52:54:00:e1:06:07' name='ns1.alcafaz.test' ip='192.168.100.5'/>
+      <host mac='52:54:00:92:ad:d8' name='mail.alcafaz.test' ip='192.168.100.10'/>
+    </dhcp>
+  </ip>
+</network>

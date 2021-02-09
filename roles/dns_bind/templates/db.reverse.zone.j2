@@ -1,12 +1,23 @@
 ;
-;{{ ansible_managed }} at {{ ansible_date_time.date }}
+; {{ ansible_managed }} at {{ ansible_date_time.date }}
 ;
+$TTL    {{ bind_ttl }}
+@       IN      SOA     {{ item.nameservers | first }} {{ item.admin_email }}.{{ item.name }}. (
+{{ item.serial | string | indent(12, True) }}     ; Serial
+{{ bind_refresh | string | indent(12, True) }}         ; Refresh
+{{ bind_retry | string | indent(12, True)  }}          ; Retry
+{{ bind_expire | string | indent(12, True)  }}        ; Expire
+{{ bind_negative_cache_ttl | string | indent(12, True)  }}         ; Negative Cache TTL
+)
 
-$INCLUDE "{{ bind_zones_path }}/default-zone-data";
+; nameservers
+@      IN           NS           {{ item.nameservers | first }}
 
 ; PTR Records
 {% for host in item.records %}
-{% if host.type == 'A' %}
-{{ host.rev }}    IN    PTR {{ host.name.rjust(10) }}.{{ item.name }}.
+{% if (host.type == 'A') and (host.rev is defined) and (host.name != '@') %}
+{{ (host.rev | string).ljust(10) }}    IN    PTR {{ host.name.rjust(10) }}.{{ item.name }}.
+{% elif (host.type == 'A') and (host.rev is defined) and (host.name == '@') %}
+{{ (host.rev | string).ljust(10) }}    IN    PTR {{ item.name.rjust(20) }}.
 {% endif %}
 {% endfor %}

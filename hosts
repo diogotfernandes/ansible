@@ -9,6 +9,9 @@
 #   - A hostname/ip can be a member of multiple groups
 
 [ns1Alcafaz]
+192.168.100.5 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
+
+[ns2Alcafaz]
 192.168.100.6 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
 
 [mailAlcafaz]
@@ -21,12 +24,12 @@
 192.168.100.15 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
 
 [rpi]
-#109.49.20.69 ansible_ssh_port=2849 ansible_user=diogo ansible_sudo_pass=qwerty
+192.168.1.10 ansible_ssh_port=2849 ansible_user=diogo ansible_sudo_pass=qwerty
 
 
 [lbDD]
 10.0.0.11 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
-10.0.0.12 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
+#10.0.0.12 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
 
 [webDD]
 10.0.0.21 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin

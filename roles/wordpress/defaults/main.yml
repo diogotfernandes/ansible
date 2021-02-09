@@ -1,0 +1,4 @@
+---
+# defaults file for wordpress
+
+wp_version: latest # for older version use wordpress-x.x

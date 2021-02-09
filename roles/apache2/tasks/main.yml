@@ -5,72 +5,43 @@
   fail:  msg="This role is not supported in {{ansible_os_family}} OS"
   when: ansible_os_family != "Debian"
 
-# - name: loop
-#   debug:
-#     msg: "{{ item }}"
-#   loop:
-#     - hey
-#     - man
-
-# - name: Using dict2items
-#   ansible.builtin.debug:
-#     msg:
-#       - "{{ item.key }}"
-#       - " name:  {{ item.value.name }}"
-#       - "conf_name:  {{ item.value.conf_name }}"
-#   loop: "{{ apache2_vhost | dict2items }}"
-
 - name: Instalar apache2
-  apt:
-    name: "{{ apache2_packages }}"
-    update_cache: true
-    state: present
-  notify:
-    - restart apache2
+  apt: name="{{ apache2_packages }}" state=present
+  notify: restart apache2
 
 - name: Create vhosts
   template:
     src: vhost.conf.j2
-    dest: /etc/apache2/sites-available/{{ item.key }}.conf
+    dest: /etc/apache2/sites-available/{{ item.name }}.conf
     backup: yes
     owner: root
     group: root
     mode: 0644
-  loop: "{{ apache2_vhost | dict2items }}"
+  with_items: "{{ apache2_vhost }}"
   when: apache2_create_vhost
-
 
 - name: Create dir to vhost
   file:
-    path: "{{ apache2_document_root }}/{{ item.key }}"
+    path: "{{ apache2_document_root }}/{{ item.name }}"
     state: directory
     owner: root
     group: root
     mode: 0755
-  loop: "{{ apache2_vhost | dict2items }}"
+  with_items: "{{ apache2_vhost }}"
   when: apache2_create_vhost
 
-#Criar loop para ativar os vhost's criados acima
-# - name: Activate vhost
-#   shell: a2ensite alcafaz.test.conf
-#   notify:
-#     - restart apache2
-#   when: apache2_create_vhost
+# Criar loop para ativar os vhost's criados acima
+- name: Activate vhost
+  command: a2ensite {{ item.name }}
+  notify: restart apache2
+  with_items: "{{ apache2_vhost }}"
+  when: apache2_create_vhost
 
 - name: Check apache2 config
   shell: apache2ctl configtest
   register: apache2_test_config
 
-- debug:
-    msg="{{apache2_test_config.stderr}}"
-
-
-
-
-
-# - name: number of elements in list
-#   debug:
-#     msg="Number of elements -> {{ apache2_vhost|length
+- debug: msg="{{ apache2_test_config }}"
 
 - name: Remove default vhost
   file:

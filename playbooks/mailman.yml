@@ -31,6 +31,7 @@
    - cyrus-sasl2
    - cyrus-imap
    - apache2
+   - postgresql
    - mailman3
 
   vars:
@@ -39,7 +40,7 @@
     virtual_recipients:
       - name: diogo
       - name: marcia
-      - name: admin
+      - name: hostmaster
       - name: mailman3web
 
     postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
@@ -49,17 +50,17 @@
     postfix_use_mailman3: true
 
     ## mailman3 vars
-    mailman3_web_emailname: unts.xyz
+    mailman3_web_emailname: alcafaz.test
     mailman3_web_superuser_name: mailman3web
-    mailman3_web_superuser_mail: mailman3web@unts.xyz
+    mailman3_web_superuser_mail: mailman3web@alcafaz.test
 
     ## apache2 vars
     apache2_create_vhost: False
-    apache2_remove_default_vhost: True
+    apache2_remove_default_vhost: False
     apache2_vhost:
-      example.com:
-        server_name: www.example.com
-        conf_name: example.com.conf
+      alcafaz.test:
+        server_name: www.alcafaz.test
+        conf_name: alcafaz.test.conf
       # alcafaz.test:
       #   conf_name: alcafaz.test.conf
       #   server_name: alcafaz.test

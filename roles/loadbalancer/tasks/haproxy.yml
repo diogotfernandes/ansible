@@ -1,0 +1,31 @@
+---
+# tasks file for haproxy
+
+- name: install haproxy packages
+  apt:
+    name: "{{ haproxy_packages }}"
+    state: present
+
+- name: HAProxy template file
+  template:
+    src: haproxy.conf.j2
+    dest: "{{ haproxy_default_path }}/haproxy.cfg"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    backup: yes
+  notify: restart haproxy
+  tags: haproxy, setup
+
+- name: Check HAProxy config
+  command: haproxy -c -V -f /etc/haproxy/haproxy.cfg
+  register: haproxy_configtest
+  ignore_errors: True
+  tags: haproxy, setup
+
+- name: Print output of haproxy config test
+  debug:
+    msg:
+      - "Result: {{ haproxy_configtest.stdout }}"
+      - "{% if haproxy_configtest.stderr_lines  %} {{ haproxy_configtest.stderr_lines }}{% else %}{% endif %}"
+  tags: haproxy, setup

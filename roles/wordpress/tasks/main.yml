@@ -1,0 +1,117 @@
+---
+# tasks file for wordpress
+
+- name: Verificar OS
+  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  when: ansible_os_family != "Debian"
+
+- name: Get wordpress security keys
+  uri:
+    url: https://api.wordpress.org/secret-key/1.1/salt/
+    method: GET
+    return_content: yes
+  register: wp_api_secret_key
+  tags: [ wordpress ]
+
+- set_fact:
+    wp_secret_key: "{{ wp_api_secret_key.content }}"
+  tags: [ wordpress ]
+
+- name: Set AUTH_KEY variable
+  set_fact:
+    wp_auth_key: "{{ wp_secret_key.split(\"\n\")[0] }}"
+  tags: [ wordpress ]
+
+- name: Set SECURE_AUTH_KEY variable
+  set_fact:
+    wp_secure_auth_key: "{{ wp_secret_key.split(\"\n\")[1] }}"
+  tags: [ wordpress ]
+
+- name: Set LOGGED_IN_KEY variable
+  set_fact:
+    wp_logged_in_key: "{{ wp_secret_key.split(\"\n\")[2] }}"
+  tags: [ wordpress ]
+
+- name: Set NONCE_KEY variable
+  set_fact:
+    wp_nonce_key: "{{ wp_secret_key.split(\"\n\")[3] }}"
+  tags: [ wordpress ]
+
+- name: Set AUTH_SALT variable
+  set_fact:
+    wp_auth_salt: "{{ wp_secret_key.split(\"\n\")[4] }}"
+  tags: [ wordpress ]
+
+- name: Set SECURE_AUTH_SALT variable
+  set_fact:
+    wp_secure_auth_salt: "{{ wp_secret_key.split(\"\n\")[5] }}"
+  tags: [ wordpress ]
+
+- name: Set LOGGED_IN_SALT variable
+  set_fact:
+    wp_logged_in_salt: "{{ wp_secret_key.split(\"\n\")[6] }}"
+  tags: [ wordpress ]
+
+- name: Set NONCE_SALT variable
+  set_fact:
+    wp_nonce_salt: "{{ wp_secret_key.split(\"\n\")[7] }}"
+  tags: [ wordpress ]
+
+- name: Get wordpress checksum
+  uri:
+    url: https://wordpress.org/{{ wp_version }}.tar.gz.md5
+    method: GET
+    return_content: yes
+  register: wp_checksum_md5
+  tags: [ wordpress ]
+
+# - set_fact:
+#     wp_secret_key: "{{ wp_api_secret_key.content }}"
+
+- name: Download worpress
+  get_url:
+    url: "{{ wp_download_url }}"
+    dest: /tmp/wordpress.tar.gz
+    checksum: md5:{{ wp_checksum_md5.content }}
+  tags: [ wordpress ]
+
+- name: Extract worpress files
+  unarchive:
+    src: /tmp/wordpress.tar.gz
+    dest: "{{ wp_install_path }}"
+    extra_opts: [--strip-components=1]
+    remote_src: yes
+  tags: [ wordpress ]
+
+- name: Set the owner on wordpress folder
+  command: chown -R www-data:www-data {{ wp_install_path }}
+  tags: [ wordpress ]
+
+- name: Set the permissions on worpress folder
+  command: find {{ wp_install_path }} -type d -exec chmod 755 {} \;
+  tags: [ wordpress ]
+
+- name: Set the permissions on worpress folder
+  command: find {{ wp_install_path }} -type f -exec chmod 644 {} \;
+  tags: [ wordpress ]
+
+- name: Copy wp-config file
+  template:
+    src: wp-config.php.j2
+    dest: "{{ wp_install_path }}/wp-config.php"
+    backup: yes
+    owner: www-data
+    group: www-data
+    mode: 0644
+  tags: [ wordpress ]
+
+# -  debug:
+#      msg :
+#        - "{{ wp_auth_key }}"
+#        - "{{ wp_secure_auth_key }}"
+#        - "{{ wp_logged_in_key }}"
+#        - "{{ wp_nonce_key }}"
+#        - "{{ wp_auth_salt }}"
+#        - "{{ wp_secure_auth_salt }}"
+#        - "{{ wp_logged_in_salt }}"
+#        - "{{ wp_nonce_salt }}"

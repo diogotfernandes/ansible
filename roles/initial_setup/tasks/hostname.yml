@@ -7,7 +7,7 @@
   lineinfile:
     dest: /etc/hosts
     insertafter: '^127\.0\.0\.1\slocalhost'
-    line: "{{ansible_default_ipv4.address}}\t{{ hostname_name }}.{{ hostname_domain_name }} {{ hostname_name }}"
+    line: "{{ ansible_default_ipv4.address }}\t{{ hostname_name }}.{{ hostname_domain_name }} {{ hostname_name }}"
     state: present
 
 - name: Remove old line from hosts file

@@ -1,0 +1,5 @@
+---
+- hosts: lbDD
+  become: true
+  roles:
+  - loadbalancer

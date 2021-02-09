@@ -23,9 +23,14 @@
 # #
 # # - fail:
 
-- name: Include task list in play
-  import_tasks: set_bind_serial.yml
-  tags: [ update serial ,zone_records ]
+# - name: Include task list in play
+#   import_tasks: set_bind_serial.yml
+#   tags: [ update_serial , zone_records, config_named, test ]
+
+# - name: Run serial script to update zone serial
+#   script:
+#     cmd: files/serial.sh
+#   tags: [ update_serial ]
 
 # - name: Exterminate mankind
 #   pause:
@@ -39,79 +44,88 @@
     packages: [ bind9, bind9utils, bind9-doc ]
   tags: [ install ]
 
-- name: Copy named conf log file
+- name: Copy named conf file
   template:
-    src: named.conf.log.j2
-    dest: /etc/bind/named.conf.log
+    src: named.conf.j2
+    dest: "{{ bind_config_path }}/named.conf"
     backup: yes
     owner: root
     group: bind
     mode: 0660
-  notify: [ restart named, update serial ]
+  notify: [ restart named ]
+  tags: [ config_named ]
+
+- name: Copy named conf log file
+  template:
+    src: named.conf.log.j2
+    dest: "{{ bind_config_path }}/named.conf.log"
+    backup: yes
+    owner: root
+    group: bind
+    mode: 0660
+  notify: [ restart named ]
   tags: [ config_named ]
 
 - name: Copy named conf options file
   template:
     src: named.conf.options.j2
-    dest: /etc/bind/named.conf.options
+    dest: "{{ bind_config_path }}/named.conf.options"
     backup: yes
     owner: root
     group: bind
     mode: 0660
-  notify: [ restart named, update serial ]
+  notify: [ restart named ]
   tags: [ config_named ]
 
 - name: Copy named conf local file
   template:
     src: named.conf.local.j2
-    dest: /etc/bind/named.conf.local
+    dest: "{{ bind_config_path }}/named.conf.local"
     backup: yes
     owner: root
     group: bind
     mode: 0640
-  notify:
-    - restart named
-    - update serial
+  notify: [ restart named ]
   tags: [ config_named ]
 
 - name: Make zones directory
   file:
-    path: /var/lib/bind/zones
+    path: "{{ bind_zones_path }}"
     state: directory
     owner: root
     group: bind
     mode: 0750
 
-- name: Copy default zone data
-  template:
-    src: default-zone-data.j2
-    dest: /var/lib/bind/zones/default-zone-data
-    owner: root
+- name: Make log directory
+  file:
+    path: /var/log/named
+    state: directory
+    owner: bind
     group: bind
-    mode: 0640
-  tags: [ zone_defaults ]
+    mode: 0744
 
 - name: Copy zone forward file
   template:
     src: db.forward.zone.j2
-    dest: /var/lib/bind/zones/db.{{ item.name }}
+    dest: "{{ bind_zones_path }}/db.{{ item.name }}"
     owner: root
     group: bind
     mode: 0640
   with_items: "{{ bind_zones }}"
-  notify: [restart named, update serial]
-  tags: [ zone_records ]
+  notify: [ restart named ]
+  tags: [ zone_records, test ]
 
 - name: Copy alcafaz.test reverse file
   template:
     src: db.reverse.zone.j2
-    dest: /var/lib/bind/zones/db.{{ item.reverse }}.in-addr.arpa
+    dest: "{{ bind_zones_path }}/db.{{ item.reverse }}.in-addr.arpa"
     owner: root
     group: bind
     mode: 0640
   with_items: "{{ bind_zones }}"
-  notify: [restart named, update serial]
+  notify: [restart named ]
   tags: [ zone_records ]
+
 
 - name: Open firewall port
   ufw:

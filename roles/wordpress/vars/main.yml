@@ -1,0 +1,16 @@
+---
+# vars file for wordpress
+
+
+wp_download_url: https://wordpress.org/{{ wp_version }}.tar.gz
+wp_install_path: /var/www/dd.test
+
+# wp-config.php
+#
+# wp_db_name: wordpress
+# wp_db_user: wp
+# wp_db_password: password
+# wp_db_host: localhost
+# wp_table_prefix: wp_
+# wp_home: http://example.com
+# wp_siteurl: http://example.com

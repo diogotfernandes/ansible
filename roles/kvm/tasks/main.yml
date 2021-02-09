@@ -16,6 +16,7 @@
   # when: kvm_xml.get_xml | regex_search('(item.mac)') is  match
   with_items: "{{ kvm_dhcp_hosts }}"
   ignore_errors: True
+  tags: [ add-ip ]
 # - fail:
 
 ## NÃO É PERSISTENTE!!!

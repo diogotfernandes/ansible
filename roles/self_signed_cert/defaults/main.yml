@@ -1,0 +1,12 @@
+---
+# defaults file for self_signed_cert
+ssl_dirs:
+  - /etc/ssl/crt
+  - /etc/ssl/csr
+  - /etc/ssl/private
+
+ssl_hostname: foo.bar
+ssl_country: PT
+ssl_org_name: foo company
+ssl_email_addr: john@foo.bar
+ssl_common_name: FOO

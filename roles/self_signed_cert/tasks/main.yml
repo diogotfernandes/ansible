@@ -1,0 +1,38 @@
+---
+# tasks file for self_signed_cert
+- name: Install python-pip
+  apt:
+    name: python-pip
+    state: present
+
+- name: Ensure python OpenSSL dependencies are installed
+  pip:
+    name: PyOpenSSL
+    state: present
+
+- name: Create SSL directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items: "{{ ssl_dirs }}"
+
+- name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+  openssl_privatekey:
+    path: /etc/ssl/private/{{ ssl_hostname }}.pem
+    type: RSA
+
+- name: Generate an OpenSSL Certificate Signing Request
+  openssl_csr:
+    path: /etc/ssl/csr/{{ ssl_hostname }}.csr
+    privatekey_path: /etc/ssl/private/{{ ssl_hostname }}.pem
+    country_name: "{{ ssl_country }}"
+    organization_name: "{{ ssl_org_name }}"
+    email_address: "{{ ssl_email_addr }}"
+    common_name: "{{ ssl_common_name }}"
+
+- name: Generate a Self Signed OpenSSL Certificate
+  openssl_certificate:
+    path: /etc/ssl/crt/{{ ssl_hostname }}.crt
+    privatekey_path: /etc/ssl/private/{{ ssl_hostname }}.pem
+    csr_path: /etc/ssl/csr/{{ ssl_hostname }}.csr
+    provider: selfsigned

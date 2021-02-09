@@ -7,13 +7,16 @@
 
 # USER_TASK
 #
+# @var: user_default: Utilizador por omissão presente no servidor, para remover. Default: debian
 user_default: debian
-#password->qwerty
+# @var: user_password: Password do novo utilizador. Default: qwerty
 user_password: $6$mysecretsalt$TeZeV.rEDBMx13VjSrdQkmPn72Wat0qtBh9li9PUFlIjrITbyOVpUy9YVi/gatKQQHRosbDeFQJCmNHR.9OW8.
+# @var: user_public_key_path: Directório da chave pública do novo utilizador. Default: ~/.ssh/id_rsa.pub
 user_public_key_path: ~/.ssh/id_rsa.pub
 
 # UFW_TASK
 #
+# @var: ufw_rules: Regras da firewall a configurar.
 ufw_rules:
   - rule: allow
     port: "{{ ssh_port }}"
@@ -21,13 +24,22 @@ ufw_rules:
 
 # TIMEZONE_TASK
 #
+# @var: timezone_local: Timezone a configurar. Default: Europe/Lisbon
 timezone_local: "Europe/Lisbon"
+# @var: timezone_ntp_default_path:  Directório, por omissão, do ficheiro timesyncd.conf.
+timezone_ntp_default_path: /etc/systemd/timesyncd.conf
+# @var: timezone_ntp_server: Servidores ntp a configurar. Default: 0.pt.pool.ntp.org 2.europe.pool.ntp.org 1.europe.pool.ntp.org
 timezone_ntp_server: "0.pt.pool.ntp.org 2.europe.pool.ntp.org 1.europe.pool.ntp.org"
+# @var: timezone_default_path: Directório, por omissão, do ficheiro timezone.
+timezone_default_path: /etc/timezone
 
 # SSH_TASK
 #
+# @var: ssh_dir_path: Directório, por omissão, do ficheiro sshd_config
 ssh_dir_path: /etc/ssh/sshd_config
+# @var: ssh_port: Porta de ssh a configurar. Default: 2849
 ssh_port: 2849
+# @var: ssh_config: Configuração do ficheiro de ssh.
 ssh_config:
   - regexp: "^PasswordAuthentication"
     line: "PasswordAuthentication no"
@@ -38,19 +50,27 @@ ssh_config:
 
 # HOSTNAME_TASK
 #
+# @var: hostname_name: Nome do hostname a configurar.
 hostname_name: hostname
+# @var: user: Nome do novo utilizar.
 user: johndoe
+# @var: hostname_domain_name: Nome de domínio do servidor.
 hostname_domain_name: example.com
 
 # CHANGE_DHCP_TASK
 #
-supersede_dhcp: True
+# @var: supersede_dhcp: Bool para modificar o ficheiro dhclient.conf
+supersede_dhcp: False
+# @var: dhcp_config_ns1: Servidor primário de dns a inserir no ficheiro dhclient.conf
 dhcp_config_ns1: 192.168.200.5
+## @var: dhcp_config_ns2: Servidor secundário de dns a inserir no ficheiro dhclient.conf
 dhcp_config_ns2: 127.0.0.53
+# @var: dhcp_config_domain_search: Domínio a inserir no ficheir dhclient.conf
 dhcp_config_domain_search: example.com
 
 # PACKAGES_TASK
 #
+# @var: packages_to_install: Software a instalar no servidor.
 packages_to_install:
   - sudo
   - aptitude

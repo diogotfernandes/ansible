@@ -1,0 +1,29 @@
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+[lb01]
+10.0.0.11 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
+
+[lb02]
+10.0.0.12 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
+
+[lbDD:children]
+lb01
+lb02
+
+[web01]
+10.0.0.21 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
+
+[web02]
+10.0.0.22 ansible_ssh_port=2849 ansible_sudo_pass=qwerty ansible_user=admin
+
+[webDD:children]
+web01
+web02
