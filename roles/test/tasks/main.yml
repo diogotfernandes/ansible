@@ -1,7 +1,0 @@
----
-
-- name: 1st task
-  debug: msg="1st task!"
-
-- name: 2nd task
-  debug: msg="hello world!"
