@@ -1,0 +1,3 @@
+{% for email in postfix_virtual_recipients %}
+{{ email.name }}@{{ email.domain }} OK
+{% endfor %}

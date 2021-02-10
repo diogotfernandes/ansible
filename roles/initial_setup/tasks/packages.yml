@@ -5,9 +5,11 @@
     update_cache: true
     cache_valid_time: 3600
     state: present
+  tags: packages, setup
 
 - name: Update all packages
   apt:
     update_cache: yes
     upgrade: yes
     autoremove: yes
+  tags: packages, setup

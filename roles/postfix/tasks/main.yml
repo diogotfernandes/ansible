@@ -2,8 +2,9 @@
 # tasks file for postfix
 
 - name: Verificar OS
-  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
+  tags: always
 
 - name: Set postfix option hostname
   debconf:
@@ -11,6 +12,7 @@
     question: postfix/mailname
     value: "{{ postfix_mailname }}"
     vtype: string
+  tags: postfix, config
 
 - name: Set postfix option type as internet site
   debconf:
@@ -18,6 +20,7 @@
     question: postfix/main_mailer_type
     value: "{{ postfix_main_mailer_type }}"
     vtype: string
+  tags: postfix, config
 
 - name: Set postfix option mynetworks
   debconf:
@@ -25,6 +28,7 @@
     question: postfix/mynetworks
     value: "{{ postfix_mynetworks }}"
     vtype: string
+  tags: postfix, config
 
 - name: Set postfix delimiter option
   debconf:
@@ -32,6 +36,7 @@
     question: postfix/recipient_delim
     value: "{{ postfix_recipient_delim }}"
     vtype: string
+  tags: postfix, config
 
 - name: Set postfix root root address
   debconf:
@@ -39,43 +44,40 @@
     question: postfix/root_address
     value: "{{ postfix_root_address }}"
     vtype: string
+  tags: postfix, config
 
 - name: Instalar postfix
-  apt:
-    name: "{{ postfix_packages }}"
-    update_cache: true
-    state: present
-  notify:
-    - restart postfix
+  apt: name="{{ postfix_packages }}" state=present
+  notify: restart postfix
+  tags: postfix, setup
 
 - name: Instalar Postfix Policy SPF
-  apt:
-    name: "{{ postfix_spf_package }}"
-    update_cache: true
-    state: present
+  apt: name="{{ postfix_spf_package }}" state=present
   when: postfix_use_spf
-  notify:
-    - restart postfix
+  notify: restart postfix
+  tags: postfix, setup
 
 - name: Create virtual recipient domains file
   template:
-    src: files/virtual_recipient_domains.j2
+    src: virtual_recipient_domains.j2
     dest: /etc/postfix/virtual_recipient_domains
     backup: true
     owner: root
     group: root
     mode: 0644
   notify: restart postfix
+  tags: postfix, config
 
 - name: Create virtual recipients file
   template:
-    src: files/virtual_recipients.j2
+    src: virtual_recipients.j2
     dest: /etc/postfix/virtual_recipients
     backup: true
     owner: root
     group: root
     mode: 0644
   notify: restart postfix
+  tags: postfix, config
 
 - name: Create postfix main.cf file
   template:
@@ -86,6 +88,7 @@
     group: root
     mode: 0644
   notify: restart postfix
+  tags: postfix, config
 
 - name: Create postfix master.cf file
   template:
@@ -96,15 +99,18 @@
     group: root
     mode: 0644
   notify: restart postfix
+  tags: postfix, config
 
 - name: Postmap virtual recipients, virtual_recipient_domains
-  shell: "{{ item }}"
+  command: "{{ item }}"
   with_items:
     - postmap /etc/postfix/virtual_recipient_domains
     - postmap /etc/postfix/virtual_recipients
   notify: restart postfix
+  changed_when: False
+  tags: postfix, config
 
-- name: Create smtpd.conf
+- name: Create smtpd.conf file
   template:
     src: smtpd.conf.j2
     dest: /etc/postfix/sasl/smtpd.conf
@@ -113,6 +119,7 @@
     group: root
     mode: 0644
   notify: restart postfix
+  tags: postfix, config
 
 - name: Open firewall port 25
   ufw:
@@ -120,3 +127,4 @@
     port: '25'
     proto: tcp
   notify: restart ufw
+  tags: postfix, config

@@ -1,4 +1,4 @@
-- hosts: new
+- hosts: rpi
   become: true
 
   roles:
@@ -13,7 +13,6 @@
       private: yes
       encrypt: sha512_crypt
       salt_size: 7
-
 
   vars:
     supersede_dhcp: False

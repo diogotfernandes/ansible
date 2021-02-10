@@ -1,0 +1,29 @@
+#
+# {{ ansible_managed }} at {{ ansible_date_time.date }}
+#
+## standard standalone server implementation
+# https://www.cyrusimap.org/imap/reference/manpages/configs/cyrus.conf.html
+
+START {
+  ## do not delete this entry!
+  recover       cmd="ctl_cyrusdb -r"
+}
+
+## UNIX sockets start with a slash and are put into /run/cyrus/socket
+SERVICES {
+{% for service in cyrus_imap_cyrus_conf.services %}
+  {{ service.name }}      {{ 'cmd="' ~ service.cmd ~ '"' }} {{ 'listen="' ~ service.listen ~ '"' }} {{ 'proto="' ~ service.proto ~ '"' if service.proto is defined }} {{ 'prefork="' ~ service.prefork ~ '"' }}
+{% endfor %}
+}
+
+EVENTS {
+{% for event in cyrus_imap_cyrus_conf.events %}
+  {{ event.name }}      {{ 'cmd="' ~ event.cmd ~ '"' }} {{ 'period="' ~ event.period ~ '"' if event.period is defined }} {{ 'at="' ~ event.at ~ '"' if event.at is defined }}
+{% endfor %}
+}
+
+DAEMON {
+{% for daemon in cyrus_imap_cyrus_conf.daemon %}
+  {{ daemon.name }}      {{ 'cmd="' ~ daemon.cmd ~ '"' }}
+{% endfor %}
+}

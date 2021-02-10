@@ -1,5 +1,9 @@
+#
+# {{ ansible_managed }} at {{ ansible_date_time.date }}
+#
 # Suggested minimal imapd.conf
 # See imapd.conf(5) for more information and more options
+# https://www.cyrusimap.org/imap/reference/manpages/configs/imapd.conf.html
 
 # Space-separated users who have admin rights for all services.
 # NB: THIS MUST BE CONFIGURED
@@ -36,9 +40,9 @@ sievedir: /var/spool/sieve
 ## Important: KEEP THESE IN SYNC WITH cyrus.conf
 ###################################################################
 
-lmtpsocket: /run/cyrus/socket/lmtp
-idlesocket: /run/cyrus/socket/idle
-notifysocket: /run/cyrus/socket/notify
+lmtpsocket: {{ cyrus_imap_lmtpsocket }}
+idlesocket: {{ cyrus_imap_idlesocket }}
+notifysocket: {{ cyrus_imap_notifysocket }}
 
 # Syslog prefix. Defaults to cyrus (so logging is done as cyrus/imap
 # etc.)
@@ -95,37 +99,40 @@ sasl_pwcheck_method: saslauthd
 # secrets when given a plaintext password. Refer to SASL documentation
 sasl_auto_transition: no
 
+{% if cyrus_imap_tls.use %}
 ###################################################################
 ## SSL/TLS Options
 ###################################################################
 
 # File containing the global certificate used for ALL services (imap,
 # pop3, lmtp, sieve)
-#tls_server_cert: /etc/ssl/certs/ssl-cert-snakeoil.pem
+tls_server_cert: {{ cyrus_imap_tls.tls_server_cert }}
 
 # File containing the private key belonging to the global server
 # certificate.
-#tls_server_key: /etc/ssl/private/ssl-cert-snakeoil.key
+tls_server_key: {{ cyrus_imap_tls.server_key }}
 
 
 # File containing one or more Certificate Authority (CA) certificates.
-#tls_client_ca_file: /etc/ssl/certs/cyrus-imapd-ca.pem
+tls_client_ca_file: {{ cyrus_imap_tls.client_ca_file }}
 
 # Path to directory with certificates of CAs.
-tls_client_ca_dir: /etc/ssl/certs
+tls_client_ca_dir: {{ cyrus_imap_tls.tls_client_ca_dir }}
 
 # The length of time (in minutes) that a TLS session will be cached for
 # later reuse.  The maximum value is 1440 (24 hours), the default.  A
 # value of 0 will disable session caching.
-tls_session_timeout: 1440
+tls_session_timeout: {{ cyrus_imap_tls.tls_session_timeout }}
+{% endif %}
 
+{% if cyrus_imap_autocreate_mailboxes.create %}
 ###################################################################
 ## Auto create mailboxes
 ###################################################################
-
-autocreate_quota: 20480
-unixhierarchysep: yes
-quotawarn: 90
-autocreate_inbox_folders: Drafts|Sent|Trash
-autocreate_subscribe_folders: Drafts|Sent|Trash
-lmtp_over_quota_perm_failure: 1
+autocreate_quota: {{ cyrus_imap_autocreate_mailboxes.autocreate_quota }}
+unixhierarchysep: {{ cyrus_imap_autocreate_mailboxes.unixhierarchysep }}
+quotawarn: {{ cyrus_imap_autocreate_mailboxes.quotawarn }}
+autocreate_inbox_folders: {{ cyrus_imap_autocreate_mailboxes.autocreate_subscribe_folders }}
+autocreate_subscribe_folders: {{ cyrus_imap_autocreate_mailboxes.autocreate_subscribe_folders }}
+lmtp_over_quota_perm_failure: {{ cyrus_imap_autocreate_mailboxes.lmtp_over_quota_perm_failure }}
+{% endif %}

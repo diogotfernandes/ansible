@@ -2,6 +2,7 @@
 - name: Check current timezone
   command: cat /etc/timezone
   register: current_timezone
+  changed_when: False
   tags: timezone, config
 
 - name: Update timezone file - '/etc/timezone'
@@ -12,15 +13,17 @@
     group: root
     mode: 0644
     backup: yes
-  when: current_timezone.rc != timezone
-  notify: update timezone
+  when: current_timezone.rc != timezone_local
+  notify: reconfigure timezone
   tags: timezone, config
 
 - name: Check ntp servers
   command: grep -c "^NTP=" /etc/systemd/timesyncd.conf # 1 if true, 0 if false
   register: current_ntp
-  #ignore_errors: true
-  failed_when: current_ntp.rc != 1 and current_ntp.rc != 0
+  ignore_errors: true
+  failed_when:
+    - current_ntp.rc != 1
+    - current_ntp.rc != 0
   changed_when: False
   tags: timezone, config
 

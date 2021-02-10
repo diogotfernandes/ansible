@@ -2,25 +2,27 @@
 # tasks file for apache2
 
 - name: Verificar OS
-  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
 
-- name: Instalar apache2
+- name: Install apache2
   apt: name="{{ apache2_packages }}" state=present
   notify: restart apache2
+  tags: apache2, setup
 
-- name: Create vhosts
+- name: Create config file to virtual host
   template:
     src: vhost.conf.j2
-    dest: /etc/apache2/sites-available/{{ item.name }}.conf
+    dest: {{ apache2_site_available_path }}/{{ item.name }}.conf
     backup: yes
     owner: root
     group: root
     mode: 0644
   with_items: "{{ apache2_vhost }}"
   when: apache2_create_vhost
+  tags: apache2, config
 
-- name: Create dir to vhost
+- name: Create directory to virtual host
   file:
     path: "{{ apache2_document_root }}/{{ item.name }}"
     state: directory
@@ -29,19 +31,24 @@
     mode: 0755
   with_items: "{{ apache2_vhost }}"
   when: apache2_create_vhost
+  tags: apache2, config
 
-# Criar loop para ativar os vhost's criados acima
-- name: Activate vhost
+- name: Activate virtual host
   command: a2ensite {{ item.name }}
   notify: restart apache2
   with_items: "{{ apache2_vhost }}"
   when: apache2_create_vhost
+  tags: apache2, config
 
 - name: Check apache2 config
-  shell: apache2ctl configtest
+  command: apache2ctl configtest
   register: apache2_test_config
+  changed_when: False
+  tags: apache2, config
 
-- debug: msg="{{ apache2_test_config }}"
+- name: Debug apache2 config test
+  debug: msg="{{ apache2_test_config }}"
+  tags: apache2, debug
 
 - name: Remove default vhost
   file:
@@ -49,9 +56,11 @@
     state: absent
   notify: restart apache2
   when: apache2_remove_default_vhost
+  tags: apache2, config
 
-- name: Add entry to UFW
+- name: Open port on firewall for http
   ufw:
     rule: 'allow'
     port: "{{ apache2_default_port }}"
     proto: tcp
+  tags: apache2, config

@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  become: true
+  roles:
+   - mkdocs
+
+  vars:
+    mkdocs_build_config: /home/diogo/Documents/Ansible-Roles-Docs/mkdocs.yml
+    mkdocs_build_output_dir: /tmp/site
+    mkdocs_remote_site_path: /var/www/ansible.unts.xyz

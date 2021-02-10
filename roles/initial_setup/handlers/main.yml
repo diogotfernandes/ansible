@@ -5,7 +5,7 @@
     name: ssh
     state: restarted
 
-- name: update timezone
+- name: reconfigure timezone
   command: dpkg-reconfigure --frontend noninteractive tzdata
 
 - name: enable network time sync

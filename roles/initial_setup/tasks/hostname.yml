@@ -2,16 +2,19 @@
 - name: set hostname
   hostname:
     name: "{{ hostname_name }}"
+  tags: hostname, config
 
 - name: Add correct IP address to hosts file
   lineinfile:
-    dest: /etc/hosts
+    dest: "{{ hostname_hosts_default_path }}"
     insertafter: '^127\.0\.0\.1\slocalhost'
     line: "{{ ansible_default_ipv4.address }}\t{{ hostname_name }}.{{ hostname_domain_name }} {{ hostname_name }}"
     state: present
+  tags: hostname, config
 
-- name: Remove old line from hosts file
+- name: Remove old localhost line from hosts file
   lineinfile:
     dest: /etc/hosts
     regexp: '^127\.0\.1\.1'
     state: absent
+  tags: hostname, config

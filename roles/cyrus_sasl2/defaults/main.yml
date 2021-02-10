@@ -1,0 +1,33 @@
+---
+# defaults file for cyrus-sasl2
+# https://packages.debian.org/source/stretch/cyrus-sasl2
+# @var: sasl2_packages: Software para instalacao
+sasl2_packages:
+  #Cyrus SASL - módulos de autenticação acopláveis
+  - libsasl2-modules
+  #Cyrus SASL - programas de administração para a base de dados de utilizadores SASL
+  - sasl2-bin
+  #Cyrus SASL - authentication abstraction library
+  - libsasl2-2
+
+#Deve conincidir com o campo 'admins: username' no ficheiro imapd.conf [admins: cyrus]
+# @var: sasl_default_imap_admin: Utilizador a ser criado com privilégio no cyrus-imap. Deve conincidir com o ficheiro imapd.conf
+sasl_default_imap_admin:
+  name: cyrus
+  password: qwerty
+
+# @var: default_sasl_group: Grupo, por omissão do sasl
+default_sasl_group: sasl
+# @var: sasl2_create_users: Bool para verificar se é para criar utilizares
+sasl2_create_users: False
+# @var: sasl_users: Utilizadores a criar, para autenticação através do sasl2
+sasl_users:
+  - name: diogo
+    password: qwerty
+    domain: example.com
+  - name: hostmaster
+    password: azerty
+    domain: example.com
+  - name: john
+    password: johndoe
+    domain: example.com

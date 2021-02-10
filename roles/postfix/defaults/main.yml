@@ -1,40 +1,65 @@
 ---
 # defaults file for postfix
-domain_name: example.com
-virtual_recipients:
+# @var: postfix_virtual_domain_name: Postfix is final destination for the specified list of domains
+postfix_virtual_domain_name: example.com
+# @var: postfix_virtual_recipients: Lookup table with all valid recipient addresses
+postfix_virtual_recipients:
   - name: johndoe
+    domain: "{{ postfix_virtual_domain_name }}"
   - name: janedoe
+    domain: "{{ postfix_virtual_domain_name }}"
 
+# @var: postfix_packages: Software relativo ao postfix a ser instalado
 postfix_packages:
   - postfix
   - postfix-doc
 
-postfix_mailname: "{{ domain_name }}"
+# @var: postfix_mailname: Used by the Mail Transfer Agent (i.e. mail server) to know its own hostname
+postfix_mailname: "{{ postfix_virtual_domain_name }}"
+# @var: postfix_main_mailer_type:
 postfix_main_mailer_type: Internet Site
+# @var: postfix_mynetworks: The list of "trusted" remote SMTP clients that have more privileges than "strangers".
 postfix_mynetworks: 127.0.0.0/8
+# @var: postfix_recipient_delim: The set of characters that can separate an email address localpart, user name, or a .forward file name from its extension.
 postfix_recipient_delim: +
-postfix_root_address: root@{{ domain_name }}
-postfix_mydomain: "{{ domain_name }}"
-postfix_myhostname: mail.{{ domain_name }}
+# @var: postfix_root_address:
+postfix_root_address: root@{{ postfix_virtual_domain_name }}
+# @var: postfix_mydomain : The mydomain parameter specifies the local internet domain name
+postfix_mydomain: "{{ postfix_virtual_domain_name }}"
+# @var: postfix_myhostname: The myhostname parameter specifies the internet hostname of this mail system
+postfix_myhostname: mail.{{ postfix_virtual_domain_name }}
 
+# @var: postfix_spf_package:
 postfix_spf_package: postfix-policyd-spf-python
+# @var: postfix_use_spf: Bool para verificar se é para utilizar spf
+postfix_use_spf: True
 
-postfix_use_spf: true
-postfix_use_mailman3: false
-postfix_use_sasl: true
+# @var: postfix_use_mailman3: Bool para verificar se é utilizado o mailman3 com o postfix
+postfix_use_mailman3: False
+# @var: postfix_use_sasl:Bool para verificar se é utilizado o método de autenticaçao sasl2
+postfix_use_sasl: True
 
+# @var: postfix_inet_interfaces: The network interface addresses that this mail system receives mail on
 postfix_inet_interfaces: all
+# @var: postfix_inet_protocols: The Internet protocols Postfix will attempt to use when making or accepting connections
 postfix_inet_protocols: ipv4
+# @var: postfix_mydestination: The list of domains that are delivered via the $local_transport mail delivery transport
 postfix_mydestination: localhost
+# @var: postfix_smtpd_helo_required: Require that a remote SMTP client introduces itself with the HELO or EHLO command
 postfix_smtpd_helo_required: 'yes'
+# @var: postfix_recipient_delimiter: The set of characters that can separate an email address localpart, user name, or a .forward file name from its extension
 postfix_recipient_delimiter: +
 
 # TRANSPORT MAPS
+# @var: postfix_virtual_mailbox_domains: Postfix is final destination for the specified list of domains
 postfix_virtual_mailbox_domains: hash:/etc/postfix/virtual_recipient_domains
+# @var: postfix_virtual_mailbox_maps: Lookup tables with all valid addresses in the domains
 postfix_virtual_mailbox_maps: hash:/etc/postfix/virtual_recipients
-#deve corresponder ao
+#deve corresponder ao (?)
+# @var: postfix_virtual_transport: The default mail delivery transport and next-hop destination for final delivery to domains listed with $virtual_mailbox_domains
 postfix_virtual_transport: lmtp:unix:/var/run/cyrus/socket/lmtp
 
+# @var: postfix_smtpd_recipient_restrictions: Restrictions that the Postfix SMTP server applies in the context of a client RCPT TO command
 postfix_smtpd_recipient_restrictions:
   - permit_mynetworks
   - permit_sasl_authenticated

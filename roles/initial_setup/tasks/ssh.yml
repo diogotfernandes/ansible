@@ -7,6 +7,7 @@
     update_cache: true
     cache_valid_time: 3600
   notify: restart ssh
+  tags: ssh, setup
 
 - name: Update SSH configuration to be more secure
   lineinfile:
@@ -18,6 +19,7 @@
     "{{ ssh_config }}"
   notify: restart ssh
   when: ansible_distribution == 'Debian'
+  tags: ssh, config
 
 
 ### TODO:

@@ -3,6 +3,7 @@
   group:
     name: sudo
     state: present
+  tags: user, config
 
 - name: Ensure sudo group has sudo privileges
   lineinfile:
@@ -11,6 +12,7 @@
     regexp: "^%sudo"
     line: "%sudo ALL=(ALL:ALL) ALL"
     validate: "/usr/sbin/visudo -cf %s"
+  tags: user, config
 
 - name: Add new super user
   user:
@@ -21,12 +23,14 @@
     state: present
     shell: /bin/bash
     update_password: always
+  tags: user, config
 
 - name: Add SSH key for new super user
   authorized_key:
     user: "{{ user }}"
     key: "{{  lookup('file',item) }}"
   with_items: "{{ user_public_key_path }}"
+  tags: user, config
 
 #- name: Disable user password
 #  shell: passwd -d "{{ user }}"
@@ -39,3 +43,4 @@
     name: "{{ user_default }}"
     state: absent
     remove: yes
+  tags: user, config

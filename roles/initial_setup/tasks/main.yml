@@ -1,34 +1,34 @@
 ---
 # tasks file for initial_setup
-
-
-- name: debug
-  debug:
-    msg:
-      - "{{ user_password }}"
-      - "{{ user }}"
-
-- name: Exterminate mankind
-  pause:
-    prompt: Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort
-
-# - fail: msg="falhou pq eu quis! :=)))"
-
 - name: Verificar OS
   fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
 
-- include_tasks: packages.yml
+- name: Include Tasks 'package.yml'
+  include_tasks: packages.yml
+  tags: package
 
-- include_tasks: hostname.yml
+- name: Include Tasks 'hostname.yml'
+  include_tasks: hostname.yml
+  tags: hostname
 
-- include_tasks: ssh.yml
+- name: Include Tasks 'ssh.yml'
+  include_tasks: ssh.yml
+  tags: ssh
 
-# - include_tasks: timezone.yml
+- name: Include Tasks 'timezone.yml'
+  include_tasks: timezone.yml
+  tags: timezone
 
-- include_tasks: ufw.yml
+- name: Include Tasks 'ufw.yml'
+  include_tasks: ufw.yml
+  tags: ufw
 
-- include_tasks: user.yml
+- name: Include Tasks 'user.yml'
+  include_tasks: user.yml
+  tags: user
 
-- include_tasks: dhcp_config.yml
+- name: Include Tasks 'dhcp_config.yml'
+  include_tasks: dhcp_config.yml
   when: supersede_dhcp
+  tags: dhcp_config

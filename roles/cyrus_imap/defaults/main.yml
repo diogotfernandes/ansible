@@ -1,0 +1,84 @@
+---
+# defaults file for cyrus-imap
+# @var: cyrus_imap_packages: Software para instalacao
+cyrus_imap_packages:
+  - cyrus-admin
+  - cyrus-clients
+  - cyrus-common
+  - cyrus-imapd
+
+# @var: cyrus_imap_default_group: Grupo utilizado pelo Servidor Cyrus
+cyrus_imap_default_group: mail
+
+# @var: cyrus_imap_default_user: Utilizador utilizado pelo Servidor Cyrus
+cyrus_imap_default_user: cyrus
+
+# @var: cyrus_imap_default_sasl_group: Grupo sasl utilizado para autenticacao atraves do sasl (?)
+cyrus_imap_default_sasl_group: sasl
+
+## Important: KEEP THESE IN SYNC WITH cyrus.conf
+# @var: cyrus_imap_lmtpsocket: Socket utilizado para o lmtp(local mail transport protocol) (?)
+cyrus_imap_lmtpsocket: /run/cyrus/socket/lmtp
+# @var: cyrus_imap_idlesocket: Socket utilizado para idle (?)
+cyrus_imap_idlesocket: /run/cyrus/socket/idle
+# @var: cyrus_imap_notifysocket: Socket utilizado para notificacoes (?)
+cyrus_imap_notifysocket: /run/cyrus/socket/notify
+
+# @var: cyrus_imap_tls: Certificados ssl
+cyrus_imap_tls:
+  use: False
+  tls_server_cert: /etc/ssl/certs/ssl-cert-snakeoil.pem
+  server_key: /etc/ssl/private/ssl-cert-snakeoil.key
+  client_ca_file: /etc/ssl/certs/cyrus-imapd-ca.pem
+  tls_client_ca_dir: /etc/ssl/certs
+  tls_session_timeout: 1440
+
+# @var: cyrus_imap_autocreate_mailboxes: Configiracao para criacao automatica de caixas de correio
+cyrus_imap_autocreate_mailboxes:
+  create: True
+  autocreate_quota: 20480
+  unixhierarchysep: 'yes'
+  quotawarn: '90'
+  autocreate_inbox_folders: Drafts|Sent|Trash
+  autocreate_subscribe_folders: Drafts|Sent|Trash
+  lmtp_over_quota_perm_failure: 1
+
+# @var: cyrus_imap_cyrus_conf: Configuracao do ficheiro cyrus.conf
+cyrus_imap_cyrus_conf:
+  services:
+    - name: imap
+      cmd: imapd
+      listen: imap
+      prefork: 0
+    - name: sieve
+      cmd: timsieved
+      listen: sieve
+      prefork: 0
+    - name: lmtpunix
+      cmd: lmtpd
+      listen: /run/cyrus/socket/lmtp
+      prefork: 0
+    - name: notify
+      cmd: notifyd
+      listen: /run/cyrus/socket/notify
+      proto: udp
+      prefork: 0
+  events:
+      - name: checkpoint
+        cmd: ctl_cyrusdb -c
+        period: 30
+      - name: delprune
+        cmd: cyr_expire -E 3
+        at: 0400
+      - name: deleteprune
+        cmd: cyr_expire -E 4 -D 28
+        at: 0430
+      - name: expungeprune
+        cmd: cyr_expire -E 4 -X 28
+        at: 0445
+      - name: tlsprune
+        cmd: tls_prune
+        at: 0400
+  daemon:
+      - name: idled
+        cmd: idled
