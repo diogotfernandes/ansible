@@ -1,2 +1,13 @@
 ---
 # handlers file for mailman3
+
+- name: restart mailman3
+  service: name=mailman3 state=restarted
+  listen: "restart mailman-full"
+
+- name: restart mailman3-web
+  service: name=mailman3 state=restarted
+  listen: "restart mailman-full"
+
+- name: restart postfix
+  service: name=postfix state=restarted

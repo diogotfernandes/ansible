@@ -1,2 +1,18 @@
 ---
 # defaults file for mailman3
+# @var: :
+mailman3_config_path: /etc/mailman3
+
+#
+# DBCONFIG-COMMON
+# @var: dbconfig_common: Dicionario com as questoes e respostas para o dbconfig_common
+dbconfig_common:
+  - question: dbconfig-common/remember-admin-pass
+    value: True
+    vtype: boolean
+  - question: dbconfig-common/remote-questions-default
+    value: False
+    vtype: boolean
+
+# @var: mailman3_create_domain_and_list: Bool para verificar se é para adicionar um novo dominio e lista
+mailman3_create_domain_and_list: False

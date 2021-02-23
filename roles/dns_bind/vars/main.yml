@@ -2,7 +2,26 @@
 # vars file for Bind setup
 #
 
-bind_acl_trusted_networks:
-  - 192.168.100.0/24
-  - 192.168.1.0/24
-  - 10.0.0.0/24
+# # @var: bind_acl_trusted_networks: Trusted networks do bind
+# bind_acl_trusted_networks:
+#   - 192.168.100.0/24
+#   - 192.168.1.0/24
+#   - 10.0.0.0/24
+#
+# # @var: bind_zones: Dicionario com a configuracao da(s) zona(s) a configurar
+# bind_zones:
+#   - name: example.com
+#     reverse: 100.168.192
+#     type: primary
+#     serial: 2020012600
+#     admin_email: hostmaster #admin zone email
+#     primary: 192.168.100.5  #primary nameserver
+#     mail_servers: #mx records
+#       - name: mail
+#         preference: 10
+#     nameservers:
+#       - ns1.example.com.
+#     records:
+#       - { name: ns1,    forward: 192.168.100.5,   type: A, rev: 5  }
+#       - { name: mail,   forward: 192.168.100.10,  type: A, rev: 10 }
+#       - { name: '@',    forward: 192.168.100.1,   type: A, rev: 1 }

@@ -1,0 +1,33 @@
+---
+# - block:
+- name: restart mailman3 service
+  service: name="mailman3" state="restarted"
+  tags: mailman3, config
+
+- name: restart mailman3-web service
+  service: name="mailman3-web" state="restarted"
+  tags: mailman3, config
+
+- name: Copy script to remote
+  become: no
+  copy:
+    src: files/mailman_config.py
+    dest: ~/mailman_config.py
+  tags: mailman3, config
+  when: mailman3_create_domain_and_list
+
+- name: Run script
+  become: no
+  command: python3 ~/mailman_config.py
+  tags: mailman3, config
+  when: mailman3_create_domain_and_list
+
+  # when: mailman3_create_domain_and_list
+
+- name: Uncomment mailman lines on postfix/main.cf
+  replace:
+    path: /etc/postfix/main.cf
+    regexp: '^#(.*mailman3/data.*)'
+    replace: '\1'
+  tags: mailman3, config
+  notify: restart postfix

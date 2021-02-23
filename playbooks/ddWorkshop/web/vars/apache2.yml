@@ -1,0 +1,7 @@
+---
+apache2_create_vhost: True
+apache2_vhost:
+  - name: web02.dd.test
+    server_name: www.web02.dd.test
+    conf_name: web02.dd.test.conf
+    port: 80

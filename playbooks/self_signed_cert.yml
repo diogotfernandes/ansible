@@ -6,6 +6,6 @@
   vars:
     ssl_hostname: dd.test
     ssl_country: PT
-    ssl_org_name: Disponibilidade e Desempenho
-    ssl_email_addr: hostmaster@dd.test
-    ssl_common_name: DD
+    ssl_org_name: 'Disponoibilidade & Desempenho'
+    ssl_email_addr: dd@dd.test
+    ssl_common_name: dd.test

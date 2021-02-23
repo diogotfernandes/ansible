@@ -1,0 +1,19 @@
+[lb]
+lb01 ansible_host=10.0.0.11
+lb02 ansible_host=10.0.0.12
+
+[web]
+web01 ansible_host=10.0.0.21
+web02 ansible_host=10.0.0.22
+
+[web:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[dd:children]
+lb
+web
+
+[dd:vars]
+ansible_ssh_port=2849
+ansible_sudo_pass=qwerty
+ansible_user=admin

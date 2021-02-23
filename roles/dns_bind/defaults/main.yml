@@ -1,11 +1,15 @@
 ---
 # vars file for Bind setup
+
+# @var: bind_packages: Software a instalar
 bind_packages:
   - bind9
   - bind9utils
   - bind9-doc
-bind_serial: 2021010100
+
+# @var: bind_default_forward_dns: DNS Forwarder por omissão
 bind_default_forward_dns: opendns
+# @var: bind_forwarders: Lista com DNS Forwarders e respectivos IP's
 bind_forwarders:
   opendns:
     primary: 208.67.222.222
@@ -16,12 +20,22 @@ bind_forwarders:
   cloudflare:
     primary: 1.1.1.1
     secondary: 1.0.0.1
-
+# @var: bind_zones_path: Directorio das zonas
 bind_zones_path: /var/lib/bind/zones
+# @var: bind_config_path: Directorio de configuracao do bind
 bind_config_path: /etc/bind
+# @var: bind_log_path: Directorio do log do bind
 bind_log_path: /var/log/named
+
+# @var: bind_serial: Serial da zona
+bind_serial: 2021010100
+# @var: bind_refresh: Refresh da zona
 bind_refresh: 604800
+# @var: bind_retry: Retry da zona
 bind_retry: 86400
+# @var: bind_expire: Expire da zona
 bind_expire: 2419200
+# @var: bind_negative_cache_ttl: Negative cache ttl da zona
 bind_negative_cache_ttl: 604800
+# @var: bind_ttl: ttl da zona
 bind_ttl: 604800

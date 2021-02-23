@@ -4,6 +4,7 @@
 - name: Verificar OS
   fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
+  tags: always
 
 - name: Install apache2
   apt: name="{{ apache2_packages }}" state=present
@@ -13,7 +14,7 @@
 - name: Create config file to virtual host
   template:
     src: vhost.conf.j2
-    dest: {{ apache2_site_available_path }}/{{ item.name }}.conf
+    dest: "{{ apache2_site_available_path }}/{{ item.name }}.conf"
     backup: yes
     owner: root
     group: root

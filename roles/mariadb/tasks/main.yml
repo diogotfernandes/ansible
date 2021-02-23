@@ -4,39 +4,40 @@
 - name: Verificar OS
   fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
+  tags: always
 
 - name: install mariadb
   apt: name="{{ mariadb_packages }}" state=present
-  tags: [ mariadb, install ]
+  tags: mariadb, setup
 
 - name: Make sure python3-pip is present
   apt: name=python3-pip state=present
-  tags: [ mariadb, install ]
+  tags: mariadb, setup
 
 - name: Make sure pymysql is present
   pip: name=pymysql state=present
-  tags: [ mariadb, install ]
+  tags: mariadb, setup
 
-- name: Copy 50-server.cnf file
-  template:
-    src: 50-server.cnf.j2
-    dest: "{{ mariadb_config_path }}/50-server.cnf"
-    backup: yes
-    owner: root
-    group: root
-    mode: 0644
-  notify: [ restart mariadb ]
-  tags: [ mariadb, config ]
+# - name: Copy my.cnf file
+#   template:
+#     src: my.cnf.j2
+#     dest: "{{ mariadb_config_path }}/my.cnf"
+#     backup: yes
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify: restart mariadb
+#   tags: mariadb, config
 
 # DATABASES
 #
-- name: Create databases
-  mysql_db:
-    db: wordpress
-    state: present
-    login_user: "{{ mariadb_user }}"
-    login_unix_socket: "{{ mariadb_unix_socket }}"
-  tags: [ mariadb, databases ]
+# - name: Create databases
+#   mysql_db:
+#     db: wordpress
+#     state: present
+#     login_user: "{{ mariadb_user }}"
+#     login_unix_socket: "{{ mariadb_unix_socket }}"
+#   tags: mariadb, config
 
 - name: Remove test database
   mysql_db:
@@ -44,7 +45,7 @@
     state: absent
     login_user: "{{ mariadb_user }}"
     login_unix_socket: "{{ mariadb_unix_socket }}"
-  tags: [ mariadb, databases ]
+  tags: mariadb, config
 
 # USERS
 #
@@ -56,17 +57,17 @@
     login_user: "{{ mariadb_user }}"
     login_unix_socket: "{{ mariadb_unix_socket }}"
   no_log: True
-  tags: [ mariadb, users ]
+  tags: mariadb, config
 
-- name: del  user
-  mysql_user:
-    name: "{{ item.name }}"
-    state: absent
-    login_user: "{{ mariadb_user }}"
-    login_unix_socket: "{{ mariadb_unix_socket }}"
-  with_items: "{{ mariadb_users }}"
-  # no_log: True
-  tags: [ mariadb, users ]
+# - name: del  user
+#   mysql_user:
+#     name: "{{ item.name }}"
+#     state: absent
+#     login_user: "{{ mariadb_user }}"
+#     login_unix_socket: "{{ mariadb_unix_socket }}"
+#   with_items: "{{ mariadb_users }}"
+#   # no_log: True
+#   tags: mariadb, config
 
 - name: Create new user
   mysql_user:
@@ -79,11 +80,11 @@
     login_unix_socket: "{{ mariadb_unix_socket }}"
   with_items: "{{ mariadb_users }}"
   # no_log: True
-  tags: [ mariadb, users ]
+  tags: mariadb, config
 
 # DEBUG
 #
 - debug:
     msg: "{{ item }}"
   with_items: "{{ mariadb_users }}"
-  tags: [ debug ]
+  tags: debug

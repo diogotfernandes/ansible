@@ -1,5 +1,0 @@
----
-- hosts: mail
-  become: true
-  roles:
-   - change_dhcp_nameservers

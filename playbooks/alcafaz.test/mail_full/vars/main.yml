@@ -1,0 +1,15 @@
+---
+# - name: Include postfix vars
+#   include_vars: postfix.yml
+#
+# - name: Include cryus_imap vars
+#   include_vars: cyrus_imap.yml
+#
+# - name: Include cyrus_sasl2 vars
+#   include_vars: cyrus_sasl2.yml
+#
+# - name: Include mailman3 vars
+#   include_vars: mailman3.yml
+#
+# - name: Include apache2 vars
+#   include_vars: apache2.yml

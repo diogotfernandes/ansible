@@ -9,6 +9,12 @@ postfix_virtual_recipients:
   - name: janedoe
     domain: "{{ postfix_virtual_domain_name }}"
 
+# @var: postfix_use_ssl: Bool para verificar se e para utilizar ssl
+postfix_use_ssl: False
+postfix_smtpd_tls_key_file: /etc/ssl/csr/mail.alcafaz.test.csr
+postfix_smtpd_tls_cert_file: /etc/ssl/crt/mail.alcafaz.test.crt
+postfix_smtpd_tls_CAfile: /etc/ssl/private/mail.alcafaz.test.pem
+
 # @var: postfix_packages: Software relativo ao postfix a ser instalado
 postfix_packages:
   - postfix

@@ -1,2 +1,5 @@
 ---
 # vars file for postgresql
+
+postgresql_admin_user: postgres
+postgresql_admin_password: qwerty

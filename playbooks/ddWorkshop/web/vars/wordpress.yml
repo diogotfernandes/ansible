@@ -1,0 +1,9 @@
+---
+wp_db_name: wordpress
+wp_db_user: wp
+wp_db_password: qwerty
+wp_db_host: localhost
+wp_table_prefix: wp_
+wp_home: http://web02.dd.test
+wp_siteurl: http://web02.dd.test
+wp_install_path: /var/www/web02.dd.test

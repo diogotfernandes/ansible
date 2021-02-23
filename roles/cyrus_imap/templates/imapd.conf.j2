@@ -89,6 +89,10 @@ allowplaintext: yes
 ## these)
 ###################################################################
 
+{% if cyrus_imap_tls.use %}
+sasl_mech_list: DIGEST-MD5 CRAM-MD5 PLAIN LOGIN
+{% endif %}
+
 # The mechanism(s) used by the server to verify plaintext passwords.
 # Possible values are "saslauthd", "auxprop", "pwcheck" and
 # "alwaystrue".  They are tried in order, you can specify more than one,
@@ -110,11 +114,11 @@ tls_server_cert: {{ cyrus_imap_tls.tls_server_cert }}
 
 # File containing the private key belonging to the global server
 # certificate.
-tls_server_key: {{ cyrus_imap_tls.server_key }}
+tls_server_key: {{ cyrus_imap_tls.tls_server_key }}
 
 
 # File containing one or more Certificate Authority (CA) certificates.
-tls_client_ca_file: {{ cyrus_imap_tls.client_ca_file }}
+tls_client_ca_file: {{ cyrus_imap_tls.tls_client_ca_file }}
 
 # Path to directory with certificates of CAs.
 tls_client_ca_dir: {{ cyrus_imap_tls.tls_client_ca_dir }}

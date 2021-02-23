@@ -3,7 +3,7 @@
   become: true
   roles:
    - mkdocs
-
+  gather_facts: no
   vars:
     mkdocs_build_config: /home/diogo/Documents/Ansible-Roles-Docs/mkdocs.yml
     mkdocs_build_output_dir: /tmp/site

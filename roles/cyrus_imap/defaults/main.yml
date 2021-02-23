@@ -46,6 +46,11 @@ cyrus_imap_autocreate_mailboxes:
 # @var: cyrus_imap_cyrus_conf: Configuracao do ficheiro cyrus.conf
 cyrus_imap_cyrus_conf:
   services:
+#  imaps         cmd="imapd -s" listen="imaps" prefork=0
+    - name: imaps
+      cmd: 'imapd -s'
+      listen: imaps
+      prefork: 0
     - name: imap
       cmd: imapd
       listen: imap

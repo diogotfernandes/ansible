@@ -1,20 +1,20 @@
-- hosts: webDD
+- hosts: web01
   become: true
 
   roles:
     - apache2
     - mariadb
-    - wordpress
+    # - wordpress
 
   vars:
     # Apache2
     #
+    apache2_create_vhost: True
     apache2_vhost:
       - name: dd.test
         server_name: www.dd.test
         conf_name: dd.test.conf
         port: 80
-    apache2_create_vhost: True
     # Mariadb
     #
     mariadb_databases:

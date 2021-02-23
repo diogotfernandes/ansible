@@ -1,0 +1,8 @@
+---
+cyrus_imap_tls:
+  use: False
+  tls_server_cert: /etc/ssl/certs/mail.alcafaz.test.cert.pem
+  tls_server_key: /etc/ssl/certs/mail.alcafaz.test.key.pem
+  tls_client_ca_file: /etc/ssl/certs/csr/mail.alcafaz.test.ca.pem
+  tls_client_ca_dir: /etc/ssl/certs
+  tls_session_timeout: 1440

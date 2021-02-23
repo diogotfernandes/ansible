@@ -2,17 +2,23 @@
 # tasks file for postgresql
 
 - name: Verificar OS
-  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+  fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
   when: ansible_os_family != "Debian"
+  tags: always
 
-- name: install postgresql pkg
-  apt:
-    name: ['postgresql', 'postgresql-contrib', 'python-psycopg2' ]
-    state: present
+- name: Install postgresql packages
+  apt: name="{{ postgresql_packages }}" state=present
+  tags: postgresql, setup
 
-- name: pd reset database user
-  become: yes
-  become_user: postgres
+- name: Change postgresql admin password
+  become_user: "{{ postgresql_admin_user }}"
   postgresql_user:
-    user: postgres
-    password: "qwerty"
+    user: "{{ postgresql_admin_user }}"
+    password: "{{ postgresql_admin_password }}"
+  notify: restart postgresql
+  tags: postgresql, config
+
+# - name: Change authentication to md5
+#   lineinfile:
+#     path: "{{ postgresql_path }}/pg_hba.conf"
+#     regexp: '^peer'

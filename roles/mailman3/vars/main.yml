@@ -1,45 +1,182 @@
 ---
 # vars file for mailman3
 
-#
-# DBCONFIG-COMMON
-dbconfig_common_remember_admin_pass: true
-dbconfig_common_remote_questions_default: false
+
 #
 # MAILMAN3
-mailman3_config_hyperkitty: true
-mailman3_dbconfig_install: true
-mailman3_database_type: pgsql
-mailman3_pgsql_method: TCP/IP
-mailman3_remote_port: 5432
-mailman3_pgsql_authmethod_admin: password
-mailman3_pgsql_authmethod_user: password
-mailman3_db_dbname: mailman3
-mailman3_db_app_user: mailman3
-mailman3_pgsql_app_pass: qwerty
+# @var: mailman3_debconf: Dicionario com as questoes e respostas para o mailman3
+mailman3_debconf:
+  - question: mailman3/config_hyperkitty
+    value: True
+    vtype: boolean
+  - question: mailman3/dbconfig-install
+    value: True
+    vtype: boolean
+  - question: mailman3/database-type
+    value: pgsql
+    vtype: select
+  - question: mailman3/pgsql/method
+    value: TCP/IP
+    vtype: select
+  - question: mailman3/remote/port
+    value: 5432
+    vtype: string
+  - question: mailman3/pgsql/authmethod-admin
+    value: password
+    vtype: select
+  - question: mailman3/pgsql/authmethod-user
+    value: password
+    vtype: select
+  - question: mailman3/db/dbname
+    value: mailman3
+    vtype: string
+  - question: mailman3/db/app-user
+    value: mailman3
+    vtype: string
+  - question: mailman3/pgsql/app-pass
+    value: qwerty
+    vtype: password
+  - question: mailman3/pgsql/admin-user
+    value: postgres
+    vtype: string
+  - question: mailman3/pgsql/admin-pass
+    value: qwerty
+    vtype: password
 
-mailman3_password_confirm: qwerty
-mailman3_app_password_confirm: qwerty
 
-mailman3_pgsql_admin_user: postgres
-mailman3_pgsql_admin_pass: qwerty
 #
 # MAILMAN3-WEB
-mailman3_web_emailname: alcafaz.test
-mailman3_web_superuser_name: mailman3web
-mailman3_web_superuser_mail: mailman3web@alcafaz.test
-mailman3_web_superuser_password: qwerty
-mailman3_web_configure_webserver: apache2
-mailman3_web_restart_webserver: true
-mailman3_web_dbconfig_install: true
-mailman3_web_database_type: pgsql
-mailman3_web_pgsql_method: TCP/IP
-mailman3_web_remote_host: localhost
-mailman3_web_remote_port: 5432
-mailman3_web_pgsql_authmethod_admin: password
-mailman3_web_pgsql_authmethod_user: password
-mailman3_web_db_dbname: mailman3web
-mailman3_web_db_app_user: mailman3web
-mailman3_web_pgsql_app_pass: qwerty
-mailman3_web_mysql_admin_user: postgres
-mailman3_web_pgsql_admin_pass: qwerty
+# @var: mailman3_web_debconf: Dicionario com as questoes e respostas para o mailman3-web
+mailman3_web_debconf:
+  - question: mailman3-web/emailname
+    value: alcafaz.test
+    vtype: string
+  - question: mailman3-web/superuser-name
+    value: admin
+    vtype: string
+  - question: mailman3-web/superuser-mail
+    value: admin@alcafaz.test
+    vtype: string
+  - question: mailman3-web/superuser-password
+    value: qwerty
+    vtype: password
+  - question: mailman3-web/configure-webserver
+    value: apache2
+    vtype: select
+  - question: mailman3-web/restart-webserver
+    value: True
+    vtype: boolean
+  - question: mailman3-web/dbconfig-install
+    value: True
+    vtype: boolean
+  - question: mailman3-web/database-type
+    value: pgsql
+    vtype: select
+  - question: mailman3-web/pgsql/method
+    value: TCP/IP
+    vtype: select
+  - question: mailman3-web/remote/host
+    value: localhost
+    vtype: select
+  - question: mailman3-web/remote/port
+    value: 5432
+    vtype: string
+  - question: mailman3-web/pgsql/authmethod-admin
+    value: password
+    vtype: select
+  - question: mailman3-web/pgsql/authmethod-user
+    value: password
+    vtype: select
+  - question: mailman3-web/db/dbname
+    value: mailman3web
+    vtype: string
+  - question: mailman3-web/db/app-user
+    value: mailman3web
+    vtype: string
+  - question: mailman3-web/pgsql/app-pass
+    value: qwerty
+    vtype: string
+  - question: mailman3-web/pgsql/admin-user
+    value: postgres
+    vtype: string
+  - question: mailman3-web/pgsql/admin-pass
+    value: qwerty
+    vtype: password
+
+
+# @var: mailman_cfg: Configuracao do ficheiro mailman.cfg
+mailman_cfg:
+  mailman_site_owner: admin@alcafaz.test
+  mailman_noreply_address: noreply
+  mailman_default_language: en
+  database_class: mailman.database.postgresql.PostgreSQLDatabase
+  database_url: postgres://mailman3:qwerty@localhost/mailman3
+  database_debug: no
+  webservice_hostname: localhost
+  webservice_port: 8001
+  webservice_use_https: no
+  webservice_admin_user: restadmin
+  webservice_admin_pass: restapipassword
+  mta_incoming: mailman.mta.postfix.LMTP
+  mta_outgoing: mailman.mta.deliver.deliver
+  mta_smtp_host: localhost
+  mta_smtp_port: 25
+  mta_smtp_user: ''
+  mta_smtp_pass: ''
+  mta_lmtp_host: 127.0.0.1
+  mta_lmtp_port: 8024
+
+# @var: mailman_web: Configuracao do ficheiro mailman-web.py
+mailman_web:
+  # secret_key: notsosecret
+  admins:
+    - description: Mailman Suite Admin
+      email: admin@alcafaz.test
+  alllowed_hosts:
+    - name: '*'
+  mailman_rest_api_url: http://localhost:8001
+  mailman_rest_api_user: restadmin
+  mailman_rest_api_pass: restapipassword
+  # igual a variavel 'api_key' no mailman-hyperkitty.cfg
+  mailman_archiver_key: archiverkey
+  mailman_archiver_from: '127.0.0.1, ::1'
+  installed_apps:
+    - name: hyperkitty
+    - name: postorius
+    - name: django_mailman3
+    - name: django.contrib.admin
+    - name: django.contrib.auth
+    - name: django.contrib.contenttypes
+    - name: django.contrib.sessions
+    - name: django.contrib.sites
+    - name: django.contrib.messages
+    - name: django.contrib.staticfiles
+    - name: rest_framework
+    - name: django_gravatar
+    - name: compressor
+    - name: haystack
+    - name: django_extensions
+    - name: django_q
+    - name: allauth
+    - name: allauth.account
+    - name: allauth.socialaccount
+    - name: django_mailman3.lib.auth.fedora
+  databases:
+    - option_name: default
+      engine: django.db.backends.postgresql_psycopg2
+      name: mailman3web
+      user: mailman3web
+      password: qwerty
+      host: localhost
+      port: ''
+  use_x_forwarded_host: True
+  email_name: alcafaz.test
+  account_default_http_protocol: http
+  compress_offline: True
+  postorius_template_base_url: http://localhost/mailman3/
+
+# @var: mailman_hyperkitty: mailman-hyperkitty.cfg
+mailman_hyperkitty:
+  base_url: http://localhost/mailman3/hyperkitty/
+  # igual a variavel 'mailman_archiver_key' no mailman-web-py
+  api_key: archiverkey

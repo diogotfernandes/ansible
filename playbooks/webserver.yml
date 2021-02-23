@@ -1,4 +1,4 @@
-- hosts: rpi
+- hosts: mailAlcafaz
   become: true
 
   roles:

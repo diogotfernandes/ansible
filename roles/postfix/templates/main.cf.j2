@@ -311,6 +311,12 @@ broken_sasl_auth_clients = yes
 transport_maps = hash:/var/lib/mailman3/data/postfix_lmtp
 relay_domains = hash:/var/lib/mailman3/data/postfix_domains
 virtual_alias_maps = hash:/var/lib/mailman3/data/postfix_vmap
+{% else %}
+# MAILMAN3 RELATED
+#
+#transport_maps = hash:/var/lib/mailman3/data/postfix_lmtp
+#relay_domains = hash:/var/lib/mailman3/data/postfix_domains
+#virtual_alias_maps = hash:/var/lib/mailman3/data/postfix_vmap
 {% endif %}
 
 
@@ -357,6 +363,19 @@ debug_peer_level = 2
 
 inet_protocols = {{ postfix_inet_protocols }}
 
-
+{% if postfix_use_ssl %}
 # TLS parameters
 #
+smtpd_use_tls = yes
+#smtpd_tls_auth_only = yes
+#smtpd_tls_key_file = /etc/ssl/certs/newkey.pem
+#smtpd_tls_cert_file = /etc/ssl/certs/newcert.pem
+#smtpd_tls_CAfile = /etc/ssl/certs/cacert.pem
+smtpd_tls_key_file = {{ postfix_smtpd_tls_key_file }}
+smtpd_tls_cert_file = {{ postfix_smtpd_tls_cert_file }}
+smtpd_tls_CAfile = {{ postfix_smtpd_tls_CAfile }}
+smtpd_tls_loglevel = 3
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_timeout = 3600s
+tls_random_source = dev:/dev/urandom
+{% endif %}

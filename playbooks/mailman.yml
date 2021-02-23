@@ -21,46 +21,73 @@
 #do mailman3 (/var/lib/mailman3/data/). Tenho que comentar as linhas relativas
 #ao mailman3. Criar o dominio na interface do mailman3, criar uma lista, e
 #depois já posso descomentar as linhas relativas ao mailman3 (/etc/postfix/main.cf)
-# A RESOLVER... (??)
 #
+# RESOLVIDO... (??)  Após a instalação do mailman3, adiciona um novo dominio e lista.
+# Depois tiro o comentário das linhas relativas aos transport_maps dos mailman3.
+# Por vezes o dá erro de autenticação na api, apesas de as pw estarem corretas;
+# Se fizer restart ao mailman3/mailman3-web funciona...
+#
+
 - hosts: mailAlcafaz
   become: true
 
   roles:
    - postfix
-   - cyrus-sasl2
-   - cyrus-imap
-   - apache2
-   - postgresql
-   - mailman3
+   - cyrus_sasl2
+   - cyrus_imap
+   # - apache2
+   # - postgresql
+   # - mailman3
 
   vars:
-
-    domain_name: alcafaz.test
-    virtual_recipients:
-      - name: diogo
-      - name: marcia
-      - name: hostmaster
-      - name: mailman3web
-
-    postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
-    postfix_root_address: diogo@{{ domain_name }}
-    default_sasl_group: sasl
-    postfix_use_spf: true
-    postfix_use_mailman3: true
-
+    cyrus_imap_tls:
+      use: True
+      tls_server_cert: /etc/ssl/certs/mail.alcafaz.test.cert.pem
+      tls_server_key: /etc/ssl/certs/mail.alcafaz.test.key.pem
+      tls_client_ca_file: /etc/ssl/certs/csr/mail.alcafaz.test.ca.pem
+      tls_client_ca_dir: /etc/ssl/certs
+      tls_session_timeout: 1440
     ## mailman3 vars
-    mailman3_web_emailname: alcafaz.test
-    mailman3_web_superuser_name: mailman3web
-    mailman3_web_superuser_mail: mailman3web@alcafaz.test
-
+    mailman3_create_domain_and_list: False
+    ## postfix vars
+    postfix_use_ssl: True
+    postfix_smtpd_tls_key_file: /etc/ssl/certs/mail.alcafaz.test.key.pem
+    postfix_smtpd_tls_cert_file: /etc/ssl/certs/mail.alcafaz.test.cert.pem
+    postfix_smtpd_tls_CAfile: /etc/ssl/certs/mail.alcafaz.test.ca.pem
+    postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
+    postfix_root_address: diogo@{{ postfix_virtual_domain_name }}
+    postfix_virtual_domain_name: alcafaz.test
+    postfix_use_spf: False
+    postfix_use_mailman3: False
+    postfix_virtual_recipients:
+      - name: diogo
+        domain: "{{ postfix_virtual_domain_name }}"
+      - name: admin
+        domain: "{{ postfix_virtual_domain_name }}"
+      - name: marcia
+        domain: "{{ postfix_virtual_domain_name }}"
+      - name: mailman3web
+        domain: "{{ postfix_virtual_domain_name }}"
+    ## sasl2 vars
+    sasl2_create_users: True
+    sasl_users:
+      - name: diogo
+        password: qwerty
+        domain: alcafaz.test
+      - name: admin
+        password: qwerty
+        domain: alcafaz.test
+      - name: marcia
+        password: qwerty
+        domain: alcafaz.test
+      - name: mailman3web
+        password: qwerty
+        domain: alcafaz.test
     ## apache2 vars
     apache2_create_vhost: False
-    apache2_remove_default_vhost: False
+    apache2_remove_default_vhost: True
     apache2_vhost:
-      alcafaz.test:
-        server_name: www.alcafaz.test
-        conf_name: alcafaz.test.conf
-      # alcafaz.test:
-      #   conf_name: alcafaz.test.conf
-      #   server_name: alcafaz.test
+      - name: unts.xyz
+        server_name: www.unts.xyz
+        conf_name: unts.xyz.conf
+        port: 80
