@@ -34,6 +34,17 @@
   when: apache2_create_vhost
   tags: apache2, config
 
+- name: Copy html file
+  template:
+    src: index_page.html.j2
+    dest: "{{ apache2_document_root }}/{{ item.name }}/{{ item.index_page }}"
+    owner: www-data
+    group: www-data
+    mode: 0644
+  with_items: "{{ apache2_vhost }}"
+  when: apache2_create_vhost
+  tags: apache2, config
+
 - name: Activate virtual host
   command: a2ensite {{ item.name }}
   notify: restart apache2
@@ -47,9 +58,9 @@
   changed_when: False
   tags: apache2, config
 
-- name: Debug apache2 config test
-  debug: msg="{{ apache2_test_config }}"
-  tags: apache2, debug
+# - name: Debug apache2 config test
+#   debug: msg="{{ apache2_test_config }}"
+#   tags: apache2, debug
 
 - name: Remove default vhost
   file:

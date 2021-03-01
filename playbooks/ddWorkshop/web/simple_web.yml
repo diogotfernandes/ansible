@@ -1,0 +1,9 @@
+- hosts: web
+  become: true
+
+  roles:
+   - apache2
+   - geerlingguy.php
+
+  vars_files:
+    - vars/apache2.yml

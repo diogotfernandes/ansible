@@ -1,0 +1,36 @@
+---
+- name: stop vm
+  virt:
+    command: shutdown
+    name: "{{ kvm_name }}"
+  when: kvm_name in (kvm_info|map(attribute="name")|list) and kvm_vm_status.status == 'running'
+  tags: shutdown
+
+# - name: Pause for 10 seconds
+#   pause:
+#     seconds: 10
+#   tags: always
+#
+# - name: Get status of vm
+#   virt:
+#     command: status
+#     name: "{{ kvm_name }}"
+#   register: kvm_vm_status
+#   when: kvm_name in kvm_info|map(attribute="name")|list
+#   tags: never, shutdown
+
+- name: wait util vm is stopped
+  virt:
+    command: status
+    name: "{{ kvm_name }}"
+  register: kvm_vm_status
+  until: kvm_vm_status.status == 'shutdown'
+  retries: 1500
+  delay: 10
+  when: kvm_name in (kvm_info|map(attribute="name")|list) and kvm_vm_status.status == 'running'
+  tags: never, shutdown
+
+- name: kvm_final_info
+  debug:
+    var: kvm_info
+  tags: never, shutdown

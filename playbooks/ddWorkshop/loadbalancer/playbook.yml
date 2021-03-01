@@ -1,4 +1,4 @@
-- hosts: lb01
+- hosts: lb02
   become: true
 
   roles:
