@@ -27,16 +27,14 @@ host:
   network: libvirt_network_name
 ```
 
-Dependencies
-------------
-
-
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ---
+
+### Playbook
 ```yaml
 - hosts: localhost
   become: false
@@ -52,7 +50,7 @@ Including an example of how to use your role (for instance, with variables passe
       mac: '52:54:00:bc:89:40'
       network: alcafaz.test
 ```
-
+### ansible-playbook commands
 ```yaml
 # Adiciona o host à network alcafaz.test
 ansible-playbook kvm.yml --tags add_remove_ip
