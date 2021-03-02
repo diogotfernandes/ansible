@@ -9,7 +9,6 @@ Role para interagir com vms kvm.
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
@@ -27,7 +26,6 @@ host:
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -42,7 +40,7 @@ Including an example of how to use your role (for instance, with variables passe
   roles:
   - kvm
   vars:
-    # Informação sobre o novo host a adicionar à network
+    # Informação sobre o novo host
     host:
       mode: add
       name: ns1.alcafaz.test
@@ -51,7 +49,7 @@ Including an example of how to use your role (for instance, with variables passe
       network: alcafaz.test
 ```
 
-```shell
+```yaml
 # Adiciona o host à network alcafaz.test
 ansible-playbook kvm.yml --tags add_remove_ip
 # Inicia a máquina virtual com o nome ns1.alcafaz.test
