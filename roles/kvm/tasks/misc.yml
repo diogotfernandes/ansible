@@ -1,118 +1,369 @@
----
-# tasks file for kvm
-
-- name: Verificar OS
-  fail:  msg="This role is not supported in {{ansible_os_family}} OS"
-  when: ansible_os_family != "Debian"
-
-
-- virt:
-   command: info
-  register: aux_info
-
-# - name: debug
-#   debug:
-#     msg: "{{ item.value.state }}"
-#   with_dict: "{{ aux_info }}"
-
+# # ---
+# # # tasks file for kvm
+# #
+# # - name: Verificar OS
+# #   fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+# #   when: ansible_os_family != "Debian"
+# #
+# #
+# # - virt:
+# #    command: info
+# #   register: aux_info
+# #
+# # # - name: debug
+# # #   debug:
+# # #     msg: "{{ item.value.state }}"
+# # #   with_dict: "{{ aux_info }}"
+# #
+# # # - name: setfact
+# # #   set_fact:
+# # #     # kvm_info: "{{ item }} + [ 'running' ]"
+# # #     kvm_info_list: "{{ kvm_info_list | default([]) }} + [ '{{ item.key ~ ' => ' ~ item.value.state }}' ]"
+# # #   with_dict: "{{ aux_info }}"
+# # #   when:
+# # #     - item.key != 'changed'
+# # #     - item.key != 'failed'
+# #
+# #
+# # - name: setfact
+# #   set_fact:
+# #     kvm_info: "{{ kvm_info|default([]) + [ { 'name': item.key, 'state': item.value.state } ] }}"
+# #   with_dict: "{{ aux_info }}"
+# #   when:
+# #     - item.key != 'changed'
+# #     - item.key != 'failed'
+# #
+# # # - debug:
+# # #     msg:
+# # #       - "{{ item.name }}"
+# # #       - "{{ item.state }}"
+# # #   with_items: "{{ kvm_info }}"
+# # #   loop_control:
+# # #     label: "{{ item.name }}"
+# #
+# # # - debug:
+# # #     var: kvm_info_list
+# #
+# # - debug:
+# #     var: kvm_info
+# #
+# # - fail:
+# #
+# #
+# # - name: List all vms
+# #   virt:
+# #     command: list_vms
+# #     uri: "{{ kvm_uri }}"
+# #   register: kvm_vms
+# #
+# # - name: list vms
+# #   debug:
+# #     var: kvm_vms.list_vms
+# #
+# # - name: Select vm
+# #   pause:
+# #     prompt: "Enter the vm name"
+# #   register: kvm_name
+# #
+# #
+# # - name: Get status of vm
+# #   virt:
+# #     command: status
+# #     name: "{{ kvm_name.user_input }}"
+# #   register: kvm_vm_status
+# #   when: kvm_name.user_input is in kvm_vms.list_vms
+# #
+# # - name: Start vm
+# #   include_tasks: start.yml
+# #   when:  mode == 'start'
+# #
+# # # - name: get xml
+# # #   virt_net:
+# # #     command: get_xml
+# # #     name: default
+# # #   register: kvm_xml
+# # #
+# # #
+# # # - shell: "virsh net-update default add ip-dhcp-host \"<host mac='{{ item.mac }}' name='{{ item.name }}' ip='{{ item.ip }}' />\" --live --config"
+# # #   # when: kvm_xml.get_xml | regex_search('(item.mac)') is  match
+# # #   with_items: "{{ kvm_dhcp_hosts }}"
+# # #   ignore_errors: True
+# # #   tags: [ add-ip ]
+# # # # - fail:
+# # #
+# # # ## NÃO É PERSISTENTE!!!
+# # # # # Add a new host in the dhcp pool
+# # # # - virt_net:
+# # # #     name: default
+# # # #     command: modify
+# # # #     xml: "<host mac='52:54:00:ae:d7:0a' name='mail.alcafaz.test' ip='192.168.100.10'/>"
+# # #
+# # #
+# # # # - name: add dhcp entry using shell
+# # # #   shell: virsh net-update default add ip-dhcp-host "<host mac='52:54:00:68:bd:6f' name='ns1.alcafaz.test' ip='192.168.100.5' />" --live --config
+# # #
+# # # - virt_net:
+# # #     command: list_nets
+# # #   register: kvm_networks
+# # #
+# # # - debug:
+# # #     msg: "{{ kvm_networks.list_nets }}"
+# # #
+# # # - name: Get facts
+# # #   virt_net:
+# # #     command: facts
+# # #   register: kvm_network_facts
+# # #
+# # # - debug:
+# # #    msg: "{{ kvm_network_facts }}"
+#
+# ---
+# # tasks file for kvm
+#
+# # - name: Verificar OS
+# #   fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+# #   when: ansible_os_family != "Debian"
+#
+#
+# - virt:
+#    command: info
+#   register: aux_info
+#   tags: always
+#
+# # ok: [localhost] => (item={'key': 'debian10', 'value': {'state': 'shutdown', 'maxMem': '1048576', 'memory': '1048576', 'nrVirtCpu': 2, 'cpuTime': '0', 'autostart': 0}})
+#
 # - name: setfact
 #   set_fact:
-#     # kvm_info: "{{ item }} + [ 'running' ]"
-#     kvm_info_list: "{{ kvm_info_list | default([]) }} + [ '{{ item.key ~ ' => ' ~ item.value.state }}' ]"
+#     kvm_info: "{{ kvm_info|default([]) + [ { \
+#                   'name': item.key, \
+#                   'state': item.value.state, \
+#                   'maxMem': item.value.maxMem, \
+#                   'memory': item.value.memory, \
+#                   'nrVirtCpu': item.value.nrVirtCpu, \
+#                   'cpuTime': item.value.cpuTime, \
+#                   'autostart': item.value.autostart \
+#                   } ] }}"
 #   with_dict: "{{ aux_info }}"
 #   when:
 #     - item.key != 'changed'
 #     - item.key != 'failed'
-
-
-- name: setfact
-  set_fact:
-    kvm_info: "{{ kvm_info|default([]) + [ { 'name': item.key, 'state': item.value.state } ] }}"
-  with_dict: "{{ aux_info }}"
-  when:
-    - item.key != 'changed'
-    - item.key != 'failed'
-
-# - debug:
-#     msg:
-#       - "{{ item.name }}"
-#       - "{{ item.state }}"
-#   with_items: "{{ kvm_info }}"
-#   loop_control:
-#     label: "{{ item.name }}"
-
-# - debug:
-#     var: kvm_info_list
-
-- debug:
-    var: kvm_info
-
-- fail:
-
-
-- name: List all vms
-  virt:
-    command: list_vms
-    uri: "{{ kvm_uri }}"
-  register: kvm_vms
-
-- name: list vms
-  debug:
-    var: kvm_vms.list_vms
-
-- name: Select vm
-  pause:
-    prompt: "Enter the vm name"
-  register: kvm_name
-
-
-- name: Get status of vm
-  virt:
-    command: status
-    name: "{{ kvm_name.user_input }}"
-  register: kvm_vm_status
-  when: kvm_name.user_input is in kvm_vms.list_vms
-
-- name: Start vm
-  include_tasks: start.yml
-  when:  mode == 'start'
-
-# - name: get xml
-#   virt_net:
-#     command: get_xml
-#     name: default
-#   register: kvm_xml
+#   tags: always
 #
 #
-# - shell: "virsh net-update default add ip-dhcp-host \"<host mac='{{ item.mac }}' name='{{ item.name }}' ip='{{ item.ip }}' />\" --live --config"
-#   # when: kvm_xml.get_xml | regex_search('(item.mac)') is  match
-#   with_items: "{{ kvm_dhcp_hosts }}"
-#   ignore_errors: True
-#   tags: [ add-ip ]
+# - name: kvm_vms_info
+#   debug:
+#     var: kvm_info
+#   tags: always
+#
+# - name: Get status of vm
+#   virt:
+#     command: status
+#     name: "{{ kvm_name }}"
+#   register: kvm_vm_status
+#   when: kvm_name in kvm_info|map(attribute="name")|list
+#   tags: never, start, shutdown
+#
+# - name: Start vm
+#   include_tasks: start.yml
+#   tags: never, start
+#
+# - name: shutdown vm
+#   include_tasks: stop.yml
+#   tags: never, shutdown
+#
+#
+# # - name: Record contains IP
+# #   debug:
+# #     msg: "{{kvm_info|map(attribute='name')|list}}"
+# #   when: kvm_name in kvm_info|map(attribute="name")|list
+#
+#
 # # - fail:
 #
-# ## NÃO É PERSISTENTE!!!
-# # # Add a new host in the dhcp pool
-# # - virt_net:
+# #
+# #
+# # - name: List all vms
+# #   virt:
+# #     command: list_vms
+# #     uri: "{{ kvm_uri }}"
+# #   register: kvm_vms
+# #
+# # - name: list vms
+# #   debug:
+# #     var: kvm_vms.list_vms
+# #
+# # - name: Select vm
+# #   pause:
+# #     prompt: "Enter the vm name"
+# #   register: kvm_name
+#
+#
+# # - name: get xml
+# #   virt_net:
+# #     command: get_xml
 # #     name: default
-# #     command: modify
-# #     xml: "<host mac='52:54:00:ae:d7:0a' name='mail.alcafaz.test' ip='192.168.100.10'/>"
+# #   register: kvm_xml
+# #
+# #
+# # - shell: "virsh net-update default add ip-dhcp-host \"<host mac='{{ item.mac }}' name='{{ item.name }}' ip='{{ item.ip }}' />\" --live --config"
+# #   # when: kvm_xml.get_xml | regex_search('(item.mac)') is  match
+# #   with_items: "{{ kvm_dhcp_hosts }}"
+# #   ignore_errors: True
+# #   tags: [ add-ip ]
+# # # - fail:
+# #
+# # ## NÃO É PERSISTENTE!!!
+# # # # Add a new host in the dhcp pool
+# # # - virt_net:
+# # #     name: default
+# # #     command: modify
+# # #     xml: "<host mac='52:54:00:ae:d7:0a' name='mail.alcafaz.test' ip='192.168.100.10'/>"
+# #
+# #
+# # # - name: add dhcp entry using shell
+# # #   shell: virsh net-update default add ip-dhcp-host "<host mac='52:54:00:68:bd:6f' name='ns1.alcafaz.test' ip='192.168.100.5' />" --live --config
+# #
+# # - virt_net:
+# #     command: list_nets
+# #   register: kvm_networks
+# #
+# # - debug:
+# #     msg: "{{ kvm_networks.list_nets }}"
+# #
+# # - name: Get facts
+# #   virt_net:
+# #     command: facts
+# #   register: kvm_network_facts
+# #
+# # - debug:
+# #    msg: "{{ kvm_network_facts }}"
+# ---
+# # tasks file for kvm
+# # - name: Verificar OS
+# #   fail:  msg="This role is not supported in {{ansible_os_family}} OS"
+# #   when: ansible_os_family != "Debian"
 #
-#
-# # - name: add dhcp entry using shell
-# #   shell: virsh net-update default add ip-dhcp-host "<host mac='52:54:00:68:bd:6f' name='ns1.alcafaz.test' ip='192.168.100.5' />" --live --config
-#
-# - virt_net:
-#     command: list_nets
-#   register: kvm_networks
-#
-# - debug:
-#     msg: "{{ kvm_networks.list_nets }}"
-#
-# - name: Get facts
+# - name: Obter o nome de todas a networks presentes
 #   virt_net:
-#     command: facts
-#   register: kvm_network_facts
+#     command: list_nets
+#   register: aux_virt_networks
+#
+# # Variável apenas com o conteúdo das networks (limpar o 'lixo' do ansible)
+# - set_fact:
+#     virt_networks: "{{ aux_virt_networks.list_nets }}"
+#
+# # Obtem info sobre network; a info é formatada em xml, entao fica num var auxiliar
+# - name: Obter Informação sobre uma determinada network
+#   virt_net:
+#     name: "{{ host.network }}"
+#     command: get_xml
+#   register: aux_default_xml
+#
+# # Converte o xml em json
+# # xml_to_json é um plugin extra!! é necessário add a uma pasta com o nome (filter_plugins)
+# # link: https://github.com/nasgoncalves/ansible-xml-to-json-filter
+# - name: Converter xml para json
+#   set_fact:
+#     to_json_network: "{{ aux_default_xml.get_xml | xml_to_json }}"
+#
+# # Criar dicionario a partir do json; seria necessário(??) sem isto ñ consigo criar a lista em baixo...
+# # talvez mudar o nome da variavel...
+# - name: Criar dict a partir do json
+#   set_fact:
+#     network: "{{ to_json_network | dict2items }}"
+#
+# - set_fact:
+#     network_hosts: "{{ network.0.value.ip.dhcp.host }}"
+#   when: network.0.value.ip.dhcp.host is defined
 #
 # - debug:
-#    msg: "{{ kvm_network_facts }}"
+#     var: network_hosts
+#   ## Quando existe apenas 1 host, o elemento network_hosts.0 ñ existe.
+#   ## Quando existem n hosts existe network_hosts.n
+#   when: network_hosts.0 is defined
+#
+#
+# # - fail:
+#
+# # Se não existirem hosts definidos na network, não vale a pena verificar se
+# # o novo host existe... então criei o bloco, e só é executado caso exista
+# # algum host definido
+# ##
+# ## Estava a dar um erro ("could not find 'host' key in iterated item")...
+# ## Quando utilizo o 'with_subelements', caso não exista a key, o ansible dá
+# ## logo erro, ou seja não chega à condição 'when'... adicionar 'skip_missing: true'
+# ## dentro do bloco 'with_subelements'. Assim se a key 'hosts' não existir o
+# ## ansible 'salta' essa parte.
+# ##
+# - block:
+#       - block:
+#
+#             # Verificar se algum dos campos do 'host' existem ( 1: existe, 0: ñ existe )
+#             - name: n hosts - Check if ip already exists
+#               set_fact:
+#                 ip_exists: "{% for item in network_hosts if host.ip==item.ip %}{{ 1|e }}{% endfor %}"
+#             - name: n hosts - Check if mac already exists
+#               set_fact:
+#                 mac_exists: "{% for item in network_hosts if host.mac==item.mac %}{{ 1|e }}{% endfor %}"
+#             - name: n hosts -  Check if name already exists
+#               set_fact:
+#                 name_exists: "{% for item in network_hosts if host.name==item.name %}{{ 1|e }}{% endfor %}"
+#
+#         when: network_hosts.0 is defined
+#
+#       - block:
+#
+#               # Verificar se algum dos campos do 'host' existem ( 1: existe, 0: ñ existe )
+#               - name: 1 host - Check if ip already exists
+#                 set_fact:
+#                   ip_exists: "{% if host.ip==network_hosts.ip %}{{ 1|e }}{% endif %}"
+#               - name: 1 host - Check if mac already exists
+#                 set_fact:
+#                   mac_exists: "{% if host.mac==network_hosts.mac %}{{ 1|e }}{% endif %}"
+#               - name: 1 host - Check if name already exists
+#                 set_fact:
+#                   name_exists: "{% if host.name==network_hosts.name %}{{ 1|e }}{% endif %}"
+#
+#         when: network_hosts is defined and network_hosts.0 is not defined
+#
+#   # # Criar lista com todos os host presentes na network, a partir
+#   #   - name: Criar lista com os hosts que estão associados à network
+#   #     set_fact:
+#   #       network_default: "{{ network_default|default([]) +
+#   #         [{
+#   #           'ip': item.1.ip,
+#   #           'mac': item.1.mac,
+#   #           'name': item.1.name
+#   #         }] }}"
+#   #     with_subelements:
+#   #       - "{{ network }}"
+#   #       - value.ip.dhcp.host
+#   #       # https://github.com/ansible/ansible/issues/22426#issuecomment-699092374
+#   #       - skip_missing: true
+#   #     loop_control:
+#   #       label: "{{ item.1.name }}"
+#
+#
+#
+#     # # Adicionar novo host à network
+#     # ## a fazer ...
+#     # - debug:
+#     #     msg: adding...
+#     #   when: not ip_exists | bool and not mac_exists | bool and not name_exists | bool
+#
+#     # utilizo a shell porque com o ansible não era persistente (Verificar?)
+#       - name: Adicionar novo host à network utilizando a shell
+#         shell: virsh net-update {{ host.network }} add ip-dhcp-host "<host mac='{{ host.mac }}' name='{{ host.name }}' ip='{{ host.ip }}' />" --live --config
+#         when: not ip_exists | bool and not mac_exists | bool and not name_exists | bool
+#
+#   # when: network.0.value.ip.dhcp.host is defined
+#   when: network_hosts is defined
+#
+#
+# # utilizo a shell porque com o ansible não era persistente (Verificar?)
+# - name: Adicionar novo host à network utilizando a shell
+#   shell: virsh net-update {{ host.network }} {{ host.mode }} ip-dhcp-host "<host mac='{{ host.mac }}' name='{{ host.name }}' ip='{{ host.ip }}' />" --live --config
+#   when: network_hosts is not defined
+#
+#
+# # virsh net-update alcafaz.test add ip-dhcp-host "<host mac='52:54:00:bc:89:41' name='ns2.alcafaz.test' ip='192.168.100.6' />" --live --config

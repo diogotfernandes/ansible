@@ -1,0 +1,10 @@
+- hosts: all
+  become: true
+
+  roles:
+    - initial_setup
+
+- hosts: webservers
+  tasks:
+    - debug:
+        msg: hi!

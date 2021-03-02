@@ -5,6 +5,12 @@
   roles:
   - kvm
   vars:
-    kvm_add_new_host: true
-    kvm_dhcp_hosts:
-      - { name: ns2.alcafaz.test, mac: 52:54:00:42:76:fc , ip: 192.168.100.6 }
+    kvm_add_new_host: True
+    # Informação sobre o novo host a adicionar à network
+
+    host:
+      mode: add
+      name: ns1.alcafaz.test
+      ip: '192.168.100.5'
+      mac: '52:54:00:bc:89:40'
+      network: alcafaz.test
