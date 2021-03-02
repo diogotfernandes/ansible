@@ -13,7 +13,7 @@ Any pre-requisites that may not be covered by Ansible itself or the role should 
 
 Role Variables
 --------------
-
+```yaml
 kvm_name: host.name
 kvm_uri: qemu:///system
 host:
@@ -22,6 +22,7 @@ host:
   ip: 10.0.0.100
   mac: '52:54:00:bc:89:40'
   network: libvirt_network_name
+```
 
 Dependencies
 ------------
@@ -52,7 +53,7 @@ Including an example of how to use your role (for instance, with variables passe
 
 ```shell
 # Adiciona o host à network alcafaz.test
-ansible-playbook kvm.yml
+ansible-playbook kvm.yml --tags add_remove_ip
 # Inicia a máquina virtual com o nome ns1.alcafaz.test
 ansible-playbook kvm.yml -e "kvm_name=ns1.alcafaz.test" --tags start
 # Pausa a máquina virtual com o nome ns1.alcafaz.test
