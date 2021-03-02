@@ -8,7 +8,11 @@ Role para interagir com vms kvm.
 
 Requirements
 ------------
+Para mudar o estado de uma vm é obrigatório definir a variável `kvm_name` e quando executar o playbook passar a tag correspondente ao estado que é pretendido. `--tags [start, pause, unpause, shutdown]`.
 
+Para adicionar/remover uma lease estática é necessário adicionar a variável `host`.
++ Adicionar: `mode: add`
++ Remover: `mode: remove`  
 
 Role Variables
 --------------
@@ -65,5 +69,4 @@ BSD
 
 Author Information
 ------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Diogo Fernandes
