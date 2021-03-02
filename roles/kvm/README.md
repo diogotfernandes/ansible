@@ -1,10 +1,10 @@
 KVM
 =========
 
-Role para interagir com kvm vms.
+Role para interagir com vms kvm.
 
 + Muda o estado da vm [ start, shutdown, pause, unpause ]
-+ Adiciona/Remove IP de uma vm à virt_network (NAT)
++ Adiciona/Remove uma lease DHCP estática de uma vm à virt_network (NAT)
 
 Requirements
 ------------
@@ -34,6 +34,7 @@ Example Playbook
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ---
+```yaml
 - hosts: localhost
   become: false
   gather_facts: no
@@ -47,6 +48,7 @@ Including an example of how to use your role (for instance, with variables passe
       ip: '192.168.100.5'
       mac: '52:54:00:bc:89:40'
       network: alcafaz.test
+```
 
 ```shell
 # Adiciona o host à network alcafaz.test
