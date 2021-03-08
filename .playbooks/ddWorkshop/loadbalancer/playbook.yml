@@ -1,9 +1,0 @@
-- hosts: lb02
-  become: true
-
-  roles:
-   - loadbalancer
-
-  vars_files:
-    - vars/haproxy.yml
-    - vars/keepalived.yml

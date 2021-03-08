@@ -1,8 +1,0 @@
----
-- hosts: lb01
-  become: true
-  roles:
-    - dns_bind
-
-  vars_files:
-    - vars/main.yml
