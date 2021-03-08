@@ -1,0 +1,13 @@
+[01;34m.[00m
+├── 00.test.yml
+├── 01.create-vm-and-initial-config.yml
+├── 02.simple-apache.yml
+├── 03.dns.yml
+├── 04.simple-mail.yml
+├── 05.mailman3.yml
+├── [01;32mansible.cfg[00m
+├── [01;34mfilter_plugins[00m
+├── [01;34minventories[00m
+├── [01;34mroles[00m
+
+3 directories, 10 files

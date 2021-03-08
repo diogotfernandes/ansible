@@ -1,9 +1,18 @@
 ---
 
+## NAÃO MUDAR A ORDEM DAS TAREFAS!!
+
+- name: include create vm task
+  include_tasks: create_vm.yml
+  tags: never, create_vm
+
 - name: include add/remove host task
-  include_tasks: add_remove_host_ip.yml
-  tags: never, add_remove_ip
+  include_tasks: add_dhcp_static_lease.yml
+  tags: never, add_ip
 
 - name: include kvm change vm state task
   include_tasks: kvm_change_vm_state.yml
   tags: never, start, shutdown, pause, unpause
+
+# Criar vm, adicionar a lease estatica e por fim iniciar a vm
+# ansible-playbook kvm.yml --tags "create_vm, add_ip, start"

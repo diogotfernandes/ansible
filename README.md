@@ -1,58 +1,34 @@
-# Ansible
+# Layout
 
-## Apache2
+inventories/
+   production/
+      hosts               # inventory file for production servers
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         hostname1.yml    # here we assign variables to particular systems
+         hostname2.yml
 
-+ Instalação do apache2
-+ Criação de vhost e ativação, quando ´apache2_create_vhost = True´
-+ TODO: criar pasta para cada vhost, e possivelmente enviar algum conteúdo...
+   staging/
+      hosts               # inventory file for staging environment
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         stagehost1.yml   # here we assign variables to particular systems
+         stagehost2.yml
 
+library/
+module_utils/
+filter_plugins/
 
-## Cyrus-Imap
+site.yml
+webservers.yml
+dbservers.yml
 
-+ Instalção e configuração (cyrus.conf , imapd.conf) do cyrus-imap
-+ Cria pastas (INBOX|Drafts|Sent|Trash) quando o utilizador entra pela 1a \
-vez na sua conta
-+ Corre em chroot
-+ TODO: utilizar variáveis no ficheiro de configuração...
-
-## Cyrus-SALS2
-
-+ Instalação e configuração do sasl2
-+ Criar utilizadores
-+ TODO: ...
-
-## DNS-Bind9
-
-+ Instalção e configuração (named.conf) do bind9
-+ Criar zonas (forward e reverse)
-+ TODO: ...
-
-## Initial_Setup
-
-+ Instalação de pacotes
-+ Criar utilizador/password
-+ Remover utilizador default
-+ Adicionar hostname
-+ Mudar configuração de ssh,
-+ configuração de firewall (ufw)
-+ Adicionar key para ssh
-+ TODO: ...
-
-## Mailman3
-
-+ Instalção do Mailman3-full com debconf
-+ TODO: ...
-
-## Postfix
-
-+ Instalação e configuração (main.cf, master.cf, smtpd.conf) do Postfix
-+ Criar virtual_recipients, virtual_recipient_domains
-+ Instalação do postfix-spf
-+ TODO: ...
-
-
-## Postgresql
-
-+ Instalação do postgresql
-+ Mudar password do user postgres
-+ TODO: ... 
+roles/
+    common/
+    webtier/
+    monitoring/
+    fooapp/

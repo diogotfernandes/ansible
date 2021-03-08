@@ -15,6 +15,7 @@
   postgresql_user:
     user: "{{ postgresql_admin_user }}"
     password: "{{ postgresql_admin_password }}"
+  no_log: True
   notify: restart postgresql
   tags: postgresql, config
 

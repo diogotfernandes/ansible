@@ -1,0 +1,64 @@
+---
+- hosts: localhost
+  become: false
+  gather_facts: False
+  roles:
+  - kvm
+  ## vars para adicionar uma nova vm, adicionar uma lease estatica e por fim iniciar a vm
+  ## ansible-playbook kvm.yml --tags "create_vm, add_ip, start"
+  vars:
+    # Informação sobre o novo host a adicionar à network
+    kvm_base_vm: debian10	## CHANGE ME!
+    host:
+      name: web01.alcafaz.test		## CHANGE ME!
+      ip: '192.168.100.11'		## CHANGE ME!
+      network: alcafaz.test		## CHANGE ME!
+    kvm_name: "{{ host.name }}"
+
+  tasks:
+    - name: Sleep for 25 seconds and continue with play
+      wait_for:
+        timeout: 25 # 15 seconds
+      delegate_to: localhost
+      tags: always
+
+- hosts: web01.alcafaz.test			## CHANGE ME!
+  gather_facts: True
+  roles:
+    - initial_setup
+
+  vars:
+    # Muda config dhcient.conf
+    supersede_dhcp: True			## CHANGE ME!
+    hostname_domain_name: alcafaz.test		## CHANGE ME!
+    hostname_name: test				## CHANGE ME!
+    user: admin					## CHANGE ME!
+    password: qwerty			## CHANGE ME!
+    user_password: "{{ password | password_hash('sha512') }}"
+    dhcp_config_ns1: 192.168.100.5		## CHANGE ME!
+    dhcp_config_ns2: 1.1.1.1			## CHANGE ME!
+    packages_to_install:			## CHANGE ME!
+      - sudo
+      - aptitude
+      - ufw
+
+  post_tasks:
+    - name: Sending an e-mail using SMTP
+      mail:
+        host: mail.alcafaz.test
+        port: 25
+        sender: admin@alcafaz.test
+        # username: admin@alcafaz.test
+        # password: qwerty
+        to: Diogo Fernandes <diogo@alcafaz.test>
+        subject: "[Ansible-report] New VM {{ ansible_hostname }}"
+        body: System {{ ansible_hostname }} has been successfully provisioned.
+      # delegate_to: localhost
+
+  # post_tasks:
+   ## por exemplo enviar email a avisar que a nova máquina está pronta!
+
+#
+# Variáveis com  'CHANGE ME!' devem ser alteradas, de acordo com o host a configurar.
+#
+# ansible-playbook 01.create_vm_and_initial_config.yml --tags "create_vm, add_ip, start, packages, hostname, ssh, timezone, ufw, user, dhcp_config" -i inventories/alcafaz.test/hosts

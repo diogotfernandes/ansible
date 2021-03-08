@@ -3,8 +3,9 @@
 #
 
 <VirtualHost *:{{ item.port }}>
-    DocumentRoot "{{ apache2_document_root }}/{{ item.name }}"
+    DocumentRoot {{ apache2_document_root }}/{{ item.name }}
     ServerName {{ item.server_name }}
+    ServerAlias {{ item.name }}
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined

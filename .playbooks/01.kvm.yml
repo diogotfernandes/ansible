@@ -1,0 +1,58 @@
+---
+- hosts: localhost
+  become: false
+  gather_facts: False
+  roles:
+  - kvm
+  ## vars para adicionar uma nova vm, adicionar uma lease estatica e por fim iniciar a vm
+  ## ansible-playbook kvm.yml --tags "create_vm, add_ip, start"
+  vars:
+    # Informação sobre o novo host a adicionar à network
+    kvm_base_vm: debian10
+    host:
+      name: demo02.alcafaz.test
+      ip: '192.168.100.202'
+      # mac: '52:54:00:63:8f:f6'
+      network: alcafaz.test
+    kvm_name: "{{ host.name }}"
+
+  tasks:
+    - name: Wait until vm starts
+      virt:
+        command: status
+        name: "{{ host.name }}"
+      register: vm_change_status
+      until: vm_change_status.status == 'running'
+      retries: 6
+      delay: 10
+      tags: always
+
+    - name: Sleep for 15 seconds and continue with play
+      wait_for:
+        timeout: 15 # 15 seconds
+      delegate_to: localhost
+      tags: always
+
+# ansible-playbook play.yml --tags add_ip
+# ansible-playbook kvm.yml -e "kvm_name=ns1.alcafaz.test" --tags pause
+
+- post_tasks:
+  hosts: demo02.alcafaz.test
+
+  gather_facts: True
+  roles:
+    - initial_setup
+  vars:
+    supersede_dhcp: True
+    hostname_name: test
+    user: admin
+    hostname_domain_name:
+    dhcp_config_ns1: 192.168.100.5
+    dhcp_config_ns2: 1.1.1.1
+    packages_to_install:
+      - sudo
+      - aptitude
+      - ufw
+  # tasks:
+  #   - ping:
+  #     tags: always

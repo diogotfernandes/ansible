@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  gather_facts: True
+  become: true
+  tasks:
+    - name: Sending an e-mail using own SMTP servers
+      mail:
+        host: mail.alcafaz.test
+        port: 25
+        sender: admin@alcafaz.test
+        # username: admin@alcafaz.test
+        # password: qwerty
+        to: John Smith <diogo@alcafaz.test>
+        subject: Ansible-report
+        body: System {{ ansible_hostname }} has been successfully provisioned.
+      # delegate_to: localhost
+
+
+# ansible-playbook 03.dns.yml -i inventories/alcafaz.test/hosts -l ns1 (--limit ns1)
+#
+# Variáveis definidas no host_vars/group_vars
+#

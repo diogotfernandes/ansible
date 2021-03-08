@@ -1,4 +1,11 @@
-#new ansible_host=192.168.100.9 ansible_ssh_extra_args='-o StrictHostKeyChecking=no' ansible_ssh_port=22 ansible_user=root ansible_sudo_pass=qwerty
+[new]
+
+
+[new:vars]
+ansible_ssh_port=22
+ansible_user=root
+ansible_ssh_pass=qwerty
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [nameservers]
 ns1 ansible_host=192.168.100.5
@@ -18,7 +25,6 @@ ansible_ssh_port=2849
 ansible_user=admin
 ansible_sudo_pass=qwerty
 
-
 [log]
 log1 ansible_host=192.168.100.9
 
@@ -26,3 +32,4 @@ log1 ansible_host=192.168.100.9
 ansible_ssh_port=2849
 ansible_user=admin
 ansible_sudo_pass=qwerty
+diogo ansible_host=192.168.100.1

@@ -1,0 +1,9 @@
+---
+# host_vars rpi.yml
+apache2_create_vhost: True
+apache2_vhost:
+  - name: unts.xyz
+    server_name: www.unts.xyz
+    conf_name: unts.xyz.conf
+    port: 80
+    index_page: index.html

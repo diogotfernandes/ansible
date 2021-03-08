@@ -1,0 +1,71 @@
+---
+- hosts: localhost
+  become: False
+  gather_facts: False
+
+  vars:
+    ## Nome do disco(.qcow2) para a nova vm
+    kvm_new_vm_qcow2_name: "{{ kvm_new_vm_user_data.fqdn }}.qcow2"
+    ## Tamanho da nova imagem (em Gb)
+    kvm_new_vm_qcow_size: 20
+    ## https://www.digitalocean.com/community/tutorials/an-introduction-to-cloud-config-scripting
+    kvm_new_vm_user_data:
+      hostname: demo
+      fqdn: demo.alcafaz.test
+      manage_etc_hosts: True
+      users:
+        - name: diogo
+          sudo: ALL=(ALL) NOPASSWD:ALL
+          groups: sudo
+          home: /home/demo
+          shell: /bin/bash
+          ssh-authorized-keys:
+            - "{{lookup('file', '~/.ssh/id_rsa.pub')}}"
+      ssh_pwauth: True
+      disable_root: True
+      chpasswd:
+        list: diogo:diogo
+        expire: False
+
+    kvm_new_vm_meta_data:
+      instance-id: demo
+      local-hostname: demo
+
+    ## Configura IP estático... Mas quando a vm inicia tem 2 IPs: o estático e um por dhcp (reboot e só fica o estático)
+    kvm_static_network:
+      interface: enp1s0
+      dhcp4: False
+      ipv4: 192.168.100.21/24
+      gw: 192.168.100.1
+      ns1: 192.168.100.5
+      ns2: 208.67.222.222
+      search: alcafaz.test
+
+  pre_tasks:
+    - name: Ensure that cloud-image-utils is installed
+      apt:
+        name: cloud-image-utils
+        state: present
+      become: True
+
+  roles:
+    - cloud-init-kvm
+
+  post_tasks:
+    - name: Wait for port 22
+      wait_for:
+        port: 22
+        host: 192.168.100.21
+        delay: 10
+      register: test
+
+    # - name: Sending an e-mail using SMTP
+    #   mail:
+    #     host: mail.alcafaz.test
+    #     port: 25
+    #     sender: admin@alcafaz.test
+    #     # username: admin@alcafaz.test
+    #     # password: qwerty
+    #     to: Diogo Fernandes <diogo@alcafaz.test>
+    #     subject: "[Ansible-report] New VM!! {{ kvm_new_vm_user_data.fqdn }}"
+    #     body: VM {{ kvm_new_vm_user_data.fqdn }} has been successfully created.

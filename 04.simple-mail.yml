@@ -1,0 +1,13 @@
+---
+- hosts: mailservers
+  gather_facts: True
+  become: True
+  roles:
+    - postfix
+    - cyrus_sasl2
+    - cyrus_imap
+
+#
+# Variáveis definidas no host_vars/group_vars
+#
+# ansible-playbook 04.simple-mail.yml -i /etc/ansible/inventories/alcafaz.test/hosts

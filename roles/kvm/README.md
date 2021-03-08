@@ -5,6 +5,7 @@ Role para interagir com vms kvm.
 
 + Muda o estado da vm [ start, shutdown, pause, unpause ]
 + Adiciona/Remove uma lease DHCP estática de uma vm à virt_network (NAT)
++ Modo de remove ainda ñ implementado!
 
 Requirements
 ------------
@@ -12,7 +13,7 @@ Para mudar o estado de uma vm é obrigatório definir a variável `kvm_name` e q
 
 Para adicionar/remover uma lease estática é necessário adicionar a variável `host`.
 + Adicionar: `mode: add`
-+ Remover: `mode: remove`  
++ Remover: `mode: delete`  
 
 Role Variables
 --------------
@@ -20,7 +21,7 @@ Role Variables
 kvm_name: host.name
 kvm_uri: qemu:///system
 host:
-  mode: [ add, remove ]
+  mode: [ add, delete ]
   name: host.name
   ip: 10.0.0.100
   mac: '52:54:00:bc:89:40'
@@ -29,8 +30,6 @@ host:
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ---
 

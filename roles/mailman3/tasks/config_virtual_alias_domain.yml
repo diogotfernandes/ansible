@@ -14,13 +14,13 @@
     src: files/mailman_config.py
     dest: ~/mailman_config.py
   tags: mailman3, config
-  when: mailman3_create_domain_and_list
+  when: mailman3_create_domain_and_list | bool
 
 - name: Run script
   become: no
   command: python3 ~/mailman_config.py
   tags: mailman3, config
-  when: mailman3_create_domain_and_list
+  when: mailman3_create_domain_and_list | bool
 
   # when: mailman3_create_domain_and_list
 

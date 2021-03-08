@@ -1,0 +1,18 @@
+---
+- hosts: rpi
+  become: True
+  gather_facts: True
+  roles:
+    - apache2
+
+  # vars:
+  #   apache2_create_vhost: True          ## CHANGE ME!
+  #   apache2_vhost:
+  #     - name: alcafaz.test              ## CHANGE ME!
+  #       server_name: www.alcafaz.test   ## CHANGE ME!
+  #       conf_name: alcafaz.test.conf    ## CHANGE ME!
+  #       port: 80                        ## CHANGE ME!
+
+#
+# Variáveis com  'CHANGE ME!' devem ser alteradas, de acordo com o host a configurar.
+#

@@ -1,9 +1,9 @@
 ---
 # tasks file for initial_setup
-- name: Verificar OS
-  fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
-  when: ansible_os_family != "Debian"
-  tags: always
+# - name: Verificar OS
+#   fail:  msg="This role is not supported in {{ ansible_os_family }} OS"
+#   when: ansible_os_family != "Debian"
+#   tags: always
 
 - name: Include Tasks 'package.yml'
   include_tasks: packages.yml
