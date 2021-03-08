@@ -1,8 +1,0 @@
-[raspi]
-rpi ansible_host=95.93.57.247
-
-[raspi:vars]
-ansible_ssh_port=2849
-ansible_user=diogo
-ansible_sudo_pass=qwerty
-ansible_python_interpreter=/usr/bin/python
