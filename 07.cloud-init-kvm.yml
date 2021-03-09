@@ -35,11 +35,11 @@
     kvm_static_network:
       interface: enp1s0
       dhcp4: False
-      ipv4: 192.168.100.21/24
+      ipv4: 192.168.100.200
       gw: 192.168.100.1
       ns1: 192.168.100.5
       ns2: 208.67.222.222
-      search: alcafaz.test
+      search: unts.xyz
 
   pre_tasks:
     - name: Ensure that cloud-image-utils is installed
@@ -55,9 +55,9 @@
     - name: Wait for port 22
       wait_for:
         port: 22
-        host: 192.168.100.21
+        host: "{{ kvm_static_network.ipv4 }}"
         delay: 10
-      register: test
+      register: res
 
     # - name: Sending an e-mail using SMTP
     #   mail:

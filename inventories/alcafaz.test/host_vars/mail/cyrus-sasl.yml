@@ -1,0 +1,18 @@
+---
+# vars for mail host
+
+# sasl2
+sasl2_create_users: True
+sasl_users:
+  - name: diogo
+    password: qwerty
+    domain: alcafaz.test
+  - name: admin
+    password: qwerty
+    domain: alcafaz.test
+  - name: marcia
+    password: qwerty
+    domain: alcafaz.test
+  - name: mailman3web
+    password: qwerty
+    domain: alcafaz.test

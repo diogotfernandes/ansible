@@ -1,0 +1,8 @@
+---
+# vars for all hosts
+
+hostname_domain_name: alcafaz.test
+supersede_dhcp: False
+packages_to_install:
+  - ufw
+  - dnsutils

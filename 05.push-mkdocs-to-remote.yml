@@ -22,7 +22,7 @@
       command: >
           rsync -a
           -e 'ssh -p {{ mkdocs_remote_host.ssh_port }}
-          -i /home/diogo/.ssh/id_rsa' {{ mkdocs_build_output_dir }}/
+          -i /home/diogo/.ssh/id_rsa' {{ mkdocs_build_output_dir }} \
           {{ mkdocs_remote_host.user }}@{{ mkdocs_remote_host.domain }}:{{ mkdocs_remote_path }} \
 
   post_tasks:

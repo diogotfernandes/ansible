@@ -6,12 +6,12 @@
   when: ansible_os_family != "Debian"
   tags: always
 
-- name: Install apache2
+- name: Install apache2 packages
   apt: name="{{ apache2_packages }}" state=present
   notify: restart apache2
   tags: apache2, setup
 
-- name: Create config file to virtual host
+- name: Create configuration file to each virtual host
   template:
     src: vhost.conf.j2
     dest: "{{ apache2_site_available_path }}/{{ item.name }}.conf"
@@ -23,7 +23,7 @@
   when: apache2_create_vhost
   tags: apache2, config
 
-- name: Create directory to virtual host
+- name: Create directory to each virtual host
   file:
     path: "{{ apache2_document_root }}/{{ item.name }}"
     state: directory
@@ -34,22 +34,15 @@
   when: apache2_create_vhost
   tags: apache2, config
 
-- name: Copy html file
+- name: Create index.html file to each virtual host
   template:
     src: index_page.html.j2
-    dest: "{{ apache2_document_root }}/{{ item.name }}/{{ item.index_page }}"
+    dest: "{{ apache2_document_root }}/{{ item.name }}/index.html"
     owner: www-data
     group: www-data
     mode: 0644
   with_items: "{{ apache2_vhost }}"
-  when: apache2_create_vhost
-  tags: apache2, config
-
-- name: Activate virtual host
-  command: a2ensite {{ item.name }}
-  notify: restart apache2
-  with_items: "{{ apache2_vhost }}"
-  when: apache2_create_vhost
+  when: apache2_create_vhost and item.create_index
   tags: apache2, config
 
 - name: Check apache2 config
@@ -58,9 +51,17 @@
   changed_when: False
   tags: apache2, config
 
-# - name: Debug apache2 config test
-#   debug: msg="{{ apache2_test_config }}"
-#   tags: apache2, debug
+- name: Debug apache2 config test
+  debug: msg="{{ apache2_test_config }}" verbosity=1
+
+- name: Activate each virtual host
+  command: a2ensite {{ item.name }}
+  notify: restart apache2
+  with_items: "{{ apache2_vhost }}"
+  register: res_enable_site
+  changed_when: "'Enabling site ' ~ item.name ~ '.' in res_enable_site.stdout"
+  when: apache2_create_vhost
+  tags: apache2, config
 
 - name: Remove default vhost
   file:

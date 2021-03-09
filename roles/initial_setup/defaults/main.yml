@@ -38,7 +38,7 @@ timezone_default_path: /etc/timezone
 # @var: ssh_dir_path: Directorio, por omissao, do ficheiro sshd_config
 ssh_dir_path: /etc/ssh/sshd_config
 # @var: ssh_port: Porta de ssh a configurar. Default: 2849
-ssh_port: 2849
+ssh_port: 22
 # @var: ssh_config: Configuração do ficheiro de ssh.
 ssh_config:
   - regexp: "^PasswordAuthentication"

@@ -1,9 +1,6 @@
 ---
-# vars for mail host
+# vars for mail host - mailman3
 
-#
-# MAILMAN3
-# @var: mailman3_debconf: Dicionario com as questoes e respostas para o mailman3
 mailman3_debconf:
   - question: mailman3/config_hyperkitty
     value: True

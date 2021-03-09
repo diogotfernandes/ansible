@@ -1,0 +1,21 @@
+---
+# vars for mail host - postfix
+
+postfix_use_ssl: False
+postfix_smtpd_tls_key_file: /etc/ssl/certs/mail.alcafaz.test.key.pem
+postfix_smtpd_tls_cert_file: /etc/ssl/certs/mail.alcafaz.test.cert.pem
+postfix_smtpd_tls_CAfile: /etc/ssl/certs/mail.alcafaz.test.ca.pem
+postfix_mynetworks: 127.0.0.0/8 192.168.100.0/24
+postfix_virtual_domain_name: alcafaz.test
+postfix_root_address: admin@{{ postfix_virtual_domain_name }}
+postfix_use_spf: True
+postfix_use_mailman3: False
+postfix_virtual_recipients:
+  - name: diogo
+    domain: "{{ postfix_virtual_domain_name }}"
+  - name: admin
+    domain: "{{ postfix_virtual_domain_name }}"
+  - name: marcia
+    domain: "{{ postfix_virtual_domain_name }}"
+  - name: mailman3web
+    domain: "{{ postfix_virtual_domain_name }}"

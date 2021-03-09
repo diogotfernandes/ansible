@@ -57,9 +57,9 @@
   shell: >
     virt-install --connect qemu:///system \
       --virt-type kvm --name {{ kvm_new_vm_user_data.fqdn }} \
-      --ram 2048 --vcpus=2 --os-type linux --os-variant debian10 \
+      --ram 1024 --vcpus=1 --os-type linux --os-variant debian10 \
       --disk path=/tmp/seed.iso,device=cdrom \
       --disk path={{ kvm_debian_base_img_dst }}/{{ kvm_new_vm_qcow2_name }},device=disk \
       --import \
-      --network network=alcafaz.test \
+      --network network=default \
       --noautoconsole \
