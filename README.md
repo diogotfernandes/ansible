@@ -5,8 +5,58 @@
 
 ## Estrutura de pastas
 
+### Ansible
+
++ Pasta `ansible`:
+
+
+```console
+.
+├── 00.test.yml
+├── 01.create-vm-and-initial-config.yml
+├── 02.cloud-init-kvm.yml
+├── 03.dns.yml
+├── 04.infra_simpleMail_simpleWeb_dns.yml
+├── 05...
+├── ansible.cfg
+├── filter_plugins
+├── inventories
+├── README.md
+└── roles
+
+```
+
+### Inventories
+
+
+```console
+foo@bar:~$ tree inventories/alcafaz.test
+
+├── group_vars
+│   ├── all.yml
+│   ├── mailservers.yml
+│   ├── nameservers.yml
+│   └── webservers.yml
+├── hosts
+└── host_vars
+    ├── mail
+    │   ├── cyrus-imap.yml
+    │   ├── cyrus-sasl.yml
+    │   ├── initial-setup.yml
+    │   ├── mailman3.yml
+    │   └── postfix.yml
+    ├── ns1
+    │   ├── bind9.yml
+    │   ├── initial-setup.yml
+    │   └── ns1.yml
+    └── web01
+        ├── apache2.yml
+        └── initial-setup.yml
+```
+
 ### Roles
 
++ Pasta `roles` com todos os roles:
 
 ```console
 foo@bar:~$ tree roles
@@ -14,19 +64,24 @@ foo@bar:~$ tree roles
 roles
 ├── apache2
 ├── cloud_init_kvm
-├── cyrus_imap
-├── cyrus_sasl2
 ├── dns_bind
 ├── initial_setup
-├── kvm
+├── wordpress
 ├── loadbalancer
 ├── mailman3
-├── mariadb
-├── mkdocs
-├── php
 ├── postfix
-├── postgresql
-├── self_signed_cert
-├── supersede_dhcp
-└── wordpress
+└── ...
+```
+
++ Dentro de cada `role`:
+
+```console
+foo@bar:~$ tree roles/apache2
+
+roles/apache2
+├── defaults
+├── handlers
+├── README.md
+├── tasks
+└── templates
 ```
