@@ -8,7 +8,7 @@
 ### Roles
 
 
-```bash
+```console
 $ tree roles
 
 roles
