@@ -8,7 +8,7 @@
 ### Roles
 
 `tree roles`
-```shell
+```html
 roles
 ├── apache2
 ├── cloud_init_kvm
