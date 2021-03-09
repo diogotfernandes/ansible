@@ -11,7 +11,8 @@
 
 
 ```console
-.
+foo@bar:~$ tree ansible
+
 ├── 00.test.yml
 ├── 01.create-vm-and-initial-config.yml
 ├── 02.cloud-init-kvm.yml
@@ -30,7 +31,7 @@
 
 
 ```console
-foo@bar:~$ tree inventories/alcafaz.test
+foo@bar:~$ tree ansible/inventories/alcafaz.test
 
 ├── group_vars
 │   ├── all.yml
@@ -59,9 +60,8 @@ foo@bar:~$ tree inventories/alcafaz.test
 + Pasta `roles` com todos os roles:
 
 ```console
-foo@bar:~$ tree roles
+foo@bar:~$ tree ansible/roles
 
-roles
 ├── apache2
 ├── cloud_init_kvm
 ├── dns_bind
@@ -76,9 +76,8 @@ roles
 + Dentro de cada `role`:
 
 ```console
-foo@bar:~$ tree roles/apache2
+foo@bar:~$ tree ansible/roles/apache2
 
-roles/apache2
 ├── defaults
 ├── handlers
 ├── README.md
