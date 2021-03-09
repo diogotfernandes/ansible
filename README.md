@@ -9,7 +9,7 @@
 
 
 ```console
-$ tree roles
+foo@bar:~$ tree roles
 
 roles
 ├── apache2
