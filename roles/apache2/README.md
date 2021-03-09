@@ -13,7 +13,6 @@ Role para instalação do servidor HTTP apache2.
 Role Variables
 --------------
 
-+ defaults
 
 | Variable                     | Default                      | Description                                                            |
 |------------------------------|------------------------------|------------------------------------------------------------------------|
@@ -36,7 +35,6 @@ Role Variables
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ```yaml
 - hosts: webservers
@@ -59,4 +57,4 @@ Including an example of how to use your role (for instance, with variables passe
 Author Information
 ------------------
 
-Diogo Fernandes | a21230576@isec.pt
+Diogo Fernandes | a21230576 at isec.pt

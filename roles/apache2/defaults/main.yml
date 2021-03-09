@@ -19,9 +19,8 @@ apache2_default_port: '80'
 apache2_document_root: /var/www
 # @var: apache2_vhost: Definição dos virtual hosts a configurar; Pode ser um ou vários
 apache2_vhost:
-  apache2_vhost:
-    - name: example.com
-      server_name: www.example.com
-      conf_name: example.com.conf
-      port: 80
-      create_index: True
+  - name: example.com
+    server_name: www.example.com
+    conf_name: example.com.conf
+    port: 80
+    create_index: True
