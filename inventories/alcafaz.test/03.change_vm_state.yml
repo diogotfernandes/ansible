@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  gather_facts: False
+  become: False
+  roles:
+    - kvm
+
+#
+# START VM
+# ansible-playbook 02.change_vm_state.yml --tags start -e "kvm_name=vm_name"
+#
+# SHUTDOWN VM
+# ansible-playbook 02.change_vm_state.yml --tags shutdown -e "kvm_name=vm_name"
+#
+# PAUSE VM
+# ansible-playbook 02.change_vm_state.yml --tags pause -e "kvm_name=vm_name"
+#
+# UNPAUSE VM
+# ansible-playbook 02.change_vm_state.yml --tags unpause -e "kvm_name=vm_name"

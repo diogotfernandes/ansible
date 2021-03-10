@@ -1,0 +1,8 @@
+---
+
+- name: Generate locales
+  locale_gen:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ bootstrap_locale }}"
+  tags: locales

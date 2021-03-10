@@ -1,0 +1,6 @@
+---
+# vars for web01 host - bootstrap
+
+bootstrap_hostname:
+  name: web01
+  domain: alcafaz.test

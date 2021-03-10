@@ -1,0 +1,21 @@
+---
+# defaults file for fail2ban
+
+f2ban_findtime: 60m
+f2ban_maxretry: 3
+f2ban_default_action: action_
+f2ban_loglevel: INFO
+f2ban_logtarget: /var/log/fail2ban.log
+
+f2ban_mail:
+  mta: mail
+  destemail: foo@example.com
+  sender: admin
+  sendername: Fail2Ban Alerts
+
+f2ban_jails:
+  - name: sshd
+    enabled: true
+    port: 2849
+    logpath: sshd_log
+    backend: sshd_backend

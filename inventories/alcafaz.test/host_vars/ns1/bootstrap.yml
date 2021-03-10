@@ -1,0 +1,6 @@
+---
+# vars for ns1 host - bootstrap
+
+bootstrap_hostname:
+  name: mail
+  domain: alcafaz.test

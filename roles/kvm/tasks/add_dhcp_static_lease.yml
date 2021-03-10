@@ -49,6 +49,7 @@
 # algum host definido
 - block:
       - block:
+            # Quando só existe 1 host
             # Verificar se algum dos campos do 'host' existem ( 1: existe, 0: ñ existe )
             - name: n hosts - Check if ip already exists
               set_fact:

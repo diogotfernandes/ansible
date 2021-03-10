@@ -1,0 +1,37 @@
+---
+- name: Add users
+  user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment }}"
+    state: present
+    groups: "{{ item.groups }}"
+    append: "{{ item.append }}"
+    shell: "{{ item.shell }}"
+    create_home: "{{ item.create_home }}"
+    home: "{{ item.home }}"
+    password: "{{ item.password | password_hash('sha512') }}"
+    update_password: "{{ item.update_password }}"
+    generate_ssh_key: "{{ item.generate_ssh_key }}"
+  with_items: "{{ bootstrap_users }}"
+  tags: users
+
+- name: Add SSH key for new users
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{  lookup('file',item.pub_key_path) }}"
+  with_items: "{{ bootstrap_users }}"
+  tags: users
+
+- name: Disable root login
+  user:
+    name: root
+    password: '!'
+  tags: users
+
+- name: Remove users
+  user:
+    name: "{{ item.name }}"
+    state: absent
+  when: bootstrap_remove_users is defined
+  with_items: "{{ bootstrap_remove_users }}"
+  tags: users

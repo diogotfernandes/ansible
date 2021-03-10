@@ -1,0 +1,14 @@
+---
+
+- name: Update repositories cache and all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+  tags: packages
+
+- name: Install essential packages
+  apt:
+    name: "{{ bootstrap_packages }}"
+    state: present
+  tags: packages

@@ -1,0 +1,30 @@
+---
+# tasks file for roles/common
+
+- name: Include packages tasks
+  include: packages.yml
+  tags: packages
+
+- name: Include timezone tasks
+  include: timezone.yml
+  tags: timezone
+
+- name: Include hostname tasks
+  include: hostname.yml
+  tags: hostname
+
+- name: Include locales tasks
+  include: locales.yml
+  tags: locales
+
+- name: Include ssh tasks
+  include: ssh.yml
+  tags: ssh
+
+- name: Include users tasks
+  include: users.yml
+  tags: users
+
+- name: Include ufw tasks
+  include: ufw.yml
+  tags: ufw

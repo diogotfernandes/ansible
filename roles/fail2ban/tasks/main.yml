@@ -1,0 +1,25 @@
+---
+# tasks file for fail2ban
+
+- name: Install fail2ban package
+  apt:
+    name: fail2ban
+    state: present
+
+- name: Template fail2ban.conf file
+  template:
+    src: fail2ban.conf.j2
+    dest: /etc/fail2ban/fail2ban.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart fail2ban
+
+- name: Template jail.local file
+  template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart fail2ban

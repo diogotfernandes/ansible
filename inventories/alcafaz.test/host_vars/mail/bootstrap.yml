@@ -1,0 +1,6 @@
+---
+# vars for mail host
+
+bootstrap_hostname:
+  name: mail
+  domain: alcafaz.test

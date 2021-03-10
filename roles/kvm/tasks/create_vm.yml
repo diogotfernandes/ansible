@@ -3,7 +3,7 @@
   virt:
     command: list_vms
   register: all_vms
-  tags: create_vm
+  tags: never, create_vm
 
 # Clonar uma vm quando esta não existe... com o comando virt-clone
 # virt-clone --original vm_original --name new_name --auto-clone
@@ -11,29 +11,31 @@
 - name: clone base vm to a new vm (debian10 - attached to alcafaz.test network)
   command: "virt-clone --original {{ kvm_base_vm }} --name {{ host.name }} --auto-clone"
   when: host.name not in all_vms.list_vms
-  tags: create_vm
+  tags: never, create_vm
 
-# Buscar o mac da nova vm para adicionar uma lease dhcp estática na network 'alcafaz.test'
+# Obter o MAC da nova vm para adicionar uma lease dhcp estática na network 'alcafaz.test'
 - name: Get new vm mac address
   shell: virsh domiflist {{ host.name }} | grep "\alcafaz.test"\ | awk '{print $5}'
   register: new_host_mac
   changed_when: False
-  tags: create_vm
+  tags: never, create_vm
 
-# adicionar o mac ao dict 'host'
+# adicionar o MAC ao dict 'host'
 - name: add new mac to host list
   set_fact:
     host: "{{ host | combine({ 'mac': new_host_mac.stdout_lines.0 }) }}"
-  tags: create_vm
+  tags: never, create_vm
 
 # adicionar uma nova linha no ficheiro de inventario
 - name: add new vm to inventory
   lineinfile:
     path: /etc/ansible/inventories/alcafaz.test/hosts
     # regexp: '[new]'
-    insertafter: '\[new\]'
-    line: "{{ host.name }}{{ ' ' }}ansible_host{{'='}}{{ host.ip }}"
-  tags: create_vm
+    insertafter: '\[{{ host.inventory_group }}\]'
+    # insertafter: "{{ '\[' ~ host.inventory_group ~ '\]' }}"
+    line: "{{ host.name.split('.')[0] }}{{ ' ' }}ansible_host{{'='}}{{ host.ip }}"
+  when: host.add_to_inventory | bool
+  tags: never, add_ip
 
 # actualizar o inventario durante a execução do playbook
 - name: Refresh inventory to ensure new instances exist in inventory

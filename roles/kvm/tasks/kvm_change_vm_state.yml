@@ -38,6 +38,7 @@
   virt:
     command: "{{ kvm_state }}"
     name: "{{ kvm_name }}"
+  changed_when: vm_current_state.status != kvm_state
   when: vm_current_state.status == ('running' if kvm_state == 'pause' else 'running' if kvm_state == 'shutdown' else 'shutdown' if kvm_state == 'start' else 'paused' if kvm_state == 'unpause')
   register: aux
   tags: never, start, shutdown, pause, unpause
@@ -109,4 +110,5 @@
 - name: kvm_final_info # do not change!
   debug:
     var: kvm_final_info
+    verbosity: 1
   tags: always

@@ -1,0 +1,18 @@
+---
+- name: Configure open ports with ufw
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ bootstrap_ufw_rules }}"
+  notify: restart ufw
+  tags: ufw
+
+- name: Configure default incoming/outgoing rules with ufw
+  ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+    state: enabled
+  with_items: "{{ bootstrap_ufw }}"
+  notify: restart ufw
+  tags: ufw

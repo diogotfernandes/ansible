@@ -1,3 +1,4 @@
 ---
 # defaults file for kvm
 kvm_uri: qemu:///system
+add_host_to_inventory: False
