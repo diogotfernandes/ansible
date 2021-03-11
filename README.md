@@ -7,12 +7,10 @@
 
 ### Ansible
 
-+ Pasta `ansible`:
-
-
 ```console
 foo@bar:~$ tree ansible
 
+.
 ├── ansible.cfg
 ├── filter_plugins
 ├── inventories
@@ -30,9 +28,7 @@ foo@bar:~$ tree ansible/inventories/alcafaz.test
 ├── 00.tests.yml
 ├── 01.bootstrap.yml
 ├── 02.create-vm.yml
-├── 03.create-vm-and-bootstrap.yml
-├── 04.change_vm_state.yml
-├── 05.cloud-init-kvm.yml
+├── ...
 ├── group_vars
 ├── hosts
 └── host_vars
