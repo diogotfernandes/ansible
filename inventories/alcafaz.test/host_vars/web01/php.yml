@@ -1,0 +1,11 @@
+php_memory_limit: "128M"
+php_max_execution_time: "90"
+php_upload_max_filesize: "256M"
+php_packages:
+  - php-curl
+  - php-json
+  - php-mbstring
+  - php-imagick
+  - php-xml
+  - php-zip
+  - php-mysql

@@ -1,0 +1,9 @@
+---
+mariadb_databases:
+  - name: wordpress
+    state: present
+mariadb_users:
+  - name: wp
+    password: qwerty
+    host: localhost
+    priv: "wordpress.*:ALL,GRANT"

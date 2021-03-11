@@ -1,17 +1,50 @@
 ---
+- name: List all vms
+  virt:
+    command: list_vms
+  register: all_vms
+  tags: never, create_vm
+
+- name: Get information about the network
+  virt_net:
+    command: status
+    name: "{{ kvm_network }}"
+  register: kvm_network_status
+  tags: always
+
+- name: Fail if the network is not active
+  fail:
+    msg: "The network {{ kvm_network }} is not active!"
+  when: "kvm_network_status.status != 'active'"
+  tags: always
+
+- name: Get information about the network hosts
+  virt_net:
+    command: get_xml
+    name: "{{ kvm_network }}"
+  register: aux_net_xml
+  tags: always
+
+- name: Converter xml para json
+  set_fact:
+    net_json: "{{ aux_net_xml.get_xml | xml_to_json }}"
+  tags: always
 
 ## NAÃO MUDAR A ORDEM DAS TAREFAS!!
 
+- name: include assert tasks
+  include_tasks: assert.yml
+  loop: "{{ host }}"
+  tags: always
+
 - name: include create vm task
   include_tasks: create_vm.yml
-  tags: never, create_vm
-
-- name: include add/remove host task
-  include_tasks: add_dhcp_static_lease.yml
-  tags: never, add_ip
+  loop: "{{ host }}"
+  tags: create_vm
 
 - name: include kvm change vm state task
   include_tasks: kvm_change_vm_state.yml
+  loop: "{{ host }}"
   tags: never, start, shutdown, pause, unpause
 
 # Criar vm, adicionar a lease estatica e por fim iniciar a vm

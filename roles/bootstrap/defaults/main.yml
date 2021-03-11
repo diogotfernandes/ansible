@@ -1,5 +1,5 @@
 ---
-# defaults file for roles/common
+# defaults file for roles/bootstrap
 
 bootstrap_timezone: Europe/Lisbon
 
@@ -14,26 +14,29 @@ bootstrap_ssh:
   password_authentication: 'no'
   port: 22
 
-bootstrap_hostname:
-  name: foo
-  domain: bar.com
-
 bootstrap_locale:
   - name: pt_PT.UTF-8
     state: present
 
-bootstrap_users:
-  - name: janedoe
-    comment: Jane Doe
-    groups: sudo
-    append: True
-    shell: /bin/bash
-    create_home: True
-    home: /home/janedoe
-    password: secretpass
-    update_password: on_creat
-    generate_ssh_key: 'yes'
-    pub_key_path: ~/.ssh/id_rsa.pub
+# bootstrap_hostname:
+#   name: foo
+#   domain: bar.com
+
+# bootstrap_users:
+#   - name: janedoe
+#     comment: Jane Doe
+#     groups: sudo
+#     append: True
+#     shell: /bin/bash
+#     create_home: True
+#     home: /home/janedoe
+#     password: secretpass
+#     update_password: on_creat
+#     generate_ssh_key: 'yes'
+#     pub_key_path: ~/.ssh/id_rsa.pub
+
+# bootstrap_remove_users:
+#   - name: debian
 
 bootstrap_ufw:
   - direction: outgoing

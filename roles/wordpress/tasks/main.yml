@@ -85,14 +85,20 @@
 
 - name: Set the owner on wordpress folder
   command: chown -R www-data:www-data {{ wp_install_path }}
+  args:
+    warn: false
   tags: [ wordpress ]
 
 - name: Set the permissions on worpress folder
   command: find {{ wp_install_path }} -type d -exec chmod 755 {} \;
+  args:
+    warn: false
   tags: [ wordpress ]
 
 - name: Set the permissions on worpress folder
   command: find {{ wp_install_path }} -type f -exec chmod 644 {} \;
+  args:
+    warn: false
   tags: [ wordpress ]
 
 - name: Copy wp-config file

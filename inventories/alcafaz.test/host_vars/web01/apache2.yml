@@ -1,6 +1,8 @@
 ---
 # vars for web01 host - apache2
-
+apache2_packages:
+  - apache2
+  - libapache2-mod-php
 apache2_create_vhost: True
 apache2_vhost:
   - name: alcafaz.test

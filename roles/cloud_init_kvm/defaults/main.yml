@@ -4,8 +4,12 @@
 ## Posso utilizar outras imagens - p.ex: existe uma imagem diária (http://cloud.debian.org/images/cloud/buster/daily/)
 ## Debian 10 generic amd64 - 20210208-542
 # @var: kvm_debian_base_img_url: URL da imagem para fazer download
-kvm_debian_base_img_url: http://cloud.debian.org/images/cloud/buster/20210208-542
+# kvm_debian_base_img_url: http://cloud.debian.org/images/cloud/buster/20210208-542
 # @var: kvm_debian_img_name: Nome da imagem a utilizar para a criação de novas vms
-kvm_debian_img_name: debian-10-generic-amd64-20210208-542.qcow2
+# kvm_debian_img_name: debian-10-generic-amd64-20210208-542.qcow2
 # @var: kvm_debian_base_img_dst: Directorio base das imagens/vms
 kvm_debian_base_img_dst: /mnt/hdd/kvm/debian-cloud-init-imgs
+
+## daily image
+kvm_debian_base_img_url: http://cloud.debian.org/images/cloud/buster/daily/20210311-573/
+kvm_debian_img_name: debian-10-generic-amd64-daily-20210311-573.qcow2

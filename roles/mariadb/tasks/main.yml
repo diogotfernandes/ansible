@@ -18,26 +18,27 @@
   pip: name=pymysql state=present
   tags: mariadb, setup
 
-# - name: Copy my.cnf file
-#   template:
-#     src: my.cnf.j2
-#     dest: "{{ mariadb_config_path }}/my.cnf"
-#     backup: yes
-#     owner: root
-#     group: root
-#     mode: 0644
-#   notify: restart mariadb
-#   tags: mariadb, config
+- name: Copy my.cnf file
+  template:
+    src: my.cnf.j2
+    dest: "{{ mariadb_config_path }}/my.cnf"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart mariadb
+  tags: mariadb, config
 
 # DATABASES
-#
-# - name: Create databases
-#   mysql_db:
-#     db: wordpress
-#     state: present
-#     login_user: "{{ mariadb_user }}"
-#     login_unix_socket: "{{ mariadb_unix_socket }}"
-#   tags: mariadb, config
+
+- name: Create databases
+  mysql_db:
+    db: "{{ item.name }}"
+    state: "{{ item.state }}"
+    login_user: "{{ mariadb_user }}"
+    login_unix_socket: "{{ mariadb_unix_socket }}"
+  loop: "{{ mariadb_databases }}"
+  tags: mariadb, config
 
 - name: Remove test database
   mysql_db:

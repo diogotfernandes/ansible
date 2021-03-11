@@ -1,0 +1,60 @@
+---
+# vars for mail host - mailman3-web-debconf
+#
+# MAILMAN3-WEB
+# @var: mailman3_web_debconf: Dicionario com as questoes e respostas para o mailman3-web
+mailman3_web_debconf:
+  - question: mailman3-web/emailname
+    value: alcafaz.test                ## CHANGE ME!!
+    vtype: string
+  - question: mailman3-web/superuser-name
+    value: admin                      ## CHANGE ME!!
+    vtype: string
+  - question: mailman3-web/superuser-mail
+    value: admin@alcafaz.test         ## CHANGE ME!!
+    vtype: string
+  - question: mailman3-web/superuser-password
+    value: qwerty                     ## CHANGE ME!!
+    vtype: password
+  - question: mailman3-web/configure-webserver
+    value: apache2
+    vtype: select
+  - question: mailman3-web/restart-webserver
+    value: True
+    vtype: boolean
+  - question: mailman3-web/dbconfig-install
+    value: True
+    vtype: boolean
+  - question: mailman3-web/database-type
+    value: pgsql
+    vtype: select
+  - question: mailman3-web/pgsql/method
+    value: TCP/IP
+    vtype: select
+  - question: mailman3-web/remote/host
+    value: localhost
+    vtype: select
+  - question: mailman3-web/remote/port
+    value: 5432
+    vtype: string
+  - question: mailman3-web/pgsql/authmethod-admin
+    value: password
+    vtype: select
+  - question: mailman3-web/pgsql/authmethod-user
+    value: password
+    vtype: select
+  - question: mailman3-web/db/dbname
+    value: mailman3web              ## CHANGE ME!!
+    vtype: string
+  - question: mailman3-web/db/app-user
+    value: mailman3web              ## CHANGE ME!!
+    vtype: string
+  - question: mailman3-web/pgsql/app-pass
+    value: qwerty                   ## CHANGE ME!!
+    vtype: string
+  - question: mailman3-web/pgsql/admin-user
+    value: postgres                 ## CHANGE ME!!
+    vtype: string
+  - question: mailman3-web/pgsql/admin-pass
+    value: qwerty                   ## CHANGE ME!!
+    vtype: password

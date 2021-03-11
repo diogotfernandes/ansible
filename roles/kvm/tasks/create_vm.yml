@@ -1,41 +1,43 @@
 ---
-- name: List all vms
-  virt:
-    command: list_vms
-  register: all_vms
-  tags: never, create_vm
-
 # Clonar uma vm quando esta não existe... com o comando virt-clone
 # virt-clone --original vm_original --name new_name --auto-clone
 # neste caso é utilizada a vm debian10, com as definições que esta tem
 - name: clone base vm to a new vm (debian10 - attached to alcafaz.test network)
-  command: "virt-clone --original {{ kvm_base_vm }} --name {{ host.name }} --auto-clone"
-  when: host.name not in all_vms.list_vms
-  tags: never, create_vm
+  command: "virt-clone --original {{ kvm_base_vm }} --name {{ item.name }} --auto-clone"
+  when: item.name not in all_vms.list_vms
+  tags: create_vm
 
 # Obter o MAC da nova vm para adicionar uma lease dhcp estática na network 'alcafaz.test'
 - name: Get new vm mac address
-  shell: virsh domiflist {{ host.name }} | grep "\alcafaz.test"\ | awk '{print $5}'
+  shell: virsh domiflist {{ item.name }} | grep "\alcafaz.test"\ | awk '{print $5}'
   register: new_host_mac
   changed_when: False
-  tags: never, create_vm
+  tags: create_vm
+
 
 # adicionar o MAC ao dict 'host'
 - name: add new mac to host list
   set_fact:
-    host: "{{ host | combine({ 'mac': new_host_mac.stdout_lines.0 }) }}"
-  tags: never, create_vm
+    host_mac: "{{ new_host_mac.stdout_lines.0 }}"
+  tags: create_vm
 
 # adicionar uma nova linha no ficheiro de inventario
 - name: add new vm to inventory
   lineinfile:
     path: /etc/ansible/inventories/alcafaz.test/hosts
     # regexp: '[new]'
-    insertafter: '\[{{ host.inventory_group }}\]'
+    insertafter: '\[{{ item.inventory_group }}\]'
     # insertafter: "{{ '\[' ~ host.inventory_group ~ '\]' }}"
-    line: "{{ host.name.split('.')[0] }}{{ ' ' }}ansible_host{{'='}}{{ host.ip }}"
-  when: host.add_to_inventory | bool
-  tags: never, add_ip
+    line: "{{ item.name.split('.')[0] }}{{ ' ' }}ansible_host{{'='}}{{ item.ip }}"
+  when: item.add_to_inventory | bool
+  tags: create_vm
+
+- name: Add static lease for new vm
+  virt_net:
+    name: "{{ kvm_network }}"
+    command: modify
+    xml: "<host mac='{{ host_mac }}' name='{{ item.name }}' ip='{{ item.ip }}'/>"
+  tags: create_vm
 
 # actualizar o inventario durante a execução do playbook
 - name: Refresh inventory to ensure new instances exist in inventory

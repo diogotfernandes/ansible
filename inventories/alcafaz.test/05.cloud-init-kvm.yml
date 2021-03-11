@@ -1,0 +1,21 @@
+---
+- hosts: kvm_host
+  become: False
+  gather_facts: False
+
+  roles:
+    - cloud_init_kvm
+
+  pre_tasks:
+    - name: Ensure that cloud-image-utils is installed
+      apt:
+        name: cloud-image-utils
+        state: present
+      become: True
+
+
+## vars: host_vars/kvm_host/cloud-init.yml
+#
+## CREATE VM(s) - STATIC IP (virtual network)
+## ansible-playbook 05.cloud-init-kvm.yml --ask-become-pass
+#

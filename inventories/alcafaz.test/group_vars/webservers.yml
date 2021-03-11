@@ -1,2 +1,8 @@
 ---
 # vars for webservers group
+bootstrap_packages:
+  - python2
+  - python-pip
+  - sudo
+  - aptitude
+  - ufw

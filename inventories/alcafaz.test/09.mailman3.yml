@@ -1,0 +1,28 @@
+---
+- hosts: mailservers
+  become: True
+
+  pre_tasks:
+    - name: Ensure that debconf is installed
+      apt:
+        name: debconf
+        state: present
+
+  vars:
+    # Cria dominio e lista de teste
+    # só utilizar na 1a instalação, senão dá erro...
+    mailman3_create_domain_and_list: True
+    # se utilizar o python3 dá erro quando instalo o postgresql...
+    ansible_python_interpreter: /usr/bin/python
+
+  roles:
+   - apache2
+   - postgresql
+   - mailman3
+
+#
+#
+# Variáveis definidas no host_vars/group_vars
+# Modificar as variáveis de acordo com a configuração do host
+#
+# ansible-playbook 09.mailman3.yml -i hosts

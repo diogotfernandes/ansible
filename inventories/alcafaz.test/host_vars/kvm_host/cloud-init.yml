@@ -1,0 +1,112 @@
+new_hosts:
+############################## ns1 #############################################
+  - name: ns1
+    kvm_new_vm_qcow_size: 20
+    kvm_ram: 1024
+    kvm_vcpus: 1
+    kvm_network: alcafaz.test
+
+    kvm_new_vm_user_data:
+      hostname: ns1
+      fqdn: ns1.alcafaz.test
+      manage_etc_hosts: True
+      users:
+        - name: diogo
+          sudo: ALL=(ALL) NOPASSWD:ALL
+          groups: sudo
+          home: /home/diogo
+          shell: /bin/bash
+          ssh-authorized-keys:
+            - "{{lookup('file', '~/.ssh/id_rsa.pub')}}"
+      ssh_pwauth: True
+      disable_root: True
+      chpasswd:
+        list: diogo:diogo
+        expire: False
+
+    kvm_new_vm_meta_data:
+      instance-id: ns1
+      local-hostname: ns1
+
+    kvm_static_network:
+      interface: enp1s0
+      dhcp4: False
+      ipv4: 192.168.100.5
+      gw: 192.168.100.1
+      ns1: 192.168.100.5
+      ns2: 208.67.222.222
+      search: alcafaz.test
+############################## mail ############################################
+  - name: mail
+    kvm_new_vm_qcow_size: 20
+    kvm_ram: 2048
+    kvm_vcpus: 2
+    kvm_network: alcafaz.test
+
+    kvm_new_vm_user_data:
+      hostname: mail
+      fqdn: mail.alcafaz.test
+      manage_etc_hosts: True
+      users:
+        - name: diogo
+          sudo: ALL=(ALL) NOPASSWD:ALL
+          groups: sudo
+          home: /home/diogo
+          shell: /bin/bash
+          ssh-authorized-keys:
+            - "{{lookup('file', '~/.ssh/id_rsa.pub')}}"
+      ssh_pwauth: True
+      disable_root: True
+      chpasswd:
+        list: diogo:diogo
+        expire: False
+
+    kvm_new_vm_meta_data:
+      instance-id: mail
+      local-hostname: mail
+
+    kvm_static_network:
+      interface: enp1s0
+      dhcp4: False
+      ipv4: 192.168.100.10
+      gw: 192.168.100.1
+      ns1: 192.168.100.5
+      ns2: 208.67.222.222
+      search: alcafaz.test
+############################## web01 ###########################################
+  - name: web01
+    kvm_new_vm_qcow_size: 20
+    kvm_ram: 1024
+    kvm_vcpus: 1
+    kvm_network: alcafaz.test
+
+    kvm_new_vm_user_data:
+      hostname: web01
+      fqdn: web01.alcafaz.test
+      manage_etc_hosts: True
+      users:
+        - name: diogo
+          sudo: ALL=(ALL) NOPASSWD:ALL
+          groups: sudo
+          home: /home/diogo
+          shell: /bin/bash
+          ssh-authorized-keys:
+            - "{{lookup('file', '~/.ssh/id_rsa.pub')}}"
+      ssh_pwauth: True
+      disable_root: True
+      chpasswd:
+        list: diogo:diogo
+        expire: False
+
+    kvm_new_vm_meta_data:
+      instance-id: web01
+      local-hostname: web01
+
+    kvm_static_network:
+      interface: enp1s0
+      dhcp4: False
+      ipv4: 192.168.100.21
+      gw: 192.168.100.1
+      ns1: 192.168.100.5
+      ns2: 208.67.222.222
+      search: alcafaz.test

@@ -12,6 +12,7 @@
     password: "{{ item.password | password_hash('sha512') }}"
     update_password: "{{ item.update_password }}"
     generate_ssh_key: "{{ item.generate_ssh_key }}"
+  when: bootstrap_users is defined
   with_items: "{{ bootstrap_users }}"
   tags: users
 
@@ -19,6 +20,7 @@
   authorized_key:
     user: "{{ item.name }}"
     key: "{{  lookup('file',item.pub_key_path) }}"
+  when: bootstrap_users is defined
   with_items: "{{ bootstrap_users }}"
   tags: users
 

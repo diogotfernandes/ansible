@@ -1,0 +1,36 @@
+---
+- hosts: alcafaz
+  gather_facts: False
+  become: True
+  roles:
+    - fail2ban
+
+  pre_tasks:
+    - name: Install sendmail to send notifications about f2ban
+      apt:
+        name: sendmail
+        state: present
+
+  vars:
+    f2ban_findtime: 60m
+    f2ban_maxretry: 3
+    f2ban_default_action: action_mw # ban and send email
+    f2ban_loglevel: INFO
+    f2ban_logtarget: /var/log/fail2ban.log
+
+    f2ban_mail:
+      mta: sendmail
+      destemail: admin@alcafaz.test
+      sender: f2ban
+      sendername: Fail2Ban Alerts
+
+    f2ban_jails:
+      - name: sshd
+        enabled: true
+        port: 22
+        logpath: sshd_log
+        backend: sshd_backend
+
+
+## INSTALL fail2ban, CONFIG jail(s)
+## ansible-playbook 08.fail2ban.yml -i hosts -l mail

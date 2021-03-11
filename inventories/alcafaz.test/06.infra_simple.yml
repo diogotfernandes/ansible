@@ -1,0 +1,40 @@
+- hosts: alcafaz
+  gather_facts: True
+  become: True
+
+- hosts: nameservers
+  gather_facts: True
+  become: True
+  roles:
+    - bootstrap
+    - dns_bind
+
+- hosts: webservers
+  gather_facts: True
+  become: True
+  roles:
+    - bootstrap
+    - apache2
+
+- hosts: mailservers
+  gather_facts: True
+  become: True
+  roles:
+    - bootstrap
+    - postfix
+    - cyrus_sasl2
+    - cyrus_imap
+
+  post_tasks:
+    - name: Sending an e-mail using SMTP
+      mail:
+        host: mail.alcafaz.test
+        port: 25
+        sender: admin@alcafaz.test
+        to: Diogo Fernandes <diogo@alcafaz.test>
+        subject: "[Ansible-report] Infrastructure Successfully provisioned"
+        body: Infrastructure has been successfully provisioned.
+      # delegate_to: localhost
+
+## INSTALL web server , mail server, dns server
+# ansible-playbook 06.infra_simple.yml -i hosts

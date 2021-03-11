@@ -1,6 +1,12 @@
 ---
 # vars for mail host
-
 bootstrap_hostname:
   name: mail
   domain: alcafaz.test
+
+bootstrap_packages:
+  - python-pip
+  - python-apt
+  - sudo
+  - aptitude
+  - ufw

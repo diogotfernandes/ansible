@@ -1,0 +1,30 @@
+---
+- hosts: webservers
+  become: True
+
+  roles:
+   - apache2
+   - geerlingguy.php
+   - mariadb
+   - wordpress
+
+  tasks:
+    # https://make.wordpress.org/hosting/handbook/handbook/server-environment/#system-packages
+    - name: Install some packages required for wordpress
+      apt:
+        name: [ ghostscript, imagemagick ]
+
+    - name: Change apache2 dir.conf to serve php
+      lineinfile:
+        path: /etc/apache2/mods-available/dir.conf
+        regexp: 'DirectoryIndex'
+        line: '        DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm'
+
+
+
+#
+#
+# Variáveis definidas no host_vars/group_vars
+#
+## INSTALA apache2, mariadb, php e wordpress
+# ansible-playbook 10.lamp-wordpress.yml -i hosts

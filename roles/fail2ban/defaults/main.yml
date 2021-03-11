@@ -16,6 +16,6 @@ f2ban_mail:
 f2ban_jails:
   - name: sshd
     enabled: true
-    port: 2849
+    port: 22
     logpath: sshd_log
     backend: sshd_backend

@@ -1,0 +1,36 @@
+- hosts: alcafaz
+  gather_facts: True
+  become: True
+  roles:
+    - bootstrap
+
+  # vars:
+  #   bootstrap_hostname:
+  #     name: foo
+  #     domain: alcafaz.test
+  #
+  #   bootstrap_users:
+  #     - name: jane
+  #       comment: Jane Doe
+  #       groups: sudo
+  #       append: True
+  #       shell: /bin/bash
+  #       create_home: True
+  #       home: /home/jane
+  #       password: secretpass
+  #       update_password: on_create
+  #       generate_ssh_key: 'yes'
+  #       pub_key_path: ~/.ssh/id_rsa.pub
+
+
+#
+## BOOTSTRAP - ALL
+## é necessário utilizar o user/password = root/qwerty,
+## que é o user/password com privilégios na VM 'debian10' (quando é feito um clone)
+# ansible-playbook 00.bootstrap.yml -e "ansible_user=root ansible_password=qwerty" -i hosts
+#
+## BOOTSTRAP - [packages, timezone, hostname, locales, ssh, users, ufw]
+# ansible-playbook 00.bootstrap.yml -e "ansible_user=root ansible_password=qwerty" -i hosts --tags [option]
+#
+## BOOTSTRAP - SSH
+# ansible-playbook 00.bootstrap.yml -e "ansible_user=root ansible_password=qwerty" -i hosts --tags ssh

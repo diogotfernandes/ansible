@@ -1,0 +1,34 @@
+---
+- hosts: kvm_host
+  become: False
+  gather_facts: False
+  roles:
+    - kvm
+
+  vars:
+    kvm_base_vm: debian10
+    kvm_network: alcafaz.test
+    host:
+      - name: demo01.alcafaz.test		    ## CHANGE ME!
+        ip: '192.168.100.51'		      ## CHANGE ME!
+        inventory_group: webservers   ## CHANGE ME!
+        add_to_inventory: True        ## CHANGE ME!
+      - name: demo02.alcafaz.test		      ## CHANGE ME!
+        ip: '192.168.100.52'		        ## CHANGE ME!
+        inventory_group: nameservers    ## CHANGE ME!
+        add_to_inventory: True          ## CHANGE ME!
+    kvm_name: "{{ host.name }}"
+
+
+
+## Cria 1 ou n vms
+#
+# Variáveis com  'CHANGE ME!' devem ser alteradas, de acordo com o host a configurar.
+#
+## CREATE NEW VM AND CREATE STATIC DHCP LEASE (virtual network)
+## ao utilizar o modulo "virt_net" command modify , a lease DCHP não é persistente(??)
+## ansible-playbook 01.create-vm.yml --tags "create_vm" -i hosts
+#
+## CREATE NEW VM AND START VM
+## ansible-playbook 01.create-vm.yml --tags "create_vm, start" -i hosts
+#

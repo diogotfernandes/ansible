@@ -1,0 +1,17 @@
+---
+- hosts: nameservers
+  become: true
+  roles:
+  - dns_bind
+
+## Variáveis definidas no host_vars/group_vars
+#
+## INSTALL bind9 AND CONFIG
+# ansible-playbook 07.dns.yml -i hosts -l ns1 (--limit ns1)
+#
+## CONFIG ONLY named.conf
+# ansible-playbook 07.dns.yml -i hosts --tags config
+#
+## CONFIG ONLY zones
+# ansible-playbook 07.dns.yml -i hosts --tags zone_config
+#

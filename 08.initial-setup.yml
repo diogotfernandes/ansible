@@ -1,9 +1,0 @@
-- hosts: alcafaz
-  become: True
-
-  roles:
-    - initial_setup
-
-
-#
-# ansible-playbook 08.initial-setup.yml --tags "packages, timezone, ufw, ssh,hostname" -i inventories/alcafaz.test/hosts

@@ -1,0 +1,11 @@
+---
+
+- name: Fail if the new vm name is in network hosts
+  fail:
+    msg: "{{ item.name }} - {{ item.ip }} is already in use!!"
+  loop: "{{net_json.network.ip.dhcp.host | flatten(1) }}"
+  loop_control:
+    label: "{{ dhcp_host.name }}"
+    loop_var: dhcp_host
+  when: item.name == dhcp_host.name or item.ip == dhcp_host.ip
+  tags: assert

@@ -2,9 +2,9 @@
 # defaults file for cyrus-imap
 # @var: cyrus_imap_packages: Software para instalacao
 cyrus_imap_packages:
+  - cyrus-common
   - cyrus-admin
   - cyrus-clients
-  - cyrus-common
   - cyrus-imapd
 
 # @var: cyrus_imap_default_group: Grupo utilizado pelo Servidor Cyrus

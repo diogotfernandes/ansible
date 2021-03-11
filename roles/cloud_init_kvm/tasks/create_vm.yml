@@ -1,0 +1,65 @@
+---
+# tasks file for cloud-init-kvm
+
+## Verificar se já existe a imagem da nova vm .qcow2
+- name: Check if the qcow2 already exists
+  stat:
+    path: "{{ kvm_debian_base_img_dst }}/{{ item.kvm_new_vm_user_data.fqdn }}"
+  register: qcow2_exists
+
+## Expandir a imagem base, com uma tamanho maior (orignal: ~ 2G)
+- name: Expand debian10 qcow
+  command: >
+      qemu-img create -b {{ kvm_debian_base_img_dst }}/{{ kvm_debian_img_name }}  \
+      -f qcow2 -F qcow2 {{ kvm_debian_base_img_dst }}/{{ item.kvm_new_vm_user_data.fqdn }} \
+      {{ item.kvm_new_vm_qcow_size }}G
+  when: qcow2_exists.stat.exists == 'false' | bool
+
+- debug:
+    var: qcow2_exists.stat
+    verbosity: 1
+  when: qcow2_exists.stat.exists == 'false' | bool
+
+- name: Template user-data
+  template:
+    src: user-data.j2
+    dest: /tmp/user-data
+    owner: diogo
+    group: diogo
+    force: 'yes'
+
+- name: Template meta-data
+  template:
+    src: meta-data.j2
+    dest: /tmp/meta-data
+    owner: diogo
+    group: diogo
+    force: 'yes'
+
+- name: Template static network
+  template:
+    src: network.j2
+    dest: /tmp/network_config_static.cfg
+    owner: diogo
+    group: diogo
+    force: 'yes'
+
+- name: Create iso with meta-data and user-data
+  command: cloud-localds --network-config=/tmp/network_config_static.cfg /tmp/seed.iso /tmp/user-data /tmp/meta-data
+
+- name: Create new vm
+  command: >
+    virt-install --connect qemu:///system \
+      --virt-type kvm --name {{ item.kvm_new_vm_user_data.fqdn }} \
+      --ram {{ item.kvm_ram }} --vcpus={{ item.kvm_vcpus }} --os-type linux --os-variant debian10 \
+      --disk path=/tmp/seed.iso,device=cdrom \
+      --disk path={{ kvm_debian_base_img_dst }}/{{ item.kvm_new_vm_user_data.fqdn }},device=disk \
+      --import \
+      --network network={{ item.kvm_network }} \
+      --noautoconsole \
+
+- name: Wait for port 22
+  wait_for:
+    port: 22
+    host: "{{ item.kvm_static_network.ipv4 }}"
+    delay: 10

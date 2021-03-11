@@ -1,9 +1,8 @@
 ---
-
 - name: Get vm status
   virt:
     command: status
-    name: "{{ kvm_name }}"
+    name: "{{ item.name }}"
   register: vm_current_state
   tags: always
 
@@ -37,7 +36,7 @@
 - name: Change vm state
   virt:
     command: "{{ kvm_state }}"
-    name: "{{ kvm_name }}"
+    name: "{{ item.name }}"
   changed_when: vm_current_state.status != kvm_state
   when: vm_current_state.status == ('running' if kvm_state == 'pause' else 'running' if kvm_state == 'shutdown' else 'shutdown' if kvm_state == 'start' else 'paused' if kvm_state == 'unpause')
   register: aux
@@ -74,7 +73,7 @@
 - name: Wait until vm change state
   virt:
     command: status
-    name: "{{ kvm_name }}"
+    name: "{{ item.name }}"
   register: vm_change_status
   when: vm_current_state.status == ('running' if kvm_state == 'pause' else 'running' if kvm_state == 'shutdown' else 'shutdown' if kvm_state == 'start' else 'paused' if kvm_state == 'unpause')
   until: vm_change_status.status == ('shutdown' if kvm_state == 'shutdown' else  'running' if kvm_state == 'start' else 'paused' if kvm_state == 'pause' else 'running' if kvm_state == 'unpause')
@@ -93,18 +92,20 @@
 - name: Create list of vms
   set_fact:
     kvm_final_info: "{{ kvm_final_info|default([]) + [ { \
-                  'name': item.key, \
-                  'state': item.value.state, \
-                  'maxMem': item.value.maxMem, \
-                  'memory': item.value.memory, \
-                  'nrVirtCpu': item.value.nrVirtCpu, \
-                  'cpuTime': item.value.cpuTime, \
-                  'autostart': item.value.autostart \
+                  'name': info.key, \
+                  'state': info.value.state, \
+                  'maxMem': info.value.maxMem, \
+                  'memory': info.value.memory, \
+                  'nrVirtCpu': info.value.nrVirtCpu, \
+                  'cpuTime': info.value.cpuTime, \
+                  'autostart': info.value.autostart \
                   } ] }}"
   with_dict: "{{ aux_info }}"
+  loop_control:
+    loop_var: info
   when:
-    - item.key != 'changed'
-    - item.key != 'failed'
+    - aux.key != 'changed'
+    - aux.key != 'failed'
   tags: always
 
 - name: kvm_final_info # do not change!

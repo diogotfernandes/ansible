@@ -1,0 +1,7 @@
+---
+- hosts: kvm_host
+  gather_facts: False
+  become: False
+
+  roles:
+    - cloud_init_kvm

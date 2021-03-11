@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  gather_facts: False
+  become: False
+
+  vars:
+    mkdocs_local_path: /home/diogo/Documents/estagio-docs
+    mkdocs_build_config: "{{ mkdocs_local_path }}/mkdocs.yml"
+    mkdocs_build_output_dir: /tmp/site
+    mkdocs_remote_site_path: /var/www/ansible.diogof.pt
+    mkdocs_remote_host:
+      user: diogo
+      domain: diogof.pt
+      ssh_port: '2849'
+    mkdocs_remote_path: /var/www/ansible.diogof.pt/
+
+  roles:
+    - mkdocs
+
+#
+# ansible-playbook 11.push-mkdocs-to-remote.yml -i hosts

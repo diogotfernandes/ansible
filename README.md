@@ -13,12 +13,6 @@
 ```console
 foo@bar:~$ tree ansible
 
-├── 00.test.yml
-├── 01.create-vm-and-initial-config.yml
-├── 02.cloud-init-kvm.yml
-├── 03.dns.yml
-├── 04.infra_simpleMail_simpleWeb_dns.yml
-├── 05...
 ├── ansible.cfg
 ├── filter_plugins
 ├── inventories
@@ -33,26 +27,15 @@ foo@bar:~$ tree ansible
 ```console
 foo@bar:~$ tree ansible/inventories/alcafaz.test
 
+├── 00.tests.yml
+├── 01.bootstrap.yml
+├── 02.create-vm.yml
+├── 03.create-vm-and-bootstrap.yml
+├── 04.change_vm_state.yml
+├── 05.cloud-init-kvm.yml
 ├── group_vars
-│   ├── all.yml
-│   ├── mailservers.yml
-│   ├── nameservers.yml
-│   └── webservers.yml
 ├── hosts
 └── host_vars
-    ├── mail
-    │   ├── cyrus-imap.yml
-    │   ├── cyrus-sasl.yml
-    │   ├── initial-setup.yml
-    │   ├── mailman3.yml
-    │   └── postfix.yml
-    ├── ns1
-    │   ├── bind9.yml
-    │   ├── initial-setup.yml
-    │   └── ns1.yml
-    └── web01
-        ├── apache2.yml
-        └── initial-setup.yml
 ```
 
 ### Roles

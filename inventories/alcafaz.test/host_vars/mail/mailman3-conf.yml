@@ -1,0 +1,78 @@
+---
+# vars for mail host - mailman3
+# @var: mailman_cfg: Configuracao do ficheiro mailman.cfg
+mailman_cfg:
+  mailman_site_owner: admin@alcafaz.test
+  mailman_noreply_address: noreply
+  mailman_default_language: en
+  database_class: mailman.database.postgresql.PostgreSQLDatabase
+  database_url: postgres://mailman3:qwerty@localhost/mailman3
+  database_debug: no
+  webservice_hostname: localhost
+  webservice_port: 8001
+  webservice_use_https: no
+  webservice_admin_user: restadmin
+  webservice_admin_pass: restapipassword
+  mta_incoming: mailman.mta.postfix.LMTP
+  mta_outgoing: mailman.mta.deliver.deliver
+  mta_smtp_host: localhost
+  mta_smtp_port: 25
+  mta_smtp_user: ''
+  mta_smtp_pass: ''
+  mta_lmtp_host: 127.0.0.1
+  mta_lmtp_port: 8024
+
+# @var: mailman_web: Configuracao do ficheiro mailman-web.py
+mailman_web:
+  # secret_key: notsosecret
+  admins:
+    - description: Mailman Suite Admin
+      email: admin@alcafaz.test
+  alllowed_hosts:
+    - name: '*'
+  mailman_rest_api_url: http://localhost:8001
+  mailman_rest_api_user: restadmin
+  mailman_rest_api_pass: restapipassword
+  # igual a variavel 'api_key' no mailman-hyperkitty.cfg
+  mailman_archiver_key: archiverkey
+  mailman_archiver_from: '127.0.0.1, ::1'
+  installed_apps:
+    - name: hyperkitty
+    - name: postorius
+    - name: django_mailman3
+    - name: django.contrib.admin
+    - name: django.contrib.auth
+    - name: django.contrib.contenttypes
+    - name: django.contrib.sessions
+    - name: django.contrib.sites
+    - name: django.contrib.messages
+    - name: django.contrib.staticfiles
+    - name: rest_framework
+    - name: django_gravatar
+    - name: compressor
+    - name: haystack
+    - name: django_extensions
+    - name: django_q
+    - name: allauth
+    - name: allauth.account
+    - name: allauth.socialaccount
+    - name: django_mailman3.lib.auth.fedora
+  databases:
+    - option_name: default
+      engine: django.db.backends.postgresql_psycopg2
+      name: mailman3web
+      user: mailman3web
+      password: qwerty
+      host: localhost
+      port: ''
+  use_x_forwarded_host: True
+  email_name: alcafaz.test
+  account_default_http_protocol: http
+  compress_offline: True
+  postorius_template_base_url: http://localhost/mailman3/
+
+# @var: mailman_hyperkitty: mailman-hyperkitty.cfg
+mailman_hyperkitty:
+  base_url: http://localhost/mailman3/hyperkitty/
+  # igual a variavel 'mailman_archiver_key' no mailman-web-py
+  api_key: archiverkey

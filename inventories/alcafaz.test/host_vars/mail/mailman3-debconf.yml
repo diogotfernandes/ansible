@@ -1,0 +1,40 @@
+---
+# vars for mail host - mailman3-debconf
+
+mailman3_debconf:
+  - question: mailman3/config_hyperkitty
+    value: True
+    vtype: boolean
+  - question: mailman3/dbconfig-install
+    value: True
+    vtype: boolean
+  - question: mailman3/database-type
+    value: pgsql
+    vtype: select
+  - question: mailman3/pgsql/method
+    value: TCP/IP
+    vtype: select
+  - question: mailman3/remote/port
+    value: 5432
+    vtype: string
+  - question: mailman3/pgsql/authmethod-admin
+    value: password
+    vtype: select
+  - question: mailman3/pgsql/authmethod-user
+    value: password
+    vtype: select
+  - question: mailman3/db/dbname
+    value: mailman3
+    vtype: string
+  - question: mailman3/db/app-user
+    value: mailman3
+    vtype: string
+  - question: mailman3/pgsql/app-pass
+    value: qwerty                       ## CHANGE ME!! pw do postgres user (?)
+    vtype: password
+  - question: mailman3/pgsql/admin-user
+    value: postgres
+    vtype: string
+  - question: mailman3/pgsql/admin-pass
+    value: qwerty
+    vtype: password

@@ -1,8 +1,24 @@
 ---
 # vars for all hosts
-
-hostname_domain_name: alcafaz.test
-supersede_dhcp: False
-packages_to_install:
+bootstrap_timezone: Europe/Lisbon
+bootstrap_packages:
+  # - python3-pip
+  - sudo
+  - aptitude
   - ufw
-  - dnsutils
+bootstrap_ssh:
+  permit_root_login: 'no'
+  password_authentication: 'no'
+  port: 22
+bootstrap_locale:
+  - name: pt_PT.UTF-8
+    state: present
+bootstrap_ufw:
+  - direction: outgoing
+    policy: allow
+  - direction: incoming
+    policy: deny
+bootstrap_ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'

@@ -1,6 +1,0 @@
----
-- hosts: ns1
-  gather_facts: False
-  become: True
-  roles:
-    - fail2ban
