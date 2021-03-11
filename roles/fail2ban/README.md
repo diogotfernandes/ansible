@@ -1,38 +1,79 @@
-Role Name
+fail2ban
 =========
 
-A brief description of the role goes here.
+Role para instalar/configurar o fail2ban.
+
++ Instalação do fail2ban
++ Configuração de `jails`
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
++ MTA para envio de notificações sobre o fail2ban
 
 Role Variables
 --------------
+| Variable                   | Default               | Description                                                                     |
+|----------------------------|-----------------------|---------------------------------------------------------------------------------|
+| f2ban_findtime             | 10m                   | Espaço de tempo em que o fail2ban monitoriza tentativas consecutivas, falhadas. |
+| f2ban_maxretry             | 3                     | Número de tentativas falhadas, consecutivas, num espaço de tempo                |
+| f2ban_default_action       | action_mw             | Ação do fail2ban.                                                               |
+| f2ban_loglevel             | INFO                  |                                                                                 |
+| f2ban_logtarget            | /var/log/fail2ban.log | Ficheiro de log do fail2ban                                                     |
+| f2ban_mail                 | n/a                   | Lista com informações sobre o email, para envio de alertas                      |
+| - f2ban_mail['mta']        | sendmail              | MTA                                                                             |
+| - f2ban_mail['destemail']  | admin@foo.bar         | Email de destino                                                                |
+| - f2ban_mail['sender']     | f2ban                 | Email do remetente. (f2ban@foo.bar)                                             |
+| - f2ban_mail['sendername'] | Fail2Ban Alerts       | Nome do remetente                                                               |
+| f2ban_jails                | n/a                   | Lista com as `jail's` a configurar no fail2ban                                  |
+| - f2ban_jails['name']      | sshd                  | Nome da `jail`                                                                  |
+| - f2ban_jails['enabled']   | true                  | Estado da `jail`                                                                |
+| - f2ban_jails['port']      | 22                    | Porta da `jail`                                                                 |
+| - f2ban_jails['logpath']   | sshd_log              | Log para o fail2ban monitorizar                                                 |
+| - f2ban_jails['backend']   | sshd_backend          |                                                                                 
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+---
+- hosts: all
+  gather_facts: False
+  become: True
+  roles:
+    - fail2ban
 
-License
--------
+  pre_tasks:
+    - name: Install sendmail to send notifications about f2ban
+      apt:
+        name: sendmail
+        state: present
 
-BSD
+  vars:
+    f2ban_findtime: 10m
+    f2ban_maxretry: 3
+    f2ban_default_action: action_mw # ban and send email
+    f2ban_loglevel: INFO
+    f2ban_logtarget: /var/log/fail2ban.log
+
+    f2ban_mail:
+      mta: sendmail
+      destemail: admin@alcafaz.test
+      sender: f2ban
+      sendername: Fail2Ban Alerts
+
+    f2ban_jails:
+      - name: sshd
+        enabled: true
+        port: 22
+        logpath: sshd_log
+        backend: sshd_backend
+```
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Diogo Fernandes | a21230576 at isec.pt

@@ -31,7 +31,7 @@ bootstrap_locale:
 #     create_home: True
 #     home: /home/janedoe
 #     password: secretpass
-#     update_password: on_creat
+#     update_password: on_create
 #     generate_ssh_key: 'yes'
 #     pub_key_path: ~/.ssh/id_rsa.pub
 

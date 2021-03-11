@@ -1,7 +1,2 @@
 ---
 # vars file for kvm
-
-# 
-# kvm_dhcp_hosts:
-#   - { name: ns1.alcafaz.test, mac: 52:54:00:68:bd:6f , ip: 192.168.100.5 }
-#   - { name: mail.alcafaz.test, mac: 52:54:00:92:ad:d8 , ip: 192.168.100.10 }

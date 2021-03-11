@@ -3,6 +3,17 @@ Cloud Init KVM
 
 Role para a criação de uma nova máquina virtual (KVM) com base numa imagem `cloud-init`
 
+Pode ser criada apenas uma máquina virtual, ou várias.
+
+```yaml
+new_hosts:
+  - name: host1
+    ...
+  - name: host2
+    ...
+```
+
+
 + Download da imagem (.qcow2) cloud-init
 + Criar um disco virtual (.qcow2) para a máquina virtual
 + Criar templates para o script cloud-init (user-data, meta-data, network)
@@ -50,7 +61,7 @@ Role Variables
 
 Example Playbook
 ----------------
-
+`ansible-playbook cloud_init_kvm --ask-become-pass`
 
 ```yaml
 ---
@@ -59,39 +70,44 @@ Example Playbook
   gather_facts: False
 
   vars:
-    kvm_new_vm_qcow2_name: "{{ kvm_new_vm_user_data.fqdn }}.qcow2"
-    kvm_new_vm_qcow_size: 20
-    kvm_new_vm_user_data:
-      hostname: foo
-      fqdn: foo.example.com
-      manage_etc_hosts: False
-      users:
-        - name: johndoe
-          sudo: ALL=(ALL) NOPASSWD:ALL
-          groups: bar
-          home: /home/johndoe
-          shell: /bin/bash
-          ssh-authorized-keys:
-            - "{{lookup('file', '~/.ssh/id_rsa.pub')}}"
-            - ssh - 32ec2ewqd23vr3r...
-      ssh_pwauth: True
-      disable_root: True
-      chpasswd:
-        list: johndoe:password
-        expire: True
+    new_hosts:
+      - name: ns1
+        kvm_new_vm_qcow_size: 20
+        kvm_ram: 1024
+        kvm_vcpus: 1
+        kvm_network: alcafaz.test
 
-    kvm_new_vm_meta_data:
-      instance-id: foo
-      local-hostname: foo
+      kvm_new_vm_user_data:
+        hostname: foo
+        fqdn: foo.example.com
+        manage_etc_hosts: False
+        users:
+          - name: johndoe
+            sudo: ALL=(ALL) NOPASSWD:ALL
+            groups: bar
+            home: /home/johndoe
+            shell: /bin/bash
+            ssh-authorized-keys:
+              - "{{lookup('file', '~/.ssh/id_rsa.pub')}}"
+              - ssh - 32ec2ewqd23vr3r...
+        ssh_pwauth: True
+        disable_root: True
+        chpasswd:
+          list: johndoe:password
+          expire: True
 
-    kvm_static_network:
-      interface: enp1s0
-      dhcp4: False
-      ipv4: 192.168.100.200
-      gw: 192.168.100.1
-      ns1: 192.168.100.5
-      ns2: 208.67.222.222
-      search: example.com
+      kvm_new_vm_meta_data:
+        instance-id: foo
+        local-hostname: foo
+
+      kvm_static_network:
+        interface: enp1s0
+        dhcp4: False
+        ipv4: 192.168.100.200
+        gw: 192.168.100.1
+        ns1: 192.168.100.5
+        ns2: 208.67.222.222
+        search: example.com
 
   pre_tasks:
     - name: Ensure that cloud-image-utils is installed

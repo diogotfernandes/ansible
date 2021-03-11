@@ -1,38 +1,66 @@
-Role Name
+wordpress
 =========
 
-A brief description of the role goes here.
+Role para instalação do wordpress
 
-Requirements
-------------
++ Download do wordpress
++ Instalação do wordpress
++ Configuração do wordpress
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Variable        | Default                                       | Description                                           |
+|-----------------|-----------------------------------------------|-------------------------------------------------------|
+| wp_version      | latest                                        | Versão do wordpress a instalar                        |
+| wp_db_name      | wordpress                                     | Nome da base de dados a ser utilizado pelo wordpress  |
+| wp_db_user      | wp                                            | Nome do utilizador da base de dados do wordpress      |
+| wp_db_password  | secret                                        | Password do utilizador da base de dados do wordpress  |
+| wp_table_prefix | wp_                                           | Prefixo a ser utilizado na base de dados do wordpress |
+| wp_home         | http://foo.bar                                |                                                       |
+| wp_siteurl      | http://foo.bar                                |                                                       |
+| wp_install_path | /var/www/foo.bar                              | Directório de instalação do wordpress                 |
+| wp_download_url | https://wordpress.org/{{ wp_version }}.tar.gz | Link para download do wordpress                       |
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Roles
+
++ geerlingguy.php
++ apache2
++ mariadb
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yaml
+- hosts: webservers
+  become: True
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  roles:
+   - apache2
+   - geerlingguy.php
+   - mariadb
+   - wordpress
 
-License
--------
+  tasks:
+    # https://make.wordpress.org/hosting/handbook/handbook/server-environment/#system-packages
+    - name: Install some packages required for wordpress
+      apt:
+        name: [ ghostscript, imagemagick ]
 
-BSD
+    - name: Change apache2 dir.conf to serve php
+      lineinfile:
+        path: /etc/apache2/mods-available/dir.conf
+        regexp: 'DirectoryIndex'
+        line: '        DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm'
+
+```
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Diogo Fernandes | a21230576 at isec.pt

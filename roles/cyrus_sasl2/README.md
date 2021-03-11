@@ -1,38 +1,54 @@
-Role Name
+cyrus_sasl2
 =========
 
-A brief description of the role goes here.
+Role para instalar e configurar o SASL2 (autenticação).
 
-Requirements
-------------
++ Instalação e configuração do SASL2
++ Criação de utilizadores para autenticação no cyrus-imap
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Variable                              | Default                                   | Description                                                                               |
+|---------------------------------------|-------------------------------------------|-------------------------------------------------------------------------------------------|
+| sasl2_packages                        | [libsasl2-modules, sasl2-bin, libsasl2-2] | Lista de software a instalar                                                              |
+| default_sasl_group                    | sasl                                      | Grupo, por omissão, do sasl                                                               |
+| sasl2_create_users                    | False                                     | Bool para verificar se é para criar utilizadores                                          |
+| sasl_users                            | n/a                                       | Lista de utilizadores para criar                                                          |
+| - sasl_users['name']                  | johndoe                                   | Nome do utilizador                                                                        |
+| - sasl_users['password']              | secretpass                                | Password do utilizador                                                                    |
+| - sasl_users['domain']                | foobar.com                                | Domínio                                                                                   |
+| sasl_default_imap_admin               | n/a                                       | Lista com o par user/password do administrador do sasl                                    |
+| - sasl_default_imap_admin['name']     | cyrus                                     | Nome do administrador. conincidir com o campo `admins: username` no ficheiro `imapd.conf` |
+| - sasl_default_imap_admin['password'] | secret                                    | Password do administrador                                                                 |
 
-Dependencies
-------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yaml
+- hosts: mailservers
+  become: True
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  roles:
+   - cyrus_imap
 
-License
--------
+  vars:
+    sasl2_create_users: True
+    sasl_users:
+      - name: johndoe
+        password: secret
+        domain: foo.bar
+      - name: jane
+        password: notsecret
+        domain: foo.bar
+```
 
-BSD
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Diogo Fernandes | a21230576 at isec.pt

@@ -1,38 +1,69 @@
-Role Name
+mailman3
 =========
 
-A brief description of the role goes here.
+Instalação e Configuração do mailman3-full (Mailman3-web e Mailman3-core)
+
++ Instalação do mailman-full através do debconf
++ Configuração do mailman3
++ Criação de uma lista de um domínio e lista de teste
+
++ [Unusual Postfix configuration](Unusual Postfix configuration)
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
++ Servidor Web - apache2
++ MTA - postfix
++ DB - postgresql
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+| Variable                        | Default       | Description                                                                                              |
+|---------------------------------|---------------|----------------------------------------------------------------------------------------------------------|
+| mailman3_config_path            | /etc/mailman3 | Directório de configuração do mailman3                                                                   |
+| dbconfig_common                 | n/a           | Lista com configurações do dbconfig_common                                                               |
+| mailman3_create_domain_and_list | True          | Bool para verificar se é para criar uma lista e domínio de teste                                         |
+| mailman_cfg                     | n/a           | Lista com configurações do ficheiro de configuração do mailman `/etc/mailman3/mailman.cfg`               |
+| mailman_web                     | n/a           | Lista com configurações do ficheiro de configuração do mailman3web `/etc/mailman3/mailman-web.py`        |
+| mailman_hyperkitty              | n/a           | Lista com configurações do ficheiro de configuração do hyperkitty `/etc/mailman3/mailman-hyperkitty.cfg` |
+| mailman3_debconf                | n/a           | Lista com configurações do mailman3_debconf                                                              |
+| mailman3_web_debconf            | n/a           | Lista com configurações do mailman3_web_debconf                                                          |
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yaml
+---
+- hosts: mailservers
+  become: True
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  pre_tasks:
+    - name: Ensure that debconf is installed
+      apt:
+        name: debconf
+        state: present
 
-License
--------
+  vars:
+    # Cria dominio e lista de teste
+    # só utilizar na 1a instalação, senão dá erro...
+    mailman3_create_domain_and_list: True
+    # se utilizar o python3 dá erro quando instalo o postgresql...
+    ansible_python_interpreter: /usr/bin/python
 
-BSD
+  roles:
+   - apache2
+   - postgresql
+   - mailman3
+```
+```yaml
+ansible-playbook 09.mailman3.yml -i hosts
+```
+
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Diogo Fernandes | a21230576 at isec.pt

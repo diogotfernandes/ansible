@@ -1,38 +1,61 @@
-Role Name
+mariadb
 =========
 
-A brief description of the role goes here.
+Role para instalação/configuração do servidor de base de dados mariadb
 
-Requirements
-------------
++ Instalação/Configuração do servidor mariadb
++ Criação de utilizadores
++ Criação de base de dados
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Variable                      | Default                     | Description                                          |
+|-------------------------------|-----------------------------|------------------------------------------------------|
+| mariadb_packages              | [mariadb-server]            | Lista com o software a instalar                      |
+| mariab_mysqld                 | n/a                         | Lista com configurações do servidor de base de dados |
+| mariab_mysqld['port']         | 3306                        | Porta a utilizar pelo servidor mariadb               |
+| mariab_mysqld['bind_address'] | 127.0.0.1                   | Endereço IP a utilizar pelo servidor mariadb         |
+| mariadb_config_path           | /etc/mysql                  | Directório do servidor mariadb                       |
+| mariadb_unix_socket           | /var/run/mysqld/mysqld.sock | Socket para se ligar ao servidor mariadb             |
+| mariadb_user                  | root                        | Utilizador com privilégios totais                    |
+| mariadb_databases             | n/a                         | Lista com base de dados a criar                      |
+| mariadb_databases['name']     | wordpress                   | Nome da base de dados                                |
+| mariadb_databases['state']    | present                     |                                                      |
+| mariadb_users                 | n/a                         | Lista de utilizadores a criar                        |
+| mariadb_users['name']         | wp                          | Nome do utilizador                                   |
+| mariadb_users['password']     | secret                      | Password do utilizador                               |
+| mariadb_users['host']         | localhost                   |                                                      |
+| mariadb_users['priv']         | "wordpress.*:ALL,GRANT"     | Privilégios do utilizador                            |
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yaml
+---
+  - hosts: webservers
+    become: True
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+    roles:
+     - mariadb
 
-License
--------
+     vars:
+       mariadb_databases:
+         - name: wordpress
+           state: present
+       mariadb_users:
+         - name: wp
+           password: qwerty
+           host: localhost
+           priv: "wordpress.*:ALL,GRANT"
 
-BSD
+```
+
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Diogo Fernandes | a21230576 at isec.pt
