@@ -6,7 +6,7 @@ Testes....
 
 ## 01.bootstrap.yml
 
-Configuração incial do servidor.
+**Configuração incial do servidor.**
 
 +  `ansible-playbook 00.bootstrap.yml -e "ansible_user=root ansible_password=qwerty" -i hosts`
 
@@ -20,7 +20,7 @@ Configura tudo. [packages, timezone, hostname, locales, ssh, users, ufw]
 
 ## 02.create-vm.yml
 
-Faz um ou vários clone(s) de uma máquina virtual base.
+**Faz um ou vários clone(s) de uma máquina virtual base.**
 
 + `ansible-playbook 01.create-vm.yml --tags "create_vm" -i hosts`
 
@@ -33,14 +33,14 @@ Clone da máquina virtual base (debian10), adiciona uma lease estática à `virt
 
 ## 03.create-vm-and-bootstrap.yml
 
-Faz um ou vários clone(s) de uma máquina virtual base, e executa o role `bootstrap`.
+**Faz um ou vários clone(s) de uma máquina virtual base, e executa o role `bootstrap`.**
 
 +  `ansible-playbook 02.create-vm-and-bootstrap.yml --tags "create_vm, start, packages, timezone, hostname, locales, ssh, users, ufw" -i inventories/alcafaz.test/hosts`
 
 
 ## 04.change_vm_state.yml
 
-Altera o estado da máquina virtual. (start, pause, unpause, shutdown)
+**Altera o estado da máquina virtual. (start, pause, unpause, shutdown)**
 
 + `ansible-playbook 02.change_vm_state.yml --tags start -e "kvm_name=vm_name"`
 
@@ -56,6 +56,6 @@ Desliga a vm `vm_name`
 
 ## 05.cloud-init-kvm.yml
 
-Cria uma máquina virtual, com base numa imagem debian cloud-init
+**Cria uma máquina virtual, com base numa imagem debian cloud-init**
 
 + `ansible-playbook 05.cloud-init-kvm.yml --ask-become-pass`
