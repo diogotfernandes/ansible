@@ -12,7 +12,7 @@
         state: present
 
   vars:
-    f2ban_findtime: 60m
+    f2ban_findtime: 10m
     f2ban_maxretry: 3
     f2ban_default_action: action_mw # ban and send email
     f2ban_loglevel: INFO
