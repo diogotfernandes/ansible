@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: instance
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        mkdocs_local_path: /home/diogo/Documents/estagio-docs
+        mkdocs_build_config: "{{ mkdocs_local_path }}/mkdocs.yml"
+        mkdocs_build_output_dir: /tmp/site/
+        mkdocs_remote_host:
+          user: diogo
+          domain: diogof.pt
+          ssh_port: '2849'
+        mkdocs_remote_path: /var/www/ansible.diogof.pt
+verifier:
+  name: ansible

@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: localhost
+  tasks:
+    - name: "Include mkdocs"
+      include_role:
+        name: "mkdocs"

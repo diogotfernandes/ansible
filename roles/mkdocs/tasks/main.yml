@@ -1,10 +1,16 @@
 ---
 - name: Build mkdocs
   command: mkdocs build -f {{ mkdocs_build_config }} -d {{ mkdocs_build_output_dir }}
+  delegate_to: localhost
+
+# - name: Push mkdocs to remote host
+#   command: >
+#       rsync -a
+#       -e 'ssh -p {{ mkdocs_remote_host.ssh_port }}
+#       -i /home/diogo/.ssh/id_rsa' {{ mkdocs_build_output_dir }} \
+#       {{ mkdocs_remote_host.user }}@{{ mkdocs_remote_host.domain }}:{{ mkdocs_remote_path }} \
 
 - name: Push mkdocs to remote host
-  command: >
-      rsync -a
-      -e 'ssh -p {{ mkdocs_remote_host.ssh_port }}
-      -i /home/diogo/.ssh/id_rsa' {{ mkdocs_build_output_dir }} \
-      {{ mkdocs_remote_host.user }}@{{ mkdocs_remote_host.domain }}:{{ mkdocs_remote_path }} \
+  synchronize:
+    src: "{{ mkdocs_build_output_dir }}"
+    dest: "{{ mkdocs_remote_path }}"
