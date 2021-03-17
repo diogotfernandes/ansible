@@ -1,2 +1,9 @@
-localhost ansible_connection=local
-kvm_host ansible_connection=local
+#localhost ansible_connection=local
+#kvm_host ansible_connection=local
+
+#rpi ansible_host=95.93.57.247 ansible_ssh_port=2849
+
+[alcafaz]
+#mail ansible_host=192.168.100.10
+ns1 ansible_host=192.168.100.5
+web01 ansible_host=192.168.100.21

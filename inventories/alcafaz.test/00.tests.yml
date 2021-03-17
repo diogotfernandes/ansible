@@ -1,7 +1,29 @@
 ---
-- hosts: kvm_host
+- name: Update all packages and show server uptime
+  hosts: all
   gather_facts: False
-  become: False
+  become: True
 
-  roles:
-    - cloud_init_kvm
+  tasks:
+    - name: Update all packages to  the latest version
+      apt: name='*' state=latest
+
+    - name: Register server uptime
+      command: uptime
+      changed_when: False
+      register: server_uptime
+
+    - name: Show server uptime
+      debug: var=server_uptime.stdout_lines
+
+- name: Install git and copy a file
+  hosts: web01
+  gather_facts: False
+  become: True
+
+  tasks:
+    - name: Install git
+      apt: name=git state=present
+
+    - name: Copy foo file to home direcory
+      copy: src=foo.txt dest=~/foo.txt
